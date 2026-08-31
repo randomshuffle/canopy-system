@@ -1,0 +1,9 @@
+log_length,commitment_count,batch_size_per_commitment,scheme,h,stage,work_items,work_unit,repetitions,mean_seconds,median_seconds,min_seconds,max_seconds,percent_of_mean_total
+18,16,128,merkle_separate,,separate_merkle_trees,8388592,leaf/internal hashes,20,0.23327202104999997,0.2234474785,0.220466501,0.299969462,100.0
+18,16,128,canopy_batched_whir,3,separate_bottom_forests,7864320,leaf/internal hashes,20,0.20052721494999998,0.1982206045,0.195570584,0.240196749,58.712766257373296
+18,16,128,canopy_batched_whir,3,hash_to_field,524288,forest roots,20,0.0327261211,0.032117979500000005,0.031522877,0.040905748,9.58194676534998
+18,16,128,canopy_batched_whir,3,reed_solomon_encoding,4194304,codeword elements,20,0.046993516750000006,0.047146416999999996,0.045426627,0.048559832,13.759326210373361
+18,16,128,canopy_batched_whir,3,old_codeword_merkle_trees,524272,leaf/internal hashes,20,0.0446849751,0.0442328745,0.04313596,0.047108875,13.08340366127868
+18,16,128,canopy_batched_whir,3,linear_combinations,20971520,field multiply-adds,20,0.0081678312,0.0082191665,0.007549417,0.008912416,2.3914757116377183
+18,16,128,canopy_batched_whir,3,combined_oracle_merkle_tree,32767,leaf/internal hashes,20,0.008437562449999996,0.008395208500000001,0.008149291,0.009155958,2.470450866394182
+18,16,128,canopy_batched_whir,3,other,,-,20,2.1535e-6,2.1635e-6,1.75e-6,2.581e-6,0.0006305275928096832

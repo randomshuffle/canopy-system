@@ -1,0 +1,5 @@
+log_length,requested_bits,feasible,modulus,log2_size,element_bytes,two_adicity,required_two_adicity,reason
+30,16,false,,,2,,30,a 16-bit field cannot contain a 2^30 radix-2 domain
+30,32,true,3221225473,31.584962501169027,4,30,30,supports the largest requested 2^30 radix-2 domain
+30,48,true,281467460517889,47.99996147537185,6,30,30,supports the largest requested 2^30 radix-2 domain
+30,64,true,18446744069414584321,63.9999999996641,8,32,30,supports the largest requested 2^30 radix-2 domain

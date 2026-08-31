@@ -1,0 +1,26 @@
+log_length,vector_length,batch_size,scheme,h,commit_seconds,prover_open_milliseconds,verifier_milliseconds,proof_bytes,note
+22,4194304,64,merkle,,0.263716041,0.021703,0.243433,30944,complete implementation
+22,4194304,128,merkle,,0.263716041,0.048443,0.49417099999999997,57952,complete implementation
+22,4194304,256,merkle,,0.263716041,0.12384,1.009847,109056,complete implementation
+22,4194304,512,merkle,,0.263716041,0.275728,1.995129,200192,complete implementation
+22,4194304,1024,merkle,,0.263716041,0.587383,3.9468330000000003,367072,complete implementation
+22,4194304,64,canopy_frontend,4,0.414566667,0.005711,0.091989,42352,commit is complete; open/verify timings exclude WHIR; code leaves contain 16 fields
+22,4194304,128,canopy_frontend,4,0.414566667,0.011856,0.190396,50800,commit is complete; open/verify timings exclude WHIR; code leaves contain 16 fields
+22,4194304,256,canopy_frontend,4,0.414566667,0.031383,0.40232,67696,commit is complete; open/verify timings exclude WHIR; code leaves contain 16 fields
+22,4194304,512,canopy_frontend,4,0.414566667,0.080231,0.8453459999999999,101360,commit is complete; open/verify timings exclude WHIR; code leaves contain 16 fields
+22,4194304,1024,canopy_frontend,4,0.414566667,0.182699,1.763139,168880,commit is complete; open/verify timings exclude WHIR; code leaves contain 16 fields
+22,4194304,64,canopy_frontend,5,0.345368042,0.006561,0.10345,38416,commit is complete; open/verify timings exclude WHIR; code leaves contain 16 fields
+22,4194304,128,canopy_frontend,5,0.345368042,0.014796,0.210783,48912,commit is complete; open/verify timings exclude WHIR; code leaves contain 16 fields
+22,4194304,256,canopy_frontend,5,0.345368042,0.037635999999999996,0.443131,69904,commit is complete; open/verify timings exclude WHIR; code leaves contain 16 fields
+22,4194304,512,canopy_frontend,5,0.345368042,0.098713,0.9377110000000001,111760,commit is complete; open/verify timings exclude WHIR; code leaves contain 16 fields
+22,4194304,1024,canopy_frontend,5,0.345368042,0.211633,1.972767,195600,commit is complete; open/verify timings exclude WHIR; code leaves contain 16 fields
+22,4194304,64,canopy_frontend,6,0.325674791,0.007389,0.11412800000000001,32952,commit is complete; open/verify timings exclude WHIR; code leaves contain 16 fields
+22,4194304,128,canopy_frontend,6,0.325674791,0.017167,0.23701,45496,commit is complete; open/verify timings exclude WHIR; code leaves contain 16 fields
+22,4194304,256,canopy_frontend,6,0.325674791,0.042276,0.5107539999999999,70520,commit is complete; open/verify timings exclude WHIR; code leaves contain 16 fields
+22,4194304,512,canopy_frontend,6,0.325674791,0.116579,1.0755439999999998,120696,commit is complete; open/verify timings exclude WHIR; code leaves contain 16 fields
+22,4194304,1024,canopy_frontend,6,0.325674791,0.26093,2.285414,220792,commit is complete; open/verify timings exclude WHIR; code leaves contain 16 fields
+22,4194304,64,canopy_frontend,7,0.327406083,0.010137,0.135211,31996,commit is complete; open/verify timings exclude WHIR; code leaves contain 16 fields
+22,4194304,128,canopy_frontend,7,0.327406083,0.019818,0.275347,46588,commit is complete; open/verify timings exclude WHIR; code leaves contain 16 fields
+22,4194304,256,canopy_frontend,7,0.327406083,0.05824,0.584021,75772,commit is complete; open/verify timings exclude WHIR; code leaves contain 16 fields
+22,4194304,512,canopy_frontend,7,0.327406083,0.143847,1.263196,133788,commit is complete; open/verify timings exclude WHIR; code leaves contain 16 fields
+22,4194304,1024,canopy_frontend,7,0.327406083,0.298508,2.6137930000000003,249308,commit is complete; open/verify timings exclude WHIR; code leaves contain 16 fields

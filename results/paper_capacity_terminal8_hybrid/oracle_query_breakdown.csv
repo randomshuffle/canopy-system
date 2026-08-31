@@ -1,0 +1,92 @@
+experiment,scheme,log_message_length,oracle_role,commitment_kind,oracle_count,shared_query_positions,shared_authentication,message_log,codeword_log,log_inverse_rate,leaf_width,leaf_count,requested_queries,samples,mean_unique_queries,mean_auth_hashes,mean_answer_fields
+2,canopy_separate,22,Canopy claim WHIR initial oracle,Merkle,1,false,false,18,22,4,16,262144,33,100,33.0,398.59,528.0
+2,canopy_separate,22,Canopy claim WHIR recursive oracle 1,Merkle,1,false,false,14,21,7,16,131072,19,100,19.0,226.27,304.0
+2,canopy_separate,22,Canopy claim WHIR recursive oracle 2,Merkle,1,false,false,10,20,10,16,65536,13,100,13.0,149.07,208.0
+2,canopy_separate,22,outer first oracle via Canopy,Canopy bottom forest,1,false,false,22,23,1,16,524288,138,100,137.97,137.93,2207.52
+2,canopy_separate,22,outer second-oracle WHIR initial oracle,Merkle,1,false,false,18,22,4,16,262144,33,100,33.0,399.49,528.0
+2,canopy_separate,22,outer second-oracle WHIR recursive oracle 1,Merkle,1,false,false,14,21,7,16,131072,19,100,19.0,226.95,304.0
+2,canopy_separate,22,outer second-oracle WHIR recursive oracle 2,Merkle,1,false,false,10,20,10,16,65536,13,100,13.0,148.93,208.0
+2,canopy_separate,24,Canopy claim WHIR initial oracle,Merkle,1,false,false,20,24,4,16,1048576,33,100,33.0,464.63,528.0
+2,canopy_separate,24,Canopy claim WHIR recursive oracle 1,Merkle,1,false,false,16,23,7,16,524288,19,100,19.0,263.9,304.0
+2,canopy_separate,24,Canopy claim WHIR recursive oracle 2,Merkle,1,false,false,12,22,10,16,262144,13,100,13.0,174.98,208.0
+2,canopy_separate,24,outer first oracle via Canopy,Canopy bottom forest,1,false,false,24,25,1,16,2097152,138,100,138.0,138.0,2208.0
+2,canopy_separate,24,outer second-oracle WHIR initial oracle,Merkle,1,false,false,20,24,4,16,1048576,33,100,33.0,465.49,528.0
+2,canopy_separate,24,outer second-oracle WHIR recursive oracle 1,Merkle,1,false,false,16,23,7,16,524288,19,100,19.0,265.06,304.0
+2,canopy_separate,24,outer second-oracle WHIR recursive oracle 2,Merkle,1,false,false,12,22,10,16,262144,13,100,13.0,175.42,208.0
+2,canopy_separate,26,Canopy claim WHIR initial oracle,Merkle,1,false,false,22,26,4,16,4194304,33,100,33.0,531.12,528.0
+2,canopy_separate,26,Canopy claim WHIR recursive oracle 1,Merkle,1,false,false,18,25,7,16,2097152,19,100,19.0,302.41,304.0
+2,canopy_separate,26,Canopy claim WHIR recursive oracle 2,Merkle,1,false,false,14,24,10,16,1048576,13,100,13.0,201.47,208.0
+2,canopy_separate,26,Canopy claim WHIR recursive oracle 3,Merkle,1,false,false,10,23,13,16,524288,10,100,10.0,148.47,160.0
+2,canopy_separate,26,outer first oracle via Canopy,Canopy bottom forest,1,false,false,26,27,1,16,8388608,138,100,138.0,138.0,2208.0
+2,canopy_separate,26,outer second-oracle WHIR initial oracle,Merkle,1,false,false,22,26,4,16,4194304,33,100,33.0,532.29,528.0
+2,canopy_separate,26,outer second-oracle WHIR recursive oracle 1,Merkle,1,false,false,18,25,7,16,2097152,19,100,19.0,301.4,304.0
+2,canopy_separate,26,outer second-oracle WHIR recursive oracle 2,Merkle,1,false,false,14,24,10,16,1048576,13,100,13.0,201.01,208.0
+2,canopy_separate,26,outer second-oracle WHIR recursive oracle 3,Merkle,1,false,false,10,23,13,16,524288,10,100,10.0,148.46,160.0
+2,canopy_separate,28,Canopy claim WHIR initial oracle,Merkle,1,false,false,24,28,4,16,16777216,33,100,33.0,598.0,528.0
+2,canopy_separate,28,Canopy claim WHIR recursive oracle 1,Merkle,1,false,false,20,27,7,16,8388608,19,100,19.0,340.02,304.0
+2,canopy_separate,28,Canopy claim WHIR recursive oracle 2,Merkle,1,false,false,16,26,10,16,4194304,13,100,13.0,227.28,208.0
+2,canopy_separate,28,Canopy claim WHIR recursive oracle 3,Merkle,1,false,false,12,25,13,16,2097152,10,100,10.0,168.51,160.0
+2,canopy_separate,28,outer first oracle via Canopy,Canopy bottom forest,1,false,false,28,29,1,16,33554432,138,100,138.0,138.0,2208.0
+2,canopy_separate,28,outer second-oracle WHIR initial oracle,Merkle,1,false,false,24,28,4,16,16777216,33,100,33.0,596.8,528.0
+2,canopy_separate,28,outer second-oracle WHIR recursive oracle 1,Merkle,1,false,false,20,27,7,16,8388608,19,100,19.0,340.46,304.0
+2,canopy_separate,28,outer second-oracle WHIR recursive oracle 2,Merkle,1,false,false,16,26,10,16,4194304,13,100,13.0,226.98,208.0
+2,canopy_separate,28,outer second-oracle WHIR recursive oracle 3,Merkle,1,false,false,12,25,13,16,2097152,10,100,10.0,168.51,160.0
+2,canopy_separate,30,Canopy claim WHIR initial oracle,Merkle,1,false,false,26,30,4,16,67108864,33,100,33.0,662.46,528.0
+2,canopy_separate,30,Canopy claim WHIR recursive oracle 1,Merkle,1,false,false,22,29,7,16,33554432,19,100,19.0,378.86,304.0
+2,canopy_separate,30,Canopy claim WHIR recursive oracle 2,Merkle,1,false,false,18,28,10,16,16777216,13,100,13.0,252.5,208.0
+2,canopy_separate,30,Canopy claim WHIR recursive oracle 3,Merkle,1,false,false,14,27,13,16,8388608,10,100,10.0,188.72,160.0
+2,canopy_separate,30,Canopy claim WHIR recursive oracle 4,Merkle,1,false,false,10,26,16,16,4194304,9,100,9.0,162.06,144.0
+2,canopy_separate,30,outer first oracle via Canopy,Canopy bottom forest,1,false,false,30,31,1,16,134217728,138,100,138.0,138.0,2208.0
+2,canopy_separate,30,outer second-oracle WHIR initial oracle,Merkle,1,false,false,26,30,4,16,67108864,33,100,33.0,661.43,528.0
+2,canopy_separate,30,outer second-oracle WHIR recursive oracle 1,Merkle,1,false,false,22,29,7,16,33554432,19,100,19.0,378.67,304.0
+2,canopy_separate,30,outer second-oracle WHIR recursive oracle 2,Merkle,1,false,false,18,28,10,16,16777216,13,100,13.0,253.44,208.0
+2,canopy_separate,30,outer second-oracle WHIR recursive oracle 3,Merkle,1,false,false,14,27,13,16,8388608,10,100,10.0,188.97,160.0
+2,canopy_separate,30,outer second-oracle WHIR recursive oracle 4,Merkle,1,false,false,10,26,16,16,4194304,9,100,9.0,161.84,144.0
+2,merkle_whir,22,outer WHIR initial oracle,Merkle,1,false,false,22,23,1,16,524288,138,100,137.97,1519.51,2207.52
+2,merkle_whir,22,outer WHIR recursive oracle 1,Merkle,1,false,false,18,22,4,16,262144,33,100,33.0,397.79,528.0
+2,merkle_whir,22,outer WHIR recursive oracle 2,Merkle,1,false,false,14,21,7,16,131072,19,100,19.0,226.64,304.0
+2,merkle_whir,22,outer WHIR recursive oracle 3,Merkle,1,false,false,10,20,10,16,65536,13,100,12.99,149.01,207.84
+2,merkle_whir,24,outer WHIR initial oracle,Merkle,1,false,false,24,25,1,16,2097152,138,100,138.0,1794.47,2208.0
+2,merkle_whir,24,outer WHIR recursive oracle 1,Merkle,1,false,false,20,24,4,16,1048576,33,100,33.0,465.06,528.0
+2,merkle_whir,24,outer WHIR recursive oracle 2,Merkle,1,false,false,16,23,7,16,524288,19,100,19.0,263.91,304.0
+2,merkle_whir,24,outer WHIR recursive oracle 3,Merkle,1,false,false,12,22,10,16,262144,13,100,13.0,175.89,208.0
+2,merkle_whir,26,outer WHIR initial oracle,Merkle,1,false,false,26,27,1,16,8388608,138,100,138.0,2069.31,2208.0
+2,merkle_whir,26,outer WHIR recursive oracle 1,Merkle,1,false,false,22,26,4,16,4194304,33,100,33.0,531.64,528.0
+2,merkle_whir,26,outer WHIR recursive oracle 2,Merkle,1,false,false,18,25,7,16,2097152,19,100,19.0,302.69,304.0
+2,merkle_whir,26,outer WHIR recursive oracle 3,Merkle,1,false,false,14,24,10,16,1048576,13,100,13.0,200.45,208.0
+2,merkle_whir,26,outer WHIR recursive oracle 4,Merkle,1,false,false,10,23,13,16,524288,10,100,10.0,147.98,160.0
+2,merkle_whir,28,outer WHIR initial oracle,Merkle,1,false,false,28,29,1,16,33554432,138,100,138.0,2346.29,2208.0
+2,merkle_whir,28,outer WHIR recursive oracle 1,Merkle,1,false,false,24,28,4,16,16777216,33,100,33.0,595.45,528.0
+2,merkle_whir,28,outer WHIR recursive oracle 2,Merkle,1,false,false,20,27,7,16,8388608,19,100,19.0,340.31,304.0
+2,merkle_whir,28,outer WHIR recursive oracle 3,Merkle,1,false,false,16,26,10,16,4194304,13,100,13.0,227.55,208.0
+2,merkle_whir,28,outer WHIR recursive oracle 4,Merkle,1,false,false,12,25,13,16,2097152,10,100,10.0,169.37,160.0
+2,merkle_whir,30,outer WHIR initial oracle,Merkle,1,false,false,30,31,1,16,134217728,138,100,138.0,2622.82,2208.0
+2,merkle_whir,30,outer WHIR recursive oracle 1,Merkle,1,false,false,26,30,4,16,67108864,33,100,33.0,663.35,528.0
+2,merkle_whir,30,outer WHIR recursive oracle 2,Merkle,1,false,false,22,29,7,16,33554432,19,100,19.0,377.1,304.0
+2,merkle_whir,30,outer WHIR recursive oracle 3,Merkle,1,false,false,18,28,10,16,16777216,13,100,13.0,253.02,208.0
+2,merkle_whir,30,outer WHIR recursive oracle 4,Merkle,1,false,false,14,27,13,16,8388608,10,100,10.0,188.53,160.0
+2,merkle_whir,30,outer WHIR recursive oracle 5,Merkle,1,false,false,10,26,16,16,4194304,9,100,9.0,162.32,144.0
+3,canopy_batched,22,batched aligned claims initial oracle,two initial Merkle roots; shared recursive roots,2,true,false,18,22,4,16,262144,33,100,32.99,794.6,1055.68
+3,canopy_batched,22,batched aligned claims recursive oracle 1,two initial Merkle roots; shared recursive roots,2,true,true,14,21,7,16,131072,19,100,19.0,226.67,608.0
+3,canopy_batched,22,batched aligned claims recursive oracle 2,two initial Merkle roots; shared recursive roots,2,true,true,10,20,10,16,65536,13,100,13.0,148.83,416.0
+3,canopy_batched,22,outer first oracle via Canopy,Canopy bottom forest,1,false,false,22,23,1,16,524288,138,100,137.97,137.93,2207.52
+3,canopy_batched,24,batched aligned claims initial oracle,two initial Merkle roots; shared recursive roots,2,true,false,20,24,4,16,1048576,33,100,33.0,929.38,1056.0
+3,canopy_batched,24,batched aligned claims recursive oracle 1,two initial Merkle roots; shared recursive roots,2,true,true,16,23,7,16,524288,19,100,18.99,264.61,607.68
+3,canopy_batched,24,batched aligned claims recursive oracle 2,two initial Merkle roots; shared recursive roots,2,true,true,12,22,10,16,262144,13,100,13.0,175.72,416.0
+3,canopy_batched,24,outer first oracle via Canopy,Canopy bottom forest,1,false,false,24,25,1,16,2097152,138,100,138.0,138.0,2208.0
+3,canopy_batched,26,batched aligned claims initial oracle,two initial Merkle roots; shared recursive roots,2,true,false,22,26,4,16,4194304,33,100,33.0,1060.96,1056.0
+3,canopy_batched,26,batched aligned claims recursive oracle 1,two initial Merkle roots; shared recursive roots,2,true,true,18,25,7,16,2097152,19,100,19.0,302.68,608.0
+3,canopy_batched,26,batched aligned claims recursive oracle 2,two initial Merkle roots; shared recursive roots,2,true,true,14,24,10,16,1048576,13,100,13.0,200.73,416.0
+3,canopy_batched,26,batched aligned claims recursive oracle 3,two initial Merkle roots; shared recursive roots,2,true,true,10,23,13,16,524288,10,100,10.0,149.0,320.0
+3,canopy_batched,26,outer first oracle via Canopy,Canopy bottom forest,1,false,false,26,27,1,16,8388608,138,100,138.0,138.0,2208.0
+3,canopy_batched,28,batched aligned claims initial oracle,two initial Merkle roots; shared recursive roots,2,true,false,24,28,4,16,16777216,33,100,33.0,1194.74,1056.0
+3,canopy_batched,28,batched aligned claims recursive oracle 1,two initial Merkle roots; shared recursive roots,2,true,true,20,27,7,16,8388608,19,100,19.0,340.5,608.0
+3,canopy_batched,28,batched aligned claims recursive oracle 2,two initial Merkle roots; shared recursive roots,2,true,true,16,26,10,16,4194304,13,100,13.0,226.74,416.0
+3,canopy_batched,28,batched aligned claims recursive oracle 3,two initial Merkle roots; shared recursive roots,2,true,true,12,25,13,16,2097152,10,100,10.0,168.56,320.0
+3,canopy_batched,28,outer first oracle via Canopy,Canopy bottom forest,1,false,false,28,29,1,16,33554432,138,100,138.0,138.0,2208.0
+3,canopy_batched,30,batched aligned claims initial oracle,two initial Merkle roots; shared recursive roots,2,true,false,26,30,4,16,67108864,33,100,33.0,1325.66,1056.0
+3,canopy_batched,30,batched aligned claims recursive oracle 1,two initial Merkle roots; shared recursive roots,2,true,true,22,29,7,16,33554432,19,100,19.0,378.37,608.0
+3,canopy_batched,30,batched aligned claims recursive oracle 2,two initial Merkle roots; shared recursive roots,2,true,true,18,28,10,16,16777216,13,100,13.0,253.2,416.0
+3,canopy_batched,30,batched aligned claims recursive oracle 3,two initial Merkle roots; shared recursive roots,2,true,true,14,27,13,16,8388608,10,100,10.0,188.91,320.0
+3,canopy_batched,30,batched aligned claims recursive oracle 4,two initial Merkle roots; shared recursive roots,2,true,true,10,26,16,16,4194304,9,100,9.0,162.42,288.0
+3,canopy_batched,30,outer first oracle via Canopy,Canopy bottom forest,1,false,false,30,31,1,16,134217728,138,100,138.0,138.0,2208.0

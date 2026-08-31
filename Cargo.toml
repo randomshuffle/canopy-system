@@ -1,0 +1,28 @@
+[package]
+name = "canopy-system"
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+description = "Proof-size and timing comparison for Merkle and Canopy vector commitments"
+
+[dependencies]
+anyhow = "1.0"
+ark-ff = { version = "0.5", features = ["asm", "parallel", "std"] }
+ark-poly = { version = "0.5", features = ["parallel", "std"] }
+ark-serialize = "0.5"
+ark-std = { version = "0.5", features = ["std"] }
+blake3 = { version = "=1.5.5", features = ["rayon"] }
+clap = { version = "4.5", features = ["derive"] }
+csv = "1.3"
+rand = "0.8"
+rand_chacha = "0.3"
+rayon = "1.10"
+serde = { version = "1.0", features = ["derive"] }
+whir-ref = { package = "whir", git = "https://github.com/worldfnd/whir.git", rev = "c274cd5898d31af2cd9be1707a44ccad92c22eaa" }
+
+[dev-dependencies]
+tempfile = "3.12"
+
+[profile.release]
+lto = "thin"
+codegen-units = 1

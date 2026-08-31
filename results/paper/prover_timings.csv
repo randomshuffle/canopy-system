@@ -1,0 +1,12 @@
+experiment,scheme,log_length,batch_size,canopy_height,warmups,repetitions,mean_prover_seconds,median_prover_seconds,min_prover_seconds,max_prover_seconds,relative_to_baseline,note
+1,merkle,20,128,,3,20,0.0726595627,0.0705196465,0.065417125,0.097818292,1.0,commitment plus minimal batch multiproof generation
+1,canopy,20,128,16,3,20,0.15781305845,0.1591495,0.144137541,0.170355999,2.1719516686548954,Canopy commitment and bottom opening plus executable WHIR claim prover; WHIR's duplicate initial commit is excluded
+1,merkle,20,256,,3,20,0.06488607284999999,0.064277083,0.063559459,0.068371126,1.0,commitment plus minimal batch multiproof generation
+1,canopy,20,256,16,3,20,0.1408127313,0.139320917,0.136912168,0.154046374,2.17015339525206,Canopy commitment and bottom opening plus executable WHIR claim prover; WHIR's duplicate initial commit is excluded
+1,merkle,20,512,,3,20,0.06484960825,0.0643229165,0.063719875,0.070350208,1.0,commitment plus minimal batch multiproof generation
+1,canopy,20,512,5,3,20,0.1790917144,0.1779046455,0.176294291,0.188304584,2.761646819971345,Canopy commitment and bottom opening plus executable WHIR claim prover; WHIR's duplicate initial commit is excluded
+1,merkle,20,1024,,3,20,0.06495144579999998,0.06442122950000001,0.063847625,0.071097917,1.0,commitment plus minimal batch multiproof generation
+1,canopy,20,1024,3,3,20,0.21708890629999997,0.2167683955,0.214707249,0.220690542,3.3423260040810367,Canopy commitment and bottom opening plus executable WHIR claim prover; WHIR's duplicate initial commit is excluded
+2,merkle_whir,20,,,3,20,0.31883429380000006,0.316595334,0.312324542,0.336514292,1.0,verifier-checked official WHIR commit plus prove
+2,canopy_separate,20,,5,3,20,0.6346062063500001,0.6343186255,0.625525874,0.650219917,1.9903950694465729,measured component composition with separate WHIR proofs for the aligned claims
+3,canopy_batched,20,,5,3,20,0.5992901061,0.5981741665,0.590430541,0.614433791,1.8796287530974496,measured component composition using the verifier-checked independent-root WHIR batch prover
