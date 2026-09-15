@@ -236,7 +236,9 @@ dependencies = [
  "rand_chacha",
  "rayon",
  "serde",
+ "spongefish",
  "tempfile",
+ "tracing",
  "whir",
 ]
 
@@ -1185,6 +1187,9 @@ name = "tracing-core"
 version = "0.1.36"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "db97caf9d906fbde555dd62fa95ddba9eecfd14cb388e4f491a66d74cd5fb79a"
+dependencies = [
+ "once_cell",
+]
 
 [[package]]
 name = "transpose"
@@ -1229,7 +1234,6 @@ checksum = "ccf3ec651a847eb01de73ccad15eb7d99f80485de043efb2f370cd654f4ea44b"
 [[package]]
 name = "whir"
 version = "0.1.0"
-source = "git+https://github.com/worldfnd/whir.git?rev=c274cd5898d31af2cd9be1707a44ccad92c22eaa#c274cd5898d31af2cd9be1707a44ccad92c22eaa"
 dependencies = [
  "ark-ff",
  "ark-serialize",
@@ -1252,6 +1256,7 @@ dependencies = [
  "spongefish",
  "static_assertions",
  "thiserror",
+ "tracing",
  "zerocopy",
  "zeroize",
 ]

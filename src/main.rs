@@ -5,6 +5,7 @@ use canopy_system::benchmark::{
     run_commitment_timings, run_size_matrix, run_size_matrix_with_regime_and_terminal, run_timings,
     SizeMatrixConfig,
 };
+use canopy_system::field_benchmark::run_field_benchmarks;
 use canopy_system::paper_experiments::{
     run_proof_estimates, run_proof_estimates_with_regime,
     run_proof_estimates_with_regime_and_terminal, run_prover_timings,
@@ -15,6 +16,8 @@ use canopy_system::separate_benchmark::{
     SeparateCommitmentTimingConfig, SeparateHeightSearchConfig, SeparateSizeMatrixConfig,
 };
 use canopy_system::whir::WhirDecodingRegime;
+#[cfg(feature = "whir-tracing")]
+use canopy_system::whir_trace::run_whir_trace_profile;
 use clap::{Parser, Subcommand};
 
 #[derive(Parser, Debug)]
@@ -26,22 +29,117 @@ struct Cli {
 
 #[derive(Subcommand, Debug)]
 enum Command {
-    /// Generate the three final paper proof-size experiments and query tables.
+    /// Search Bolt initial interleaving widths and Canopy heights; time each width.
+    BoltGrid {
+        #[arg(long, value_enum, default_value_t = canopy_system::bolt_experiment::CanopyLayout::QuarterEach)]
+        canopy_layout: canopy_system::bolt_experiment::CanopyLayout,
+        #[arg(long, value_delimiter = ',', default_values_t = vec![4, 8, 16])]
+        interleavings: Vec<usize>,
+        #[arg(long, value_delimiter = ',', default_values_t = vec![22, 26, 30])]
+        log_lengths: Vec<usize>,
+        #[arg(long, default_value_t = 100)]
+        samples: usize,
+        #[arg(long, default_value_t = 22)]
+        timing_log_length: usize,
+        #[arg(long, default_value_t = 1)]
+        warmups: usize,
+        #[arg(long, default_value_t = 5)]
+        repetitions: usize,
+        #[arg(long, default_value_t = canopy_system::bolt_experiment::DEFAULT_SEED)]
+        seed: u64,
+        #[arg(long, default_value = "results/bolt_max_canopy_quarter_width_grid")]
+        output_dir: PathBuf,
+    },
+    /// Explain saved Bolt-max estimates by proof component and WHIR oracle.
+    BoltBreakdown {
+        #[arg(long, default_value = "results/bolt_max_canopy_quarter")]
+        output_dir: PathBuf,
+    },
+    /// Estimate prime-field Bolt-max with separate Canopy RS layers.
+    BoltEstimate {
+        #[arg(long, value_enum, default_value_t = canopy_system::bolt_experiment::CanopyLayout::QuarterEach)]
+        canopy_layout: canopy_system::bolt_experiment::CanopyLayout,
+        #[arg(long, default_value_t = canopy_system::bolt::DEFAULT_INTERLEAVING)]
+        interleaving: usize,
+        #[arg(long, value_delimiter = ',', default_values_t = vec![22, 26, 30])]
+        log_lengths: Vec<usize>,
+        #[arg(long, default_value_t = 100)]
+        samples: usize,
+        #[arg(long, default_value_t = canopy_system::bolt_experiment::DEFAULT_SEED)]
+        seed: u64,
+        #[arg(long, default_value = "results/bolt_max_canopy_quarter")]
+        output_dir: PathBuf,
+    },
+    /// Time and verify the H-oracle-aided Bolt-max/Canopy experiment.
+    BoltTime {
+        #[arg(long, value_enum, default_value_t = canopy_system::bolt_experiment::CanopyLayout::QuarterEach)]
+        canopy_layout: canopy_system::bolt_experiment::CanopyLayout,
+        #[arg(long, default_value_t = canopy_system::bolt::DEFAULT_INTERLEAVING)]
+        interleaving: usize,
+        #[arg(long, default_value_t = 22)]
+        log_length: usize,
+        #[arg(long, default_value_t = 1)]
+        warmups: usize,
+        #[arg(long, default_value_t = 5)]
+        repetitions: usize,
+        #[arg(long, default_value_t = 100)]
+        height_search_samples: usize,
+        #[arg(long, default_value_t = canopy_system::bolt_experiment::DEFAULT_SEED)]
+        seed: u64,
+        #[arg(long, default_value = "results/bolt_max_canopy_quarter")]
+        output_dir: PathBuf,
+    },
+    /// Benchmark rate-1/2 WHIR RS encoding and Canopy H2F across large fields.
+    FieldBench {
+        #[arg(long, default_value_t = 18)]
+        log_length: usize,
+        #[arg(long, default_value_t = 3)]
+        folding_log: usize,
+        #[arg(long, default_value_t = 4)]
+        canopy_height: usize,
+        #[arg(long, default_value_t = 1)]
+        warmups: usize,
+        #[arg(long, default_value_t = 5)]
+        repetitions: usize,
+        #[arg(long, default_value = "results/field_benchmarks_n18_f3_h4")]
+        output_dir: PathBuf,
+    },
+    /// Trace internal WHIR prover spans for one-oracle rate-1/2 vs rate-1/4.
+    #[cfg(feature = "whir-tracing")]
+    WhirTraceProfile {
+        #[arg(long, default_value_t = 18)]
+        log_length: usize,
+        #[arg(long, default_value_t = 3)]
+        folding_log: usize,
+        #[arg(long, default_value_t = 3)]
+        warmups: usize,
+        #[arg(long, default_value_t = 30)]
+        repetitions: usize,
+        #[arg(long, default_value = "results/profile_whir_trace_johnson_n18")]
+        output_dir: PathBuf,
+    },
+    /// Generate all three baselines and Experiments 2--3 with the proved Johnson bound.
     PaperEstimate {
         #[arg(long, default_value_t = 100)]
         samples: usize,
         #[arg(long, default_value_t = 0x5041_5045_525f_5631)]
         seed: u64,
-        #[arg(long, default_value = "results/paper")]
+        #[arg(
+            long,
+            default_value = "results/paper_multi_1248_johnson_terminal_le10_fold34"
+        )]
         output_dir: PathBuf,
     },
-    /// Generate conjectural capacity-bound versions of all three experiments.
+    /// Generate all three baselines and Experiments 2--3 with the conjectural capacity bound.
     PaperCapacityEstimate {
         #[arg(long, default_value_t = 100)]
         samples: usize,
         #[arg(long, default_value_t = 0x5041_5045_525f_5631)]
         seed: u64,
-        #[arg(long, default_value = "results/paper_capacity")]
+        #[arg(
+            long,
+            default_value = "results/paper_multi_1248_capacity_terminal_le10_fold34"
+        )]
         output_dir: PathBuf,
     },
     /// Estimate capacity-bound Canopy vs Merkle for batch 128 and terminal 2^8.
@@ -53,52 +151,64 @@ enum Command {
         #[arg(long, default_value = "results/paper_capacity_terminal8_batch128")]
         output_dir: PathBuf,
     },
-    /// Estimate all experiments with fixed fold 3, capacity, and terminal 2^8.
-    PaperCapacityTerminal8HybridEstimate {
+    /// Search {3,4} folds for all capacity-bound baselines and Experiments 2--3.
+    PaperCapacityTerminal10HybridEstimate {
         #[arg(long, default_value_t = 100)]
         samples: usize,
         #[arg(long, default_value_t = 0x5041_5045_525f_5631)]
         seed: u64,
-        #[arg(long, default_value = "results/paper_capacity_terminal8_fold3")]
+        #[arg(
+            long,
+            default_value = "results/paper_multi_1248_capacity_terminal_le10_fold34"
+        )]
         output_dir: PathBuf,
     },
-    /// Estimate all experiments with fixed fold 3, Johnson, and terminal 2^8.
-    PaperTerminal8HybridEstimate {
+    /// Search {3,4} folds for all Johnson-bound baselines and Experiments 2--3.
+    PaperTerminal10HybridEstimate {
         #[arg(long, default_value_t = 100)]
         samples: usize,
         #[arg(long, default_value_t = 0x5041_5045_525f_5631)]
         seed: u64,
-        #[arg(long, default_value = "results/paper_johnson_terminal8_fold3")]
+        #[arg(
+            long,
+            default_value = "results/paper_multi_1248_johnson_terminal_le10_fold34"
+        )]
         output_dir: PathBuf,
     },
-    /// Run the executable 2^20 prover benchmarks for all three experiments.
+    /// Run the executable 2^18 prover benchmarks for all baselines and Experiments 2--3.
     PaperTime {
-        #[arg(long, default_value_t = 20)]
+        #[arg(long, default_value_t = 18)]
         log_length: usize,
-        #[arg(long, default_value_t = 3)]
+        #[arg(long, default_value_t = 1)]
         warmups: usize,
-        #[arg(long, default_value_t = 20)]
+        #[arg(long, default_value_t = 5)]
         repetitions: usize,
-        #[arg(long, default_value_t = 100)]
+        #[arg(long, default_value_t = 1)]
         height_search_samples: usize,
         #[arg(long, default_value_t = 0x5041_5045_525f_5631)]
         seed: u64,
-        #[arg(long, default_value = "results/paper")]
+        #[arg(
+            long,
+            default_value = "results/paper_multi_1248_johnson_terminal_le10_fold34"
+        )]
         output_dir: PathBuf,
     },
-    /// Run conjectural capacity-bound executable prover benchmarks at 2^20.
+    /// Run conjectural capacity-bound executable prover benchmarks at 2^18.
     PaperCapacityTime {
-        #[arg(long, default_value_t = 20)]
+        #[arg(long, default_value_t = 18)]
         log_length: usize,
-        #[arg(long, default_value_t = 3)]
+        #[arg(long, default_value_t = 1)]
         warmups: usize,
-        #[arg(long, default_value_t = 20)]
+        #[arg(long, default_value_t = 5)]
         repetitions: usize,
-        #[arg(long, default_value_t = 100)]
+        #[arg(long, default_value_t = 1)]
         height_search_samples: usize,
         #[arg(long, default_value_t = 0x5041_5045_525f_5631)]
         seed: u64,
-        #[arg(long, default_value = "results/paper_capacity")]
+        #[arg(
+            long,
+            default_value = "results/paper_multi_1248_capacity_terminal_le10_fold34"
+        )]
         output_dir: PathBuf,
     },
     /// Estimate the requested proof-size matrix without allocating the vectors.
@@ -216,6 +326,112 @@ enum Command {
 
 fn main() -> Result<()> {
     match Cli::parse().command {
+        Command::BoltGrid {
+            canopy_layout,
+            interleavings,
+            log_lengths,
+            samples,
+            timing_log_length,
+            warmups,
+            repetitions,
+            seed,
+            output_dir,
+        } => {
+            canopy_system::bolt_experiment::grid_with_layout(
+                &log_lengths,
+                &interleavings,
+                canopy_layout,
+                samples,
+                timing_log_length,
+                warmups,
+                repetitions,
+                seed,
+                &output_dir,
+            )?;
+            println!("wrote Bolt-max width grid to {}", output_dir.display());
+        }
+        Command::BoltBreakdown { output_dir } => {
+            canopy_system::bolt_experiment::write_proof_breakdown(&output_dir)?;
+            println!("wrote reconciled Bolt-max proof breakdown to {}", output_dir.display());
+        }
+        Command::BoltEstimate {
+            canopy_layout,
+            interleaving,
+            log_lengths,
+            samples,
+            seed,
+            output_dir,
+        } => {
+            canopy_system::bolt_experiment::estimate_with_layout(
+                &log_lengths,
+                interleaving,
+                canopy_layout,
+                samples,
+                seed,
+                &output_dir,
+            )?;
+            println!("wrote Bolt-max size estimates to {}", output_dir.display());
+        }
+        Command::BoltTime {
+            canopy_layout,
+            interleaving,
+            log_length,
+            warmups,
+            repetitions,
+            height_search_samples,
+            seed,
+            output_dir,
+        } => {
+            canopy_system::bolt_experiment::time_with_layout(
+                log_length,
+                interleaving,
+                canopy_layout,
+                warmups,
+                repetitions,
+                height_search_samples,
+                seed,
+                &output_dir,
+            )?;
+            println!(
+                "wrote verifier-checked Bolt-max timings to {}",
+                output_dir.display()
+            );
+        }
+        Command::FieldBench {
+            log_length,
+            folding_log,
+            canopy_height,
+            warmups,
+            repetitions,
+            output_dir,
+        } => {
+            let rows = run_field_benchmarks(
+                &output_dir,
+                log_length,
+                folding_log,
+                canopy_height,
+                warmups,
+                repetitions,
+            )
+            .with_context(|| format!("writing field benchmarks to {}", output_dir.display()))?;
+            println!(
+                "wrote {} field benchmark rows to {}",
+                rows.len(),
+                output_dir.display()
+            );
+        }
+        #[cfg(feature = "whir-tracing")]
+        Command::WhirTraceProfile {
+            log_length,
+            folding_log,
+            warmups,
+            repetitions,
+            output_dir,
+        } => {
+            run_whir_trace_profile(&output_dir, log_length, folding_log, warmups, repetitions)
+                .with_context(|| format!("writing WHIR trace to {}", output_dir.display()))?;
+            println!("wrote detailed WHIR trace to {}", output_dir.display());
+        }
         Command::PaperEstimate {
             samples,
             seed,
@@ -259,6 +475,8 @@ fn main() -> Result<()> {
                 layer_field_bits: vec![256],
                 codeword_log_reductions: vec![0],
                 folding_log: canopy_system::whir::DEFAULT_FOLDING_LOG,
+                folding_choices: Vec::new(),
+                optimize_folding_schedule: false,
                 samples,
                 seed,
             };
@@ -280,7 +498,7 @@ fn main() -> Result<()> {
                 output_dir.display()
             );
         }
-        Command::PaperCapacityTerminal8HybridEstimate {
+        Command::PaperCapacityTerminal10HybridEstimate {
             samples,
             seed,
             output_dir,
@@ -290,20 +508,20 @@ fn main() -> Result<()> {
                 samples,
                 seed,
                 WhirDecodingRegime::Capacity,
-                8,
+                10,
             )
             .with_context(|| {
                 format!(
-                    "writing terminal-2^8 capacity hybrid estimates to {}",
+                    "writing terminal-at-most-2^10 capacity hybrid estimates to {}",
                     output_dir.display()
                 )
             })?;
             println!(
-                "wrote terminal-2^8 capacity hybrid estimates to {}",
+                "wrote terminal-at-most-2^10 capacity hybrid estimates to {}",
                 output_dir.display()
             );
         }
-        Command::PaperTerminal8HybridEstimate {
+        Command::PaperTerminal10HybridEstimate {
             samples,
             seed,
             output_dir,
@@ -313,16 +531,16 @@ fn main() -> Result<()> {
                 samples,
                 seed,
                 WhirDecodingRegime::Johnson,
-                8,
+                10,
             )
             .with_context(|| {
                 format!(
-                    "writing terminal-2^8 Johnson hybrid estimates to {}",
+                    "writing terminal-at-most-2^10 Johnson hybrid estimates to {}",
                     output_dir.display()
                 )
             })?;
             println!(
-                "wrote terminal-2^8 Johnson hybrid estimates to {}",
+                "wrote terminal-at-most-2^10 Johnson hybrid estimates to {}",
                 output_dir.display()
             );
         }
@@ -390,6 +608,8 @@ fn main() -> Result<()> {
                 layer_field_bits,
                 codeword_log_reductions,
                 folding_log: canopy_system::whir::DEFAULT_FOLDING_LOG,
+                folding_choices: Vec::new(),
+                optimize_folding_schedule: false,
                 samples,
                 seed,
             };

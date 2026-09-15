@@ -3,62 +3,117 @@
 Rust/arkworks implementation and concrete proof-size/prover-time comparison for
 Merkle, Canopy, and executable WHIR commitments.
 
+## WHIR/Canopy field comparison
+
+The 192-bit field-switch experiment is retired from the active suite. Its
+[archived notes](docs/archive/experiment4_field_switch.md) and historical
+results are retained for provenance.
+
+The [isolated GF(2^256) backend](experiments/binary-whir/README.md) runs the
+shared WHIR/Canopy prover timing harness with additive RS codes and packed
+32-byte field elements. The matched comparison uses `2^22` elements per
+polynomial, `t in {1,2,4,8}`, BLAKE3, and fresh 256-bit-prime timings. Bolt
+continues to use its existing prime-field backend. Results and stage breakdowns
+are in the [field comparison](results/whir_field_comparison_n22/comparison.md).
+
+## Bolt-max experiment
+
+The [Bolt-max/Canopy experiment](docs/experiment_bolt_max.md) uses the
+existing 256-bit prime field, BLAKE3, and the degree-8 Bolt-max encoder adapted
+to prime-field additions. The latest sweep gives both systematic/parity
+Canopy RS layers length `k/4`, `k/2`, or `k`, with independently optimized heights; the
+original `k/4, k/16` variant is also available. The initial interleaving grid
+searches widths 4, 8, and 16; subsequent
+WHIR folds remain factor 8. The prime-field LDPC distance `0.013` is an explicit
+assumption.
+
+New Bolt grids start at `2^22`; historical `2^18` results are retained.
+The [memory and larger-input report](results/bolt_max_canopy_memory/summary.md)
+measures peak RAM and extends executable comparisons to `2^24` at width 4.
+
+```sh
+cargo run --release -- bolt-grid --interleavings 4,8,16 --samples 100
+cargo run --release -- bolt-grid --canopy-layout equal-blocks \
+  --warmups 2 --repetitions 10 --output-dir results/bolt_max_canopy_equal_blocks
+```
+
+The [block-length comparison](results/bolt_max_canopy_block_lengths/comparison.md)
+compares `k/4`, `k/2`, and `k` for both parts, including commitment and opening
+timings. Reproduction commands are in the experiment notes.
+The [equal-block report](results/bolt_max_canopy_equal_blocks/comparison.md) uses
+`k/4` for both Canopy blocks and includes fresh timings at `2^18` and `2^22`.
+Its [detailed prover profile](results/bolt_max_canopy_equal_blocks/prover_profile.md)
+breaks down commitment and opening costs. The [earlier width-grid report](results/bolt_max_canopy_quarter_width_grid/summary.md)
+compares proof sizes at all four input lengths and timings at `2^18`.
+The [additional `2^22` timings](results/bolt_max_canopy_quarter_width_grid/timing_n22/summary.md)
+measure the first grid point where Canopy reduces proof size.
+The [detailed prover profiles](results/bolt_max_canopy_prover_profile/summary.md)
+separate encoding, row hashing, Canopy H2F/RS commitments, common WHIR proofs,
+row openings, and Canopy WHIR SEP proofs, using ten measured repetitions.
+The [original width-128 results](results/bolt_max_canopy_quarter/) are preserved.
+Timings execute and verify the public-H protocol using constrained WHIR proofs;
+they exclude Spark/Mulperm preprocessing. See the experiment notes for protocol,
+soundness, and byte-accounting details.
+
 ## Final paper experiments
 
-The final configuration uses 128-bit soundness, BLAKE3-256, no proof of work,
-and only the proved Johnson-bound RS proximity regime. All protocol field
-elements use the FFT-friendly prime
-`2^256 - 43 * 2^32 + 1`, whose two-adicity is 32. The executable WHIR adapter
-is pinned to official WHIR commit
-`c274cd5898d31af2cd9be1707a44ccad92c22eaa`.
+The current suite contains Experiments 2 and 3 for `t in {1,2,4,8}` input
+oracles; Experiments 1 and 4 are no longer run. Proof sizes are reported for
+input lengths `2^18`, `2^22`, `2^26`, and `2^30`. Every row targets 128-bit round-by-round
+soundness, uses no proof of work, starts the main RS codes at rate 1/2, searches
+ordered folding schedules over `{3,4}`, and terminates with at most `2^10`
+coefficients. The source field is the FFT-friendly 256-bit prime
+`2^256 - 43 * 2^32 + 1`.
 
-The generated paper results are:
+Each regime includes three Merkle-WHIR baselines: `t` complete independent
+rate-1/2 WHIR proofs; a rate-1/2 batched baseline with independent first
+transitions followed by one generalized Schwartz--Zippel batch of the `t`
+second-oracle claims; and the same batched construction at initial rate 1/4.
+Experiment 2 leaves all `2t` Canopy/outer aligned claims independent.
+Experiment 3 batches all `2t` aligned claims into one recursive WHIR tail.
 
-- [`results/paper/summary.md`](results/paper/summary.md): proof sizes for all
-  three experiments and the largest-point oracle-query table;
-- [`results/paper/oracle_query_breakdown.csv`](results/paper/oracle_query_breakdown.csv):
-  every queried codeword in experiments 2 and 3;
-- [`results/paper/prover_timings.md`](results/paper/prover_timings.md): executable
-  `2^20` prover timings and stage breakdowns; and
-- [`results/paper/experiment1_canopy_vs_merkle/`](results/paper/experiment1_canopy_vs_merkle/):
-  complete Experiment 1 proof-size components and height search.
+The proved Johnson run retains `eta=sqrt(rho)/20` and uses the exact
+list-correlated-agreement exceptional-set expression from
+[Theorem 4.6](https://eccc.weizmann.ac.il/report/2025/169/download). The
+capacity run retains `eta=rho/20` and is conjectural. Generated reports are in:
 
-The matching capacity-bound results are in
-[`results/paper_capacity/`](results/paper_capacity/). They use the same field,
-128-bit target, grids, and zero-PoW policy, but rely on STIR Conjecture 5.6 and
-must be labeled conjectural.
-The batch-128-only diagnostic that permits a terminal polynomial of up to
-`2^8` coefficients is in
-[`results/paper_capacity_terminal8_batch128/`](results/paper_capacity_terminal8_batch128/).
-The terminal-`2^8` Johnson- and capacity-bound Experiments 2 and 3 versus
-independently optimized Merkle WHIR are in
-[`results/paper_johnson_terminal8_fold3/`](results/paper_johnson_terminal8_fold3/)
-and
-[`results/paper_capacity_terminal8_fold3/`](results/paper_capacity_terminal8_fold3/).
-These reports use no Canopy shortening, search every feasible Canopy height
-independently in Experiment 2, set `h=f0+1=4` in Experiment 3, and use
-three-variable folds throughout.
+- [`results/paper_multi_1248_johnson_terminal_le10_fold34/`](results/paper_multi_1248_johnson_terminal_le10_fold34/)
+- [`results/paper_multi_1248_capacity_terminal_le10_fold34/`](results/paper_multi_1248_capacity_terminal_le10_fold34/)
 
+Each directory contains selected proof sizes, the complete folding grid,
+per-oracle query counts, per-event RBR bounds, separate Experiment 2 and 3
+comparisons against both baselines, and executable `2^18` prover timings.
 Regenerate them with:
 
 ```sh
-cargo run --release -- paper-estimate --samples 100 --output-dir results/paper
-cargo run --release -- paper-time --log-length 20 --warmups 3 --repetitions 20 --output-dir results/paper
-cargo run --release -- paper-capacity-estimate --samples 100 --output-dir results/paper_capacity
-cargo run --release -- paper-capacity-time --log-length 20 --warmups 3 --repetitions 20 --output-dir results/paper_capacity
-cargo run --release -- paper-capacity-terminal8-estimate --samples 100 --output-dir results/paper_capacity_terminal8_batch128
-cargo run --release -- paper-terminal8-hybrid-estimate --samples 100 --output-dir results/paper_johnson_terminal8_fold3
-cargo run --release -- paper-capacity-terminal8-hybrid-estimate --samples 100 --output-dir results/paper_capacity_terminal8_fold3
+cargo run --release -- paper-terminal10-hybrid-estimate --samples 100 --output-dir results/paper_multi_1248_johnson_terminal_le10_fold34
+cargo run --release -- paper-capacity-terminal10-hybrid-estimate --samples 100 --output-dir results/paper_multi_1248_capacity_terminal_le10_fold34
+cargo run --release -- paper-time --log-length 18 --warmups 1 --repetitions 5 --output-dir results/paper_multi_1248_johnson_terminal_le10_fold34
+cargo run --release -- paper-capacity-time --log-length 18 --warmups 1 --repetitions 5 --output-dir results/paper_multi_1248_capacity_terminal_le10_fold34
 ```
 
-The standard WHIR timing is one verifier-checked executable proof. The hybrid
-timings are transparent sums of the measured stages in
-`prover_timing_stages.csv`; the aligned tail proofs themselves are generated
-and verifier-checked by the executable WHIR adapter, but a monolithic hybrid
-transcript has not been implemented.
-The current executable reference also hard-codes termination below `2^4`, so
-the terminal-`2^8` Experiment 3 outputs are proof-size estimates rather than
-executable prover-time measurements.
+The proof-size search allows per-round folds in `{3,4}`. At `2^18`, the selected
+initial fold is three, so the executable timing rows use `f=3`, aligned
+Experiment-3 height `h=4`, and the independently optimized Experiment-2 height
+`h=18`; batched rows explicitly measure the generalized Schwartz--Zippel
+cross-evaluation work. The reference implementation's native sub-`2^3`
+recursive suffix is separately measured and subtracted so these component
+timings use the paper's at-most-`2^10` stopping condition.
+
+The timing path uses one common base-code implementation for every scheme:
+WHIR's own interleaved NTT produces the rate-1/2 (or rate-1/4 baseline) matrix and WHIR's matrix
+commitment hashes its folding-column rows. Merkle-WHIR commits the full matrix;
+Canopy starts its bottom forest from those identical row hashes, then uses the
+same WHIR interleaved NTT and matrix/Merkle commitment for the Canopy-layer
+codeword. Initial OOD evaluations are classified as opening work, not as part
+of either scheme's commitment time.
+
+The candidate large-field microbenchmark uses the same WHIR encoder and exact
+Canopy H2F workload:
+
+```sh
+cargo run --release -- field-bench --log-length 18 --folding-log 3 --canopy-height 4 --warmups 6 --repetitions 24 --output-dir results/field_benchmarks_n18_f3_h4
+```
 
 ## Legacy exploratory results (superseded)
 

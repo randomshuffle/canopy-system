@@ -29,6 +29,10 @@ pub struct SizeMatrixConfig {
     pub codeword_log_reductions: Vec<usize>,
     /// Folding width used by the initial and all recursive WHIR folds.
     pub folding_log: usize,
+    /// Candidate widths for an optimized ordered folding schedule.
+    pub folding_choices: Vec<usize>,
+    /// Search schedules that stop as soon as the message reaches the terminal cap.
+    pub optimize_folding_schedule: bool,
     pub samples: usize,
     pub seed: u64,
 }
@@ -44,6 +48,8 @@ impl Default for SizeMatrixConfig {
             layer_field_bits: vec![256],
             codeword_log_reductions: vec![0],
             folding_log: DEFAULT_FOLDING_LOG,
+            folding_choices: Vec::new(),
+            optimize_folding_schedule: false,
             samples: 100,
             seed: 0x4341_4e4f_5059,
         }
@@ -57,6 +63,8 @@ pub struct ProofSizeRow {
     pub batch_size: usize,
     pub scheme: String,
     pub h: Option<usize>,
+    pub folding_schedule: Option<String>,
+    pub terminal_message_variables: Option<usize>,
     pub codeword_log_reduction: Option<usize>,
     pub rs_length_log: Option<usize>,
     pub input_field_bits: usize,
@@ -88,6 +96,8 @@ pub struct BestHeightRow {
     pub best_layer_field_bits: usize,
     pub best_codeword_log_reduction: usize,
     pub best_h: usize,
+    pub best_folding_schedule: String,
+    pub best_terminal_message_variables: usize,
     pub canopy_mean_bytes: f64,
     pub canopy_hash_bytes: f64,
     pub canopy_field_bytes: f64,
@@ -107,6 +117,8 @@ pub struct BestByFieldRow {
     pub h_candidates: String,
     pub merkle_mean_bytes: f64,
     pub best_h: usize,
+    pub best_folding_schedule: String,
+    pub best_terminal_message_variables: usize,
     pub canopy_mean_bytes: f64,
     pub canopy_hash_bytes: f64,
     pub canopy_field_bytes: f64,
@@ -137,7 +149,67 @@ pub fn default_heights_for_batch(batch_size: usize) -> Result<Vec<usize>> {
     Ok(heights)
 }
 
-fn height_candidates(config: &SizeMatrixConfig, n: usize, batch_size: usize) -> Result<Vec<usize>> {
+fn folding_schedules_up_to(
+    message_variables: usize,
+    max_terminal_message_variables: usize,
+    choices: &[usize],
+) -> Vec<Vec<usize>> {
+    fn visit(
+        remaining: usize,
+        terminal_cap: usize,
+        choices: &[usize],
+        prefix: &mut Vec<usize>,
+        schedules: &mut Vec<Vec<usize>>,
+    ) {
+        if remaining <= terminal_cap {
+            schedules.push(prefix.clone());
+            return;
+        }
+        for &choice in choices {
+            if choice <= remaining {
+                prefix.push(choice);
+                visit(remaining - choice, terminal_cap, choices, prefix, schedules);
+                prefix.pop();
+            }
+        }
+    }
+
+    let mut choices = choices.to_vec();
+    choices.sort_unstable();
+    choices.dedup();
+    let mut schedules = Vec::new();
+    visit(
+        message_variables,
+        max_terminal_message_variables,
+        &choices,
+        &mut Vec::new(),
+        &mut schedules,
+    );
+    schedules
+}
+
+fn folding_schedules_for_message(
+    config: &SizeMatrixConfig,
+    message_variables: usize,
+    terminal_message_variables: usize,
+) -> Vec<Vec<usize>> {
+    if config.optimize_folding_schedule {
+        folding_schedules_up_to(
+            message_variables,
+            terminal_message_variables,
+            &config.folding_choices,
+        )
+    } else {
+        vec![Vec::new()]
+    }
+}
+
+fn height_candidates(
+    config: &SizeMatrixConfig,
+    n: usize,
+    batch_size: usize,
+    terminal_message_variables: usize,
+) -> Result<Vec<usize>> {
     let requested = if config.heights.is_empty() {
         default_heights_for_batch(batch_size)?
     } else {
@@ -145,13 +217,67 @@ fn height_candidates(config: &SizeMatrixConfig, n: usize, batch_size: usize) -> 
     };
     let candidates: Vec<_> = requested
         .into_iter()
-        .filter(|&h| h < n && n - h >= config.folding_log)
+        .filter(|&h| {
+            h < n
+                && if config.optimize_folding_schedule {
+                    !folding_schedules_for_message(config, n - h, terminal_message_variables)
+                        .is_empty()
+                } else {
+                    n - h >= config.folding_log
+                }
+        })
         .collect();
     ensure!(
         !candidates.is_empty(),
         "no valid h candidate for log length {n} and batch size {batch_size}"
     );
     Ok(candidates)
+}
+
+#[allow(clippy::too_many_arguments)]
+fn whir_params_for_schedule(
+    config: &SizeMatrixConfig,
+    message_variables: usize,
+    log_inverse_rate: usize,
+    field: WhirFieldProfile,
+    decoding_regime: WhirDecodingRegime,
+    terminal_message_variables: usize,
+    folding_schedule: &[usize],
+) -> Result<WhirParameters> {
+    if config.optimize_folding_schedule {
+        let terminal_message_variables =
+            message_variables - folding_schedule.iter().copied().sum::<usize>();
+        WhirParameters::with_regime_and_field_and_terminal_and_schedule(
+            message_variables,
+            log_inverse_rate,
+            field,
+            decoding_regime,
+            terminal_message_variables,
+            folding_schedule,
+            1,
+        )
+    } else {
+        WhirParameters::with_regime_and_field_and_terminal_and_folding(
+            message_variables,
+            log_inverse_rate,
+            field,
+            decoding_regime,
+            terminal_message_variables,
+            config.folding_log,
+        )
+    }
+}
+
+fn schedule_label(schedule: &[usize]) -> String {
+    if schedule.is_empty() {
+        "terminal".to_owned()
+    } else {
+        schedule
+            .iter()
+            .map(ToString::to_string)
+            .collect::<Vec<_>>()
+            .join(";")
+    }
 }
 
 #[derive(Clone, Debug, Serialize)]
@@ -222,12 +348,15 @@ impl Samples {
             .push(input_fields * FIELD_BYTES + layer_fields * layer_field_bytes);
     }
 
+    #[allow(clippy::too_many_arguments)]
     fn row(
         &self,
         log_length: usize,
         batch_size: usize,
         scheme: &str,
         h: Option<usize>,
+        folding_schedule: Option<String>,
+        terminal_message_variables: Option<usize>,
         layer_field: Option<WhirFieldProfile>,
         codeword_log_reduction: Option<usize>,
     ) -> ProofSizeRow {
@@ -250,6 +379,8 @@ impl Samples {
             batch_size,
             scheme: scheme.to_owned(),
             h,
+            folding_schedule,
+            terminal_message_variables,
             codeword_log_reduction,
             rs_length_log: codeword_log_reduction.map(|reduction| log_length - reduction),
             input_field_bits: FIELD_BITS,
@@ -329,6 +460,16 @@ pub fn run_size_matrix_with_regime_and_terminal(
         !config.codeword_log_reductions.is_empty(),
         "at least one codeword length is required"
     );
+    if config.optimize_folding_schedule {
+        ensure!(
+            !config.folding_choices.is_empty(),
+            "folding-schedule search requires folding choices"
+        );
+        ensure!(
+            config.folding_choices.iter().all(|&fold| fold > 0),
+            "folding choices must be positive"
+        );
+    }
     fs::create_dir_all(output_dir).with_context(|| format!("creating {}", output_dir.display()))?;
 
     let mut proof_rows = Vec::new();
@@ -401,7 +542,9 @@ pub fn run_size_matrix_with_regime_and_terminal(
         let parameter_heights: BTreeSet<usize> = config
             .batch_sizes
             .iter()
-            .map(|&batch_size| height_candidates(config, n, batch_size))
+            .map(|&batch_size| {
+                height_candidates(config, n, batch_size, max_terminal_message_variables)
+            })
             .collect::<Result<Vec<_>>>()?
             .into_iter()
             .flatten()
@@ -410,139 +553,151 @@ pub fn run_size_matrix_with_regime_and_terminal(
             for &reduction in &reductions {
                 for &h in parameter_heights.iter().filter(|&&h| h > reduction) {
                     ensure!(h < n, "h must be smaller than n");
-                    let params = WhirParameters::with_regime_and_field_and_terminal_and_folding(
-                        n - h,
-                        h - reduction,
-                        field,
-                        decoding_regime,
-                        max_terminal_message_variables,
-                        config.folding_log,
-                    )?;
-                    let combination_security = params
-                        .rounds
-                        .iter()
-                        .map(|r| format!("{:.2}", r.combination_security_bits_per_challenge))
-                        .collect::<Vec<_>>()
-                        .join(";");
-                    let folding_security = params
-                        .all_folding_security_bits_per_challenge()
-                        .iter()
-                        .map(|x| format!("{x:.2}"))
-                        .collect::<Vec<_>>()
-                        .join(";");
-                    let sumcheck_repetitions = params
-                        .all_sumcheck_repetitions()
-                        .iter()
-                        .map(ToString::to_string)
-                        .collect::<Vec<_>>()
-                        .join(";");
-                    let sumcheck_challenges = params
-                        .all_sumcheck_repetitions()
-                        .iter()
-                        .zip(params.all_folding_logs())
-                        .map(|(repetitions, folding_log)| repetitions * folding_log)
-                        .map(|challenges| challenges.to_string())
-                        .collect::<Vec<_>>()
-                        .join(";");
-                    parameter_rows.push(WhirParameterRow {
-                        decoding_regime: decoding_regime.label(),
-                        max_terminal_message_variables,
-                        log_length: n,
-                        h,
-                        codeword_log_reduction: reduction,
-                        message_variables: n - h,
-                        rs_dimension_log: n - h,
-                        rs_length_log: n - reduction,
-                        log_inverse_rate: h - reduction,
-                        folding_log: params.folding_log,
-                        folding_factor: params.folding_factor,
-                        terminal_message_variables: params.terminal_message_variables,
-                        security_bits: params.security_bits,
-                        field_bits: params.field_bits,
-                        field_modulus: params.field_modulus,
-                        field_log2_size: params.field_log2_size,
-                        field_bytes: params.field_bytes,
-                        field_two_adicity: params.field_two_adicity,
-                        hash_bits: params.hash_bits,
-                        hash_collision_security_bits: params.hash_collision_security_bits,
-                        effective_security_bits: params.effective_security_bits,
-                        pow_enabled: false,
-                        minimum_single_challenge_security_bits: params
-                            .minimum_single_challenge_security_bits(),
-                        commitment_ood_samples: params.commitment_ood_samples,
-                        rounds: params.rounds.len(),
-                        folding_logs_initial_and_rounds: params
-                            .all_folding_logs()
+                    for folding_schedule in
+                        folding_schedules_for_message(config, n - h, max_terminal_message_variables)
+                    {
+                        let params = whir_params_for_schedule(
+                            config,
+                            n - h,
+                            h - reduction,
+                            field,
+                            decoding_regime,
+                            max_terminal_message_variables,
+                            &folding_schedule,
+                        )?;
+                        let combination_security = params
+                            .rounds
+                            .iter()
+                            .map(|r| format!("{:.2}", r.combination_security_bits_per_challenge))
+                            .collect::<Vec<_>>()
+                            .join(";");
+                        let folding_security = params
+                            .all_folding_security_bits_per_challenge()
+                            .iter()
+                            .map(|x| format!("{x:.2}"))
+                            .collect::<Vec<_>>()
+                            .join(";");
+                        let sumcheck_repetitions = params
+                            .all_sumcheck_repetitions()
                             .iter()
                             .map(ToString::to_string)
                             .collect::<Vec<_>>()
-                            .join(";"),
-                        query_leaf_widths_by_oracle: params
-                            .all_query_leaf_widths()
+                            .join(";");
+                        let sumcheck_challenges = params
+                            .all_sumcheck_repetitions()
                             .iter()
-                            .map(ToString::to_string)
+                            .zip(params.all_folding_logs())
+                            .map(|(repetitions, folding_log)| repetitions * folding_log)
+                            .map(|challenges| challenges.to_string())
                             .collect::<Vec<_>>()
-                            .join(";"),
-                        requested_queries_by_oracle: params
-                            .all_query_counts()
-                            .iter()
-                            .map(ToString::to_string)
-                            .collect::<Vec<_>>()
-                            .join(";"),
-                        query_distances_by_oracle: params
-                            .all_query_distances()
-                            .iter()
-                            .map(|distance| format!("{distance:.12}"))
-                            .collect::<Vec<_>>()
-                            .join(";"),
-                        query_security_bits_per_query_by_oracle: params
-                            .all_query_security_bits_per_query()
-                            .iter()
-                            .map(|bits| format!("{bits:.6}"))
-                            .collect::<Vec<_>>()
-                            .join(";"),
-                        ood_samples_by_commitment: params
-                            .all_ood_counts()
-                            .iter()
-                            .map(ToString::to_string)
-                            .collect::<Vec<_>>()
-                            .join(";"),
-                        folding_security_bits_per_challenge_initial_and_rounds: folding_security,
-                        combination_security_bits_per_challenge_by_round: combination_security,
-                        sumcheck_repetitions_initial_and_rounds: sumcheck_repetitions,
-                        sumcheck_challenges_initial_and_rounds: sumcheck_challenges,
-                        final_sumcheck_rounds: params.final_sumcheck_rounds,
-                        final_sumcheck_security_bits_per_challenge: params
-                            .final_sumcheck_security_bits_per_challenge,
-                        final_sumcheck_repetitions: params.final_sumcheck_repetitions,
-                        final_sumcheck_challenges: params.final_sumcheck_rounds
-                            * params.final_sumcheck_repetitions,
-                        final_log_inverse_rate: params.final_log_inverse_rate,
-                        final_oracle_leaf_width: params.final_oracle_leaf_width,
-                    });
+                            .join(";");
+                        parameter_rows.push(WhirParameterRow {
+                            decoding_regime: decoding_regime.label(),
+                            max_terminal_message_variables,
+                            log_length: n,
+                            h,
+                            codeword_log_reduction: reduction,
+                            message_variables: n - h,
+                            rs_dimension_log: n - h,
+                            rs_length_log: n - reduction,
+                            log_inverse_rate: h - reduction,
+                            folding_log: params.folding_log,
+                            folding_factor: params.folding_factor,
+                            terminal_message_variables: params.terminal_message_variables,
+                            security_bits: params.security_bits,
+                            field_bits: params.field_bits,
+                            field_modulus: params.field_modulus,
+                            field_log2_size: params.field_log2_size,
+                            field_bytes: params.field_bytes,
+                            field_two_adicity: params.field_two_adicity,
+                            hash_bits: params.hash_bits,
+                            hash_collision_security_bits: params.hash_collision_security_bits,
+                            effective_security_bits: params.effective_security_bits,
+                            pow_enabled: false,
+                            minimum_single_challenge_security_bits: params
+                                .minimum_single_challenge_security_bits(),
+                            commitment_ood_samples: params.commitment_ood_samples,
+                            rounds: params.rounds.len(),
+                            folding_logs_initial_and_rounds: params
+                                .all_folding_logs()
+                                .iter()
+                                .map(ToString::to_string)
+                                .collect::<Vec<_>>()
+                                .join(";"),
+                            query_leaf_widths_by_oracle: params
+                                .all_query_leaf_widths()
+                                .iter()
+                                .map(ToString::to_string)
+                                .collect::<Vec<_>>()
+                                .join(";"),
+                            requested_queries_by_oracle: params
+                                .all_query_counts()
+                                .iter()
+                                .map(ToString::to_string)
+                                .collect::<Vec<_>>()
+                                .join(";"),
+                            query_distances_by_oracle: params
+                                .all_query_distances()
+                                .iter()
+                                .map(|distance| format!("{distance:.12}"))
+                                .collect::<Vec<_>>()
+                                .join(";"),
+                            query_security_bits_per_query_by_oracle: params
+                                .all_query_security_bits_per_query()
+                                .iter()
+                                .map(|bits| format!("{bits:.6}"))
+                                .collect::<Vec<_>>()
+                                .join(";"),
+                            ood_samples_by_commitment: params
+                                .all_ood_counts()
+                                .iter()
+                                .map(ToString::to_string)
+                                .collect::<Vec<_>>()
+                                .join(";"),
+                            folding_security_bits_per_challenge_initial_and_rounds:
+                                folding_security,
+                            combination_security_bits_per_challenge_by_round: combination_security,
+                            sumcheck_repetitions_initial_and_rounds: sumcheck_repetitions,
+                            sumcheck_challenges_initial_and_rounds: sumcheck_challenges,
+                            final_sumcheck_rounds: params.final_sumcheck_rounds,
+                            final_sumcheck_security_bits_per_challenge: params
+                                .final_sumcheck_security_bits_per_challenge,
+                            final_sumcheck_repetitions: params.final_sumcheck_repetitions,
+                            final_sumcheck_challenges: params.final_sumcheck_rounds
+                                * params.final_sumcheck_repetitions,
+                            final_log_inverse_rate: params.final_log_inverse_rate,
+                            final_oracle_leaf_width: params.final_oracle_leaf_width,
+                        });
+                    }
                 }
             }
         }
 
         for &batch_size in &config.batch_sizes {
             ensure!(batch_size <= vector_len, "batch exceeds vector length");
-            let heights = height_candidates(config, n, batch_size)?;
+            let heights = height_candidates(config, n, batch_size, max_terminal_message_variables)?;
             let mut merkle_samples = Samples::default();
-            let mut canopy_samples: Vec<(WhirFieldProfile, usize, usize, Samples)> = layer_fields
-                .iter()
-                .flat_map(|&field| {
-                    reductions.iter().flat_map({
-                        let heights = heights.clone();
-                        move |&reduction| {
-                            heights
-                                .clone()
-                                .into_iter()
-                                .filter(move |&h| h > reduction)
-                                .map(move |h| (field, reduction, h, Samples::default()))
+            let mut canopy_samples =
+                Vec::<(WhirFieldProfile, usize, usize, Vec<usize>, Samples)>::new();
+            for &field in &layer_fields {
+                for &reduction in &reductions {
+                    for &h in heights.iter().filter(|&&h| h > reduction) {
+                        for folding_schedule in folding_schedules_for_message(
+                            config,
+                            n - h,
+                            max_terminal_message_variables,
+                        ) {
+                            canopy_samples.push((
+                                field,
+                                reduction,
+                                h,
+                                folding_schedule,
+                                Samples::default(),
+                            ));
                         }
-                    })
-                })
-                .collect();
+                    }
+                }
+            }
 
             for sample in 0..config.samples {
                 let indices = sample_unique_indices(
@@ -553,19 +708,29 @@ pub fn run_size_matrix_with_regime_and_terminal(
                 let merkle_hashes = frontier_hash_count(&indices, vector_len, n)?;
                 merkle_samples.push(merkle_hashes, batch_size, 0, 0);
 
-                for (field, reduction, h, samples) in &mut canopy_samples {
+                for (field, reduction, h, folding_schedule, samples) in &mut canopy_samples {
                     let bottom_hashes = frontier_hash_count(&indices, vector_len, *h)?;
-                    let params = WhirParameters::with_regime_and_field_and_terminal_and_folding(
+                    let params = whir_params_for_schedule(
+                        config,
                         n - *h,
                         *h - *reduction,
                         *field,
                         decoding_regime,
                         max_terminal_message_variables,
-                        config.folding_log,
+                        folding_schedule,
                     )?;
                     let whir_seed = expand_seed(derive_u64(
                         config.seed,
-                        &[n, batch_size, *h, sample, 0x5748_4952],
+                        &[
+                            n,
+                            batch_size,
+                            *h,
+                            sample,
+                            folding_schedule
+                                .iter()
+                                .fold(0usize, |acc, &fold| acc.wrapping_mul(8).wrapping_add(fold)),
+                            0x5748_4952,
+                        ],
                     ));
                     let whir = estimate_proof(&params, whir_seed)?;
                     samples.push(
@@ -577,15 +742,18 @@ pub fn run_size_matrix_with_regime_and_terminal(
                 }
             }
 
-            let merkle_row = merkle_samples.row(n, batch_size, "merkle", None, None, None);
+            let merkle_row =
+                merkle_samples.row(n, batch_size, "merkle", None, None, None, None, None);
             proof_rows.push(merkle_row.clone());
             let mut rows_for_batch = Vec::new();
-            for (field, reduction, h, samples) in &canopy_samples {
+            for (field, reduction, h, folding_schedule, samples) in &canopy_samples {
                 let row = samples.row(
                     n,
                     batch_size,
                     "canopy",
                     Some(*h),
+                    Some(schedule_label(folding_schedule)),
+                    Some(n - *h - folding_schedule.iter().copied().sum::<usize>()),
                     Some(*field),
                     Some(*reduction),
                 );
@@ -618,6 +786,8 @@ pub fn run_size_matrix_with_regime_and_terminal(
                             .join(";"),
                         merkle_mean_bytes: merkle_row.mean_total_bytes,
                         best_h: best.h.unwrap(),
+                        best_folding_schedule: best.folding_schedule.clone().unwrap(),
+                        best_terminal_message_variables: best.terminal_message_variables.unwrap(),
                         canopy_mean_bytes: best.mean_total_bytes,
                         canopy_hash_bytes: best.mean_hash_bytes,
                         canopy_field_bytes: best.mean_field_bytes,
@@ -642,6 +812,8 @@ pub fn run_size_matrix_with_regime_and_terminal(
                 best_layer_field_bits: best.layer_field_bits.unwrap(),
                 best_codeword_log_reduction: best.codeword_log_reduction.unwrap(),
                 best_h: best.h.unwrap(),
+                best_folding_schedule: best.folding_schedule.clone().unwrap(),
+                best_terminal_message_variables: best.terminal_message_variables.unwrap(),
                 canopy_mean_bytes: best.mean_total_bytes,
                 canopy_hash_bytes: best.mean_hash_bytes,
                 canopy_field_bytes: best.mean_field_bytes,
@@ -694,11 +866,26 @@ fn write_summary_markdown(
         "Mean of {} deterministic random index/query samples; seed `{:#x}`. Sizes include opened values, exclude verifier-generated indices and randomness.\n",
         config.samples, config.seed
     )?;
-    writeln!(
-        file,
-        "WHIR security target: {} bits. Recursive folding terminates once message length is at most `2^{}`; all folds use `2^{}`.\n",
-        DEFAULT_SECURITY_BITS, max_terminal_message_variables, config.folding_log
-    )?;
+    if config.optimize_folding_schedule {
+        writeln!(
+            file,
+            "WHIR security target: {} bits. Folding schedules are searched over `{{{}}}` and stop as soon as the message contains at most `2^{}` coefficients.\n",
+            DEFAULT_SECURITY_BITS,
+            config
+                .folding_choices
+                .iter()
+                .map(ToString::to_string)
+                .collect::<Vec<_>>()
+                .join(","),
+            max_terminal_message_variables,
+        )?;
+    } else {
+        writeln!(
+            file,
+            "WHIR security target: {} bits. Recursive folding terminates once message length is at most `2^{}`; all folds use `2^{}`.\n",
+            DEFAULT_SECURITY_BITS, max_terminal_message_variables, config.folding_log
+        )?;
+    }
     writeln!(
         file,
         "Input-vector elements use the fixed {}-bit field and occupy {} bytes. The Canopy/WHIR layer field is searched independently. Merkle hashes occupy {} bytes.\n",
@@ -745,18 +932,23 @@ fn write_summary_markdown(
     )?;
     writeln!(
         file,
-        "| log2 N | batch | layer bits | codeword | best h | Merkle KiB | Canopy KiB | hashes KiB | fields KiB | Canopy/Merkle |"
+        "| log2 N | batch | layer bits | codeword | best h | folds | terminal log | Merkle KiB | Canopy KiB | hashes KiB | fields KiB | Canopy/Merkle |"
     )?;
-    writeln!(file, "|---:|---:|---:|---|---:|---:|---:|---:|---:|---:|")?;
+    writeln!(
+        file,
+        "|---:|---:|---:|---|---:|---|---:|---:|---:|---:|---:|---:|"
+    )?;
     for row in by_field {
         writeln!(
             file,
-            "| {} | {} | {} | N/{} | {} | {:.2} | {:.2} | {:.2} | {:.2} | {:.3} |",
+            "| {} | {} | {} | N/{} | {} | {} | {} | {:.2} | {:.2} | {:.2} | {:.2} | {:.3} |",
             row.log_length,
             row.batch_size,
             row.layer_field_bits,
             1usize << row.codeword_log_reduction,
             row.best_h,
+            row.best_folding_schedule.replace(';', ","),
+            row.best_terminal_message_variables,
             row.merkle_mean_bytes / 1024.0,
             row.canopy_mean_bytes / 1024.0,
             row.canopy_hash_bytes / 1024.0,
@@ -768,16 +960,16 @@ fn write_summary_markdown(
     writeln!(file, "\n## Overall optimum\n")?;
     writeln!(
         file,
-        "| log2 N | batch | h candidates | Merkle KiB | layer bits | codeword | best h | Canopy KiB | hashes KiB | fields KiB | Canopy/Merkle |"
+        "| log2 N | batch | h candidates | Merkle KiB | layer bits | codeword | best h | folds | terminal log | Canopy KiB | hashes KiB | fields KiB | Canopy/Merkle |"
     )?;
     writeln!(
         file,
-        "|---:|---:|---|---:|---:|---|---:|---:|---:|---:|---:|"
+        "|---:|---:|---|---:|---:|---|---:|---|---:|---:|---:|---:|---:|"
     )?;
     for row in rows {
         writeln!(
             file,
-            "| {} | {} | {} | {:.2} | {} | N/{} | {} | {:.2} | {:.2} | {:.2} | {:.3} |",
+            "| {} | {} | {} | {:.2} | {} | N/{} | {} | {} | {} | {:.2} | {:.2} | {:.2} | {:.3} |",
             row.log_length,
             row.batch_size,
             row.h_candidates.replace(';', ","),
@@ -785,6 +977,8 @@ fn write_summary_markdown(
             row.best_layer_field_bits,
             1usize << row.best_codeword_log_reduction,
             row.best_h,
+            row.best_folding_schedule.replace(';', ","),
+            row.best_terminal_message_variables,
             row.canopy_mean_bytes / 1024.0,
             row.canopy_hash_bytes / 1024.0,
             row.canopy_field_bytes / 1024.0,
@@ -1296,6 +1490,18 @@ mod tests {
     use super::*;
 
     #[test]
+    fn optimized_schedules_stop_at_the_terminal_cap() {
+        let schedules = folding_schedules_up_to(22, 10, &[3, 4]);
+        assert!(!schedules.is_empty());
+        for schedule in schedules {
+            let folded = schedule.iter().sum::<usize>();
+            assert!(22 - folded <= 10);
+            assert!(22 - (folded - schedule.last().unwrap()) > 10);
+        }
+        assert_eq!(folding_schedules_up_to(10, 10, &[3, 4]), vec![vec![]]);
+    }
+
+    #[test]
     fn small_matrix_writes_all_outputs() {
         let temp = tempfile::tempdir().unwrap();
         let config = SizeMatrixConfig {
@@ -1305,6 +1511,8 @@ mod tests {
             layer_field_bits: vec![128],
             codeword_log_reductions: vec![0, 1, 2],
             folding_log: DEFAULT_FOLDING_LOG,
+            folding_choices: Vec::new(),
+            optimize_folding_schedule: false,
             samples: 3,
             seed: 1,
         };
@@ -1329,7 +1537,7 @@ mod tests {
         // The initial four-variable fold is still valid when the message is
         // already at or below the terminal threshold.
         assert_eq!(
-            height_candidates(&config, 22, 64).unwrap(),
+            height_candidates(&config, 22, 64, MAX_TERMINAL_MESSAGE_VARIABLES).unwrap(),
             (1..=15).collect::<Vec<_>>()
         );
     }

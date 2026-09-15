@@ -1,0 +1,561 @@
+canopy_layout,log_input,interleaving,scheme,systematic_h,parity_h,setup_seed,rayon_threads,iteration,phase,part,stage,seconds
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,0,commitment,Bolt,sparse syndrome U=HX,0.0033905
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,0,commitment,Bolt,parity RS encoding Y=RS(U),0.003195833
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,0,commitment,X,row Merkle tree or forest,0.004349584
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,0,commitment,X,Merkle root transcript,1.67e-7
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,0,commitment,Y,row Merkle tree or forest,0.001331084
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,0,commitment,Y,Merkle root transcript,2.92e-7
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,0,opening,Bolt,partial evaluation g,0.005812
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,0,opening,Bolt,column projections x=Xr and u=Ur,0.001238917
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,0,opening,common WHIR,WHIR configuration,3.25e-6
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,0,opening,x,common WHIR RS encode and oracle commitment,0.001824916
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,0,opening,u,common WHIR RS encode and oracle commitment,0.000613334
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,0,opening,Bolt,syndrome evaluation sigma,0.000127791
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,0,opening,Bolt,sample row queries,0.000075167
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,0,opening,X,copy and serialize queried row values,0.044882
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,0,opening,X,collect and serialize row authentication paths,0.001329042
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,0,opening,Y,copy and serialize queried row values,0.000863375
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,0,opening,Y,collect and serialize row authentication paths,0.00011475
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,0,opening,Bolt,project queried rows and sample batching challenges,0.00569125
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,0,opening,Bolt,systematic query covector,0.000647792
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,0,opening,Bolt,parity query covector and transpose RS FFT,0.000753458
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,0,opening,Bolt,public H transpose covector,0.000752375
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,0,opening,x,common WHIR constrained proof,0.007112625
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,0,opening,u,common WHIR constrained proof,0.001491125
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,0,commitment,other,unassigned phase work and timing overhead,5.819999999989722e-7
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,0,opening,other,unassigned phase work and timing overhead,3.916000000020459e-6
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,0,commitment,Bolt,sparse syndrome U=HX,0.003378667
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,0,commitment,Bolt,parity RS encoding Y=RS(U),0.003458958
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,0,commitment,X,row Merkle tree or forest,0.004277041
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,0,commitment,X,Canopy hash-to-field,4.58e-7
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,0,commitment,X,Canopy constant RS commitment,2.791e-6
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,0,commitment,Y,row Merkle tree or forest,0.001397875
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,0,commitment,Y,Canopy hash-to-field,2.92e-7
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,0,commitment,Y,Canopy constant RS commitment,2.667e-6
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,0,opening,Bolt,partial evaluation g,0.005726958
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,0,opening,Bolt,column projections x=Xr and u=Ur,0.001278
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,0,opening,common WHIR,WHIR configuration,3.75e-6
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,0,opening,x,common WHIR RS encode and oracle commitment,0.001741292
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,0,opening,u,common WHIR RS encode and oracle commitment,0.000590084
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,0,opening,Bolt,syndrome evaluation sigma,0.000123958
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,0,opening,Bolt,sample row queries,0.000073875
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,0,opening,X,copy and serialize queried row values,0.045318917
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,0,opening,X,collect and serialize row authentication paths,0.001562542
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,0,opening,Y,copy and serialize queried row values,0.000869167
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,0,opening,Y,collect and serialize row authentication paths,0.000104875
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,0,opening,Bolt,project queried rows and sample batching challenges,0.00579625
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,0,opening,Bolt,systematic query covector,0.000755292
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,0,opening,Bolt,parity query covector and transpose RS FFT,0.0008765
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,0,opening,Bolt,public H transpose covector,0.000762416
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,0,opening,x,common WHIR constrained proof,0.007163584
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,0,opening,u,common WHIR constrained proof,0.001679959
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,0,opening,X,Canopy ancestor claims,0.000018166
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,0,opening,X,Canopy constant opening,4.58e-7
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,0,opening,Y,Canopy ancestor claims,5e-7
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,0,opening,Y,Canopy constant opening,2.5e-7
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,0,commitment,other,unassigned phase work and timing overhead,6.260000000000987e-7
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,0,opening,other,unassigned phase work and timing overhead,4.08200000001635e-6
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,1,commitment,Bolt,sparse syndrome U=HX,0.003638583
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,1,commitment,Bolt,parity RS encoding Y=RS(U),0.003988541
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,1,commitment,X,row Merkle tree or forest,0.004957541
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,1,commitment,X,Canopy hash-to-field,5.83e-7
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,1,commitment,X,Canopy constant RS commitment,2.625e-6
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,1,commitment,Y,row Merkle tree or forest,0.001605667
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,1,commitment,Y,Canopy hash-to-field,2.92e-7
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,1,commitment,Y,Canopy constant RS commitment,2.667e-6
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,1,opening,Bolt,partial evaluation g,0.006744042
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,1,opening,Bolt,column projections x=Xr and u=Ur,0.0015185
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,1,opening,common WHIR,WHIR configuration,5e-6
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,1,opening,x,common WHIR RS encode and oracle commitment,0.002028209
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,1,opening,u,common WHIR RS encode and oracle commitment,0.000625334
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,1,opening,Bolt,syndrome evaluation sigma,0.000131875
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,1,opening,Bolt,sample row queries,0.000082458
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,1,opening,X,copy and serialize queried row values,0.048291667
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,1,opening,X,collect and serialize row authentication paths,0.001253833
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,1,opening,Y,copy and serialize queried row values,0.000826625
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,1,opening,Y,collect and serialize row authentication paths,0.000102417
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,1,opening,Bolt,project queried rows and sample batching challenges,0.005506583
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,1,opening,Bolt,systematic query covector,0.000706625
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,1,opening,Bolt,parity query covector and transpose RS FFT,0.000758875
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,1,opening,Bolt,public H transpose covector,0.000752375
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,1,opening,x,common WHIR constrained proof,0.007305958
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,1,opening,u,common WHIR constrained proof,0.001461458
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,1,opening,X,Canopy ancestor claims,0.000014833
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,1,opening,X,Canopy constant opening,3.33e-7
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,1,opening,Y,Canopy ancestor claims,5.42e-7
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,1,opening,Y,Canopy constant opening,2.5e-7
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,1,commitment,other,unassigned phase work and timing overhead,1.1270000000000724e-6
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,1,opening,other,unassigned phase work and timing overhead,0.00008095799999997821
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,1,commitment,Bolt,sparse syndrome U=HX,0.003421167
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,1,commitment,Bolt,parity RS encoding Y=RS(U),0.00304875
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,1,commitment,X,row Merkle tree or forest,0.004240708
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,1,commitment,X,Merkle root transcript,1.67e-7
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,1,commitment,Y,row Merkle tree or forest,0.001257042
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,1,commitment,Y,Merkle root transcript,4.59e-7
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,1,opening,Bolt,partial evaluation g,0.005833
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,1,opening,Bolt,column projections x=Xr and u=Ur,0.001284917
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,1,opening,common WHIR,WHIR configuration,3.542e-6
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,1,opening,x,common WHIR RS encode and oracle commitment,0.001719041
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,1,opening,u,common WHIR RS encode and oracle commitment,0.000592333
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,1,opening,Bolt,syndrome evaluation sigma,0.0001245
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,1,opening,Bolt,sample row queries,0.000072458
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,1,opening,X,copy and serialize queried row values,0.04604675
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,1,opening,X,collect and serialize row authentication paths,0.001476375
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,1,opening,Y,copy and serialize queried row values,0.000832417
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,1,opening,Y,collect and serialize row authentication paths,0.000102417
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,1,opening,Bolt,project queried rows and sample batching challenges,0.005443916
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,1,opening,Bolt,systematic query covector,0.000661709
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,1,opening,Bolt,parity query covector and transpose RS FFT,0.000717291
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,1,opening,Bolt,public H transpose covector,0.000745042
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,1,opening,x,common WHIR constrained proof,0.006975959
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,1,opening,u,common WHIR constrained proof,0.001561125
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,1,commitment,other,unassigned phase work and timing overhead,9.149999999989028e-7
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,1,opening,other,unassigned phase work and timing overhead,0.0001486670000000051
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,2,commitment,Bolt,sparse syndrome U=HX,0.003298417
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,2,commitment,Bolt,parity RS encoding Y=RS(U),0.003092167
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,2,commitment,X,row Merkle tree or forest,0.004061208
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,2,commitment,X,Merkle root transcript,1.67e-7
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,2,commitment,Y,row Merkle tree or forest,0.001388
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,2,commitment,Y,Merkle root transcript,3.33e-7
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,2,opening,Bolt,partial evaluation g,0.005769167
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,2,opening,Bolt,column projections x=Xr and u=Ur,0.001216958
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,2,opening,common WHIR,WHIR configuration,4.291e-6
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,2,opening,x,common WHIR RS encode and oracle commitment,0.00182175
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,2,opening,u,common WHIR RS encode and oracle commitment,0.000639333
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,2,opening,Bolt,syndrome evaluation sigma,0.000127166
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,2,opening,Bolt,sample row queries,0.00007325
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,2,opening,X,copy and serialize queried row values,0.044245791
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,2,opening,X,collect and serialize row authentication paths,0.001412708
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,2,opening,Y,copy and serialize queried row values,0.000822167
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,2,opening,Y,collect and serialize row authentication paths,0.000107
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,2,opening,Bolt,project queried rows and sample batching challenges,0.005501959
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,2,opening,Bolt,systematic query covector,0.000665
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,2,opening,Bolt,parity query covector and transpose RS FFT,0.000702209
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,2,opening,Bolt,public H transpose covector,0.000747125
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,2,opening,x,common WHIR constrained proof,0.006745167
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,2,opening,u,common WHIR constrained proof,0.0017215
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,2,commitment,other,unassigned phase work and timing overhead,7.909999999999862e-7
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,2,opening,other,unassigned phase work and timing overhead,2.7089999999896364e-6
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,2,commitment,Bolt,sparse syndrome U=HX,0.003411833
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,2,commitment,Bolt,parity RS encoding Y=RS(U),0.002999875
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,2,commitment,X,row Merkle tree or forest,0.004159625
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,2,commitment,X,Canopy hash-to-field,5e-7
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,2,commitment,X,Canopy constant RS commitment,2.667e-6
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,2,commitment,Y,row Merkle tree or forest,0.0013885
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,2,commitment,Y,Canopy hash-to-field,2.92e-7
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,2,commitment,Y,Canopy constant RS commitment,2.708e-6
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,2,opening,Bolt,partial evaluation g,0.005713542
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,2,opening,Bolt,column projections x=Xr and u=Ur,0.001192083
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,2,opening,common WHIR,WHIR configuration,3.417e-6
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,2,opening,x,common WHIR RS encode and oracle commitment,0.001804958
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,2,opening,u,common WHIR RS encode and oracle commitment,0.000588291
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,2,opening,Bolt,syndrome evaluation sigma,0.000123458
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,2,opening,Bolt,sample row queries,0.000073125
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,2,opening,X,copy and serialize queried row values,0.044951625
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,2,opening,X,collect and serialize row authentication paths,0.001422792
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,2,opening,Y,copy and serialize queried row values,0.000874334
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,2,opening,Y,collect and serialize row authentication paths,0.000101458
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,2,opening,Bolt,project queried rows and sample batching challenges,0.00552175
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,2,opening,Bolt,systematic query covector,0.000718625
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,2,opening,Bolt,parity query covector and transpose RS FFT,0.000745041
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,2,opening,Bolt,public H transpose covector,0.000750917
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,2,opening,x,common WHIR constrained proof,0.006833125
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,2,opening,u,common WHIR constrained proof,0.001582917
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,2,opening,X,Canopy ancestor claims,0.000013791
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,2,opening,X,Canopy constant opening,3.75e-7
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,2,opening,Y,Canopy ancestor claims,5.83e-7
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,2,opening,Y,Canopy constant opening,2.5e-7
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,2,commitment,other,unassigned phase work and timing overhead,5.839999999979195e-7
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,2,opening,other,unassigned phase work and timing overhead,0.00005729300000002768
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,3,commitment,Bolt,sparse syndrome U=HX,0.003399375
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,3,commitment,Bolt,parity RS encoding Y=RS(U),0.003035042
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,3,commitment,X,row Merkle tree or forest,0.004188209
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,3,commitment,X,Canopy hash-to-field,2.92e-7
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,3,commitment,X,Canopy constant RS commitment,2.583e-6
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,3,commitment,Y,row Merkle tree or forest,0.001288375
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,3,commitment,Y,Canopy hash-to-field,2.92e-7
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,3,commitment,Y,Canopy constant RS commitment,2.959e-6
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,3,opening,Bolt,partial evaluation g,0.005828708
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,3,opening,Bolt,column projections x=Xr and u=Ur,0.001276042
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,3,opening,common WHIR,WHIR configuration,3.583e-6
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,3,opening,x,common WHIR RS encode and oracle commitment,0.00186275
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,3,opening,u,common WHIR RS encode and oracle commitment,0.000624292
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,3,opening,Bolt,syndrome evaluation sigma,0.000127334
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,3,opening,Bolt,sample row queries,0.000073083
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,3,opening,X,copy and serialize queried row values,0.046021583
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,3,opening,X,collect and serialize row authentication paths,0.001463791
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,3,opening,Y,copy and serialize queried row values,0.000886916
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,3,opening,Y,collect and serialize row authentication paths,0.000101375
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,3,opening,Bolt,project queried rows and sample batching challenges,0.005518292
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,3,opening,Bolt,systematic query covector,0.000699541
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,3,opening,Bolt,parity query covector and transpose RS FFT,0.000733584
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,3,opening,Bolt,public H transpose covector,0.000735834
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,3,opening,x,common WHIR constrained proof,0.006465208
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,3,opening,u,common WHIR constrained proof,0.00175925
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,3,opening,X,Canopy ancestor claims,0.000017208
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,3,opening,X,Canopy constant opening,4.17e-7
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,3,opening,Y,Canopy ancestor claims,5.41e-7
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,3,opening,Y,Canopy constant opening,2.08e-7
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,3,commitment,other,unassigned phase work and timing overhead,7.899999999987778e-7
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,3,opening,other,unassigned phase work and timing overhead,3.20999999998961e-6
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,3,commitment,Bolt,sparse syndrome U=HX,0.003288417
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,3,commitment,Bolt,parity RS encoding Y=RS(U),0.002992541
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,3,commitment,X,row Merkle tree or forest,0.004117708
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,3,commitment,X,Merkle root transcript,8.3e-8
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,3,commitment,Y,row Merkle tree or forest,0.001246458
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,3,commitment,Y,Merkle root transcript,4.17e-7
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,3,opening,Bolt,partial evaluation g,0.005749542
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,3,opening,Bolt,column projections x=Xr and u=Ur,0.001231083
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,3,opening,common WHIR,WHIR configuration,3.291e-6
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,3,opening,x,common WHIR RS encode and oracle commitment,0.001734834
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,3,opening,u,common WHIR RS encode and oracle commitment,0.000609
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,3,opening,Bolt,syndrome evaluation sigma,0.000123667
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,3,opening,Bolt,sample row queries,0.000081584
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,3,opening,X,copy and serialize queried row values,0.046002459
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,3,opening,X,collect and serialize row authentication paths,0.001384125
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,3,opening,Y,copy and serialize queried row values,0.000884042
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,3,opening,Y,collect and serialize row authentication paths,0.000102292
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,3,opening,Bolt,project queried rows and sample batching challenges,0.005474584
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,3,opening,Bolt,systematic query covector,0.000661416
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,3,opening,Bolt,parity query covector and transpose RS FFT,0.000747375
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,3,opening,Bolt,public H transpose covector,0.000752583
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,3,opening,x,common WHIR constrained proof,0.006862292
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,3,opening,u,common WHIR constrained proof,0.001506709
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,3,commitment,other,unassigned phase work and timing overhead,6.25999999998364e-7
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,3,opening,other,unassigned phase work and timing overhead,0.0002087890000000009
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,4,commitment,Bolt,sparse syndrome U=HX,0.00323775
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,4,commitment,Bolt,parity RS encoding Y=RS(U),0.002986167
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,4,commitment,X,row Merkle tree or forest,0.004409958
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,4,commitment,X,Merkle root transcript,2.08e-7
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,4,commitment,Y,row Merkle tree or forest,0.001310542
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,4,commitment,Y,Merkle root transcript,3.34e-7
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,4,opening,Bolt,partial evaluation g,0.00592375
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,4,opening,Bolt,column projections x=Xr and u=Ur,0.001201417
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,4,opening,common WHIR,WHIR configuration,3.209e-6
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,4,opening,x,common WHIR RS encode and oracle commitment,0.001672959
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,4,opening,u,common WHIR RS encode and oracle commitment,0.0006255
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,4,opening,Bolt,syndrome evaluation sigma,0.000124208
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,4,opening,Bolt,sample row queries,0.00007525
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,4,opening,X,copy and serialize queried row values,0.046134333
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,4,opening,X,collect and serialize row authentication paths,0.001488833
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,4,opening,Y,copy and serialize queried row values,0.000859542
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,4,opening,Y,collect and serialize row authentication paths,0.000102541
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,4,opening,Bolt,project queried rows and sample batching challenges,0.00551
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,4,opening,Bolt,systematic query covector,0.000665625
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,4,opening,Bolt,parity query covector and transpose RS FFT,0.000952916
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,4,opening,Bolt,public H transpose covector,0.000720208
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,4,opening,x,common WHIR constrained proof,0.006831667
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,4,opening,u,common WHIR constrained proof,0.001570875
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,4,commitment,other,unassigned phase work and timing overhead,6.250000000006251e-7
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,4,opening,other,unassigned phase work and timing overhead,3.501000000002974e-6
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,4,commitment,Bolt,sparse syndrome U=HX,0.003342167
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,4,commitment,Bolt,parity RS encoding Y=RS(U),0.004220667
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,4,commitment,X,row Merkle tree or forest,0.005027666
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,4,commitment,X,Canopy hash-to-field,5.83e-7
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,4,commitment,X,Canopy constant RS commitment,2.667e-6
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,4,commitment,Y,row Merkle tree or forest,0.001696625
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,4,commitment,Y,Canopy hash-to-field,2.92e-7
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,4,commitment,Y,Canopy constant RS commitment,2.833e-6
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,4,opening,Bolt,partial evaluation g,0.006415667
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,4,opening,Bolt,column projections x=Xr and u=Ur,0.001526875
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,4,opening,common WHIR,WHIR configuration,4.375e-6
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,4,opening,x,common WHIR RS encode and oracle commitment,0.00209275
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,4,opening,u,common WHIR RS encode and oracle commitment,0.000615292
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,4,opening,Bolt,syndrome evaluation sigma,0.000130042
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,4,opening,Bolt,sample row queries,0.000075875
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,4,opening,X,copy and serialize queried row values,0.048698458
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,4,opening,X,collect and serialize row authentication paths,0.0012625
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,4,opening,Y,copy and serialize queried row values,0.000930583
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,4,opening,Y,collect and serialize row authentication paths,0.000102667
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,4,opening,Bolt,project queried rows and sample batching challenges,0.005521833
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,4,opening,Bolt,systematic query covector,0.000707542
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,4,opening,Bolt,parity query covector and transpose RS FFT,0.000764667
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,4,opening,Bolt,public H transpose covector,0.000755083
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,4,opening,x,common WHIR constrained proof,0.007093458
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,4,opening,u,common WHIR constrained proof,0.001458417
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,4,opening,X,Canopy ancestor claims,0.000022209
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,4,opening,X,Canopy constant opening,4.58e-7
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,4,opening,Y,Canopy ancestor claims,4.17e-7
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,4,opening,Y,Canopy constant opening,2.5e-7
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,4,commitment,other,unassigned phase work and timing overhead,1.041999999997975e-6
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,4,opening,other,unassigned phase work and timing overhead,0.0002831230000000101
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,5,commitment,Bolt,sparse syndrome U=HX,0.00337025
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,5,commitment,Bolt,parity RS encoding Y=RS(U),0.002901333
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,5,commitment,X,row Merkle tree or forest,0.004113167
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,5,commitment,X,Canopy hash-to-field,2.5e-7
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,5,commitment,X,Canopy constant RS commitment,2.542e-6
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,5,commitment,Y,row Merkle tree or forest,0.001393292
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,5,commitment,Y,Canopy hash-to-field,2.91e-7
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,5,commitment,Y,Canopy constant RS commitment,2.625e-6
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,5,opening,Bolt,partial evaluation g,0.005869333
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,5,opening,Bolt,column projections x=Xr and u=Ur,0.001247416
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,5,opening,common WHIR,WHIR configuration,3.833e-6
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,5,opening,x,common WHIR RS encode and oracle commitment,0.001778958
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,5,opening,u,common WHIR RS encode and oracle commitment,0.000595125
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,5,opening,Bolt,syndrome evaluation sigma,0.000126917
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,5,opening,Bolt,sample row queries,0.000073166
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,5,opening,X,copy and serialize queried row values,0.04381775
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,5,opening,X,collect and serialize row authentication paths,0.001417459
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,5,opening,Y,copy and serialize queried row values,0.00081675
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,5,opening,Y,collect and serialize row authentication paths,0.000101959
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,5,opening,Bolt,project queried rows and sample batching challenges,0.005532417
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,5,opening,Bolt,systematic query covector,0.000697
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,5,opening,Bolt,parity query covector and transpose RS FFT,0.000976583
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,5,opening,Bolt,public H transpose covector,0.000744958
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,5,opening,x,common WHIR constrained proof,0.006619792
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,5,opening,u,common WHIR constrained proof,0.001614209
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,5,opening,X,Canopy ancestor claims,0.0000175
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,5,opening,X,Canopy constant opening,4.16e-7
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,5,opening,Y,Canopy ancestor claims,5.42e-7
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,5,opening,Y,Canopy constant opening,3.34e-7
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,5,commitment,other,unassigned phase work and timing overhead,8.34000000001639e-7
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,5,opening,other,unassigned phase work and timing overhead,3.6239999999659878e-6
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,5,commitment,Bolt,sparse syndrome U=HX,0.003383334
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,5,commitment,Bolt,parity RS encoding Y=RS(U),0.002952542
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,5,commitment,X,row Merkle tree or forest,0.004341958
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,5,commitment,X,Merkle root transcript,2.08e-7
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,5,commitment,Y,row Merkle tree or forest,0.001456542
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,5,commitment,Y,Merkle root transcript,4.17e-7
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,5,opening,Bolt,partial evaluation g,0.005848375
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,5,opening,Bolt,column projections x=Xr and u=Ur,0.001236792
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,5,opening,common WHIR,WHIR configuration,3.334e-6
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,5,opening,x,common WHIR RS encode and oracle commitment,0.001634084
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,5,opening,u,common WHIR RS encode and oracle commitment,0.000578
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,5,opening,Bolt,syndrome evaluation sigma,0.000126208
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,5,opening,Bolt,sample row queries,0.000081625
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,5,opening,X,copy and serialize queried row values,0.046185875
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,5,opening,X,collect and serialize row authentication paths,0.001396375
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,5,opening,Y,copy and serialize queried row values,0.000859209
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,5,opening,Y,collect and serialize row authentication paths,0.000102833
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,5,opening,Bolt,project queried rows and sample batching challenges,0.005483333
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,5,opening,Bolt,systematic query covector,0.000672958
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,5,opening,Bolt,parity query covector and transpose RS FFT,0.00083375
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,5,opening,Bolt,public H transpose covector,0.000745333
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,5,opening,x,common WHIR constrained proof,0.007065083
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,5,opening,u,common WHIR constrained proof,0.001459041
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,5,commitment,other,unassigned phase work and timing overhead,4.989999999992917e-7
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,5,opening,other,unassigned phase work and timing overhead,3.0420000000225267e-6
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,6,commitment,Bolt,sparse syndrome U=HX,0.003231625
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,6,commitment,Bolt,parity RS encoding Y=RS(U),0.003052166
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,6,commitment,X,row Merkle tree or forest,0.004312
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,6,commitment,X,Merkle root transcript,2.08e-7
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,6,commitment,Y,row Merkle tree or forest,0.001417
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,6,commitment,Y,Merkle root transcript,3.75e-7
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,6,opening,Bolt,partial evaluation g,0.00588325
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,6,opening,Bolt,column projections x=Xr and u=Ur,0.00122225
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,6,opening,common WHIR,WHIR configuration,3.625e-6
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,6,opening,x,common WHIR RS encode and oracle commitment,0.001850416
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,6,opening,u,common WHIR RS encode and oracle commitment,0.000612083
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,6,opening,Bolt,syndrome evaluation sigma,0.000128625
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,6,opening,Bolt,sample row queries,0.000072417
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,6,opening,X,copy and serialize queried row values,0.045966708
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,6,opening,X,collect and serialize row authentication paths,0.001459416
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,6,opening,Y,copy and serialize queried row values,0.000857792
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,6,opening,Y,collect and serialize row authentication paths,0.000103583
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,6,opening,Bolt,project queried rows and sample batching challenges,0.005469542
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,6,opening,Bolt,systematic query covector,0.000658708
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,6,opening,Bolt,parity query covector and transpose RS FFT,0.00069675
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,6,opening,Bolt,public H transpose covector,0.000745084
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,6,opening,x,common WHIR constrained proof,0.006542084
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,6,opening,u,common WHIR constrained proof,0.00184025
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,6,commitment,other,unassigned phase work and timing overhead,7.929999999989334e-7
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,6,opening,other,unassigned phase work and timing overhead,3.042000000008649e-6
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,6,commitment,Bolt,sparse syndrome U=HX,0.003254458
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,6,commitment,Bolt,parity RS encoding Y=RS(U),0.003102083
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,6,commitment,X,row Merkle tree or forest,0.004173292
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,6,commitment,X,Canopy hash-to-field,5.41e-7
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,6,commitment,X,Canopy constant RS commitment,2.625e-6
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,6,commitment,Y,row Merkle tree or forest,0.001348417
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,6,commitment,Y,Canopy hash-to-field,2.5e-7
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,6,commitment,Y,Canopy constant RS commitment,2.75e-6
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,6,opening,Bolt,partial evaluation g,0.005810958
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,6,opening,Bolt,column projections x=Xr and u=Ur,0.001370167
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,6,opening,common WHIR,WHIR configuration,3.542e-6
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,6,opening,x,common WHIR RS encode and oracle commitment,0.001993875
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,6,opening,u,common WHIR RS encode and oracle commitment,0.00059875
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,6,opening,Bolt,syndrome evaluation sigma,0.000126167
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,6,opening,Bolt,sample row queries,0.000073166
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,6,opening,X,copy and serialize queried row values,0.045945542
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,6,opening,X,collect and serialize row authentication paths,0.001384209
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,6,opening,Y,copy and serialize queried row values,0.000869875
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,6,opening,Y,collect and serialize row authentication paths,0.000101208
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,6,opening,Bolt,project queried rows and sample batching challenges,0.005643625
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,6,opening,Bolt,systematic query covector,0.000696875
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,6,opening,Bolt,parity query covector and transpose RS FFT,0.00081025
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,6,opening,Bolt,public H transpose covector,0.000742167
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,6,opening,x,common WHIR constrained proof,0.007260375
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,6,opening,u,common WHIR constrained proof,0.001629292
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,6,opening,X,Canopy ancestor claims,0.000014375
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,6,opening,X,Canopy constant opening,4.59e-7
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,6,opening,Y,Canopy ancestor claims,5.83e-7
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,6,opening,Y,Canopy constant opening,2.08e-7
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,6,commitment,other,unassigned phase work and timing overhead,7.920000000011945e-7
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,6,opening,other,unassigned phase work and timing overhead,0.0002085410000000204
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,7,commitment,Bolt,sparse syndrome U=HX,0.003388958
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,7,commitment,Bolt,parity RS encoding Y=RS(U),0.003339792
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,7,commitment,X,row Merkle tree or forest,0.004152375
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,7,commitment,X,Canopy hash-to-field,3.33e-7
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,7,commitment,X,Canopy constant RS commitment,2.875e-6
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,7,commitment,Y,row Merkle tree or forest,0.001360208
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,7,commitment,Y,Canopy hash-to-field,2.92e-7
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,7,commitment,Y,Canopy constant RS commitment,2.541e-6
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,7,opening,Bolt,partial evaluation g,0.005803125
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,7,opening,Bolt,column projections x=Xr and u=Ur,0.001392584
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,7,opening,common WHIR,WHIR configuration,3.209e-6
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,7,opening,x,common WHIR RS encode and oracle commitment,0.001804042
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,7,opening,u,common WHIR RS encode and oracle commitment,0.000597041
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,7,opening,Bolt,syndrome evaluation sigma,0.000128209
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,7,opening,Bolt,sample row queries,0.000076917
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,7,opening,X,copy and serialize queried row values,0.0459745
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,7,opening,X,collect and serialize row authentication paths,0.001451334
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,7,opening,Y,copy and serialize queried row values,0.0008575
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,7,opening,Y,collect and serialize row authentication paths,0.00010275
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,7,opening,Bolt,project queried rows and sample batching challenges,0.005560459
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,7,opening,Bolt,systematic query covector,0.0007025
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,7,opening,Bolt,parity query covector and transpose RS FFT,0.000779417
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,7,opening,Bolt,public H transpose covector,0.000740958
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,7,opening,x,common WHIR constrained proof,0.006713042
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,7,opening,u,common WHIR constrained proof,0.001558416
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,7,opening,X,Canopy ancestor claims,0.000014125
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,7,opening,X,Canopy constant opening,4.58e-7
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,7,opening,Y,Canopy ancestor claims,6.25e-7
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,7,opening,Y,Canopy constant opening,3.33e-7
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,7,commitment,other,unassigned phase work and timing overhead,7.099999999992529e-7
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,7,opening,other,unassigned phase work and timing overhead,3.4559999999850266e-6
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,7,commitment,Bolt,sparse syndrome U=HX,0.003331583
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,7,commitment,Bolt,parity RS encoding Y=RS(U),0.002888375
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,7,commitment,X,row Merkle tree or forest,0.004203834
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,7,commitment,X,Merkle root transcript,2.08e-7
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,7,commitment,Y,row Merkle tree or forest,0.001305375
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,7,commitment,Y,Merkle root transcript,3.33e-7
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,7,opening,Bolt,partial evaluation g,0.005822417
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,7,opening,Bolt,column projections x=Xr and u=Ur,0.00127625
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,7,opening,common WHIR,WHIR configuration,3.625e-6
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,7,opening,x,common WHIR RS encode and oracle commitment,0.001809667
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,7,opening,u,common WHIR RS encode and oracle commitment,0.000597542
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,7,opening,Bolt,syndrome evaluation sigma,0.000127333
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,7,opening,Bolt,sample row queries,0.000071916
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,7,opening,X,copy and serialize queried row values,0.043937541
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,7,opening,X,collect and serialize row authentication paths,0.001468958
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,7,opening,Y,copy and serialize queried row values,0.0008185
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,7,opening,Y,collect and serialize row authentication paths,0.000106416
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,7,opening,Bolt,project queried rows and sample batching challenges,0.005488417
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,7,opening,Bolt,systematic query covector,0.000657583
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,7,opening,Bolt,parity query covector and transpose RS FFT,0.000737125
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,7,opening,Bolt,public H transpose covector,0.000739959
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,7,opening,x,common WHIR constrained proof,0.006630667
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,7,opening,u,common WHIR constrained proof,0.001546458
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,7,commitment,other,unassigned phase work and timing overhead,7.510000000019584e-7
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,7,opening,other,unassigned phase work and timing overhead,0.00019650099999998782
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,8,commitment,Bolt,sparse syndrome U=HX,0.003596958
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,8,commitment,Bolt,parity RS encoding Y=RS(U),0.003697916
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,8,commitment,X,row Merkle tree or forest,0.004588667
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,8,commitment,X,Merkle root transcript,1.25e-7
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,8,commitment,Y,row Merkle tree or forest,0.001820417
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,8,commitment,Y,Merkle root transcript,3.75e-7
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,8,opening,Bolt,partial evaluation g,0.005735583
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,8,opening,Bolt,column projections x=Xr and u=Ur,0.001509458
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,8,opening,common WHIR,WHIR configuration,3.833e-6
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,8,opening,x,common WHIR RS encode and oracle commitment,0.00186575
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,8,opening,u,common WHIR RS encode and oracle commitment,0.000595041
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,8,opening,Bolt,syndrome evaluation sigma,0.000128625
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,8,opening,Bolt,sample row queries,0.000072583
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,8,opening,X,copy and serialize queried row values,0.04480225
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,8,opening,X,collect and serialize row authentication paths,0.001533542
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,8,opening,Y,copy and serialize queried row values,0.00090825
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,8,opening,Y,collect and serialize row authentication paths,0.000102792
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,8,opening,Bolt,project queried rows and sample batching challenges,0.00546125
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,8,opening,Bolt,systematic query covector,0.000656625
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,8,opening,Bolt,parity query covector and transpose RS FFT,0.000754333
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,8,opening,Bolt,public H transpose covector,0.000730375
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,8,opening,x,common WHIR constrained proof,0.006913
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,8,opening,u,common WHIR constrained proof,0.001566042
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,8,commitment,other,unassigned phase work and timing overhead,9.999999999992654e-7
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,8,opening,other,unassigned phase work and timing overhead,3.2520000000091365e-6
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,8,commitment,Bolt,sparse syndrome U=HX,0.003416042
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,8,commitment,Bolt,parity RS encoding Y=RS(U),0.002833209
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,8,commitment,X,row Merkle tree or forest,0.004268792
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,8,commitment,X,Canopy hash-to-field,4.17e-7
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,8,commitment,X,Canopy constant RS commitment,2.75e-6
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,8,commitment,Y,row Merkle tree or forest,0.00135175
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,8,commitment,Y,Canopy hash-to-field,2.92e-7
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,8,commitment,Y,Canopy constant RS commitment,2.791e-6
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,8,opening,Bolt,partial evaluation g,0.005782583
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,8,opening,Bolt,column projections x=Xr and u=Ur,0.001220541
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,8,opening,common WHIR,WHIR configuration,3.417e-6
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,8,opening,x,common WHIR RS encode and oracle commitment,0.001671709
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,8,opening,u,common WHIR RS encode and oracle commitment,0.000593
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,8,opening,Bolt,syndrome evaluation sigma,0.000134917
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,8,opening,Bolt,sample row queries,0.000073208
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,8,opening,X,copy and serialize queried row values,0.044479167
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,8,opening,X,collect and serialize row authentication paths,0.001389708
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,8,opening,Y,copy and serialize queried row values,0.000823083
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,8,opening,Y,collect and serialize row authentication paths,0.000105584
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,8,opening,Bolt,project queried rows and sample batching challenges,0.005521541
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,8,opening,Bolt,systematic query covector,0.000700125
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,8,opening,Bolt,parity query covector and transpose RS FFT,0.000666
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,8,opening,Bolt,public H transpose covector,0.000714708
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,8,opening,x,common WHIR constrained proof,0.006635
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,8,opening,u,common WHIR constrained proof,0.001447959
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,8,opening,X,Canopy ancestor claims,0.000015792
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,8,opening,X,Canopy constant opening,3.34e-7
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,8,opening,Y,Canopy ancestor claims,5.41e-7
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,8,opening,Y,Canopy constant opening,2.5e-7
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,8,commitment,other,unassigned phase work and timing overhead,8.73999999997932e-7
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,8,opening,other,unassigned phase work and timing overhead,3.707999999991163e-6
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,9,commitment,Bolt,sparse syndrome U=HX,0.003230917
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,9,commitment,Bolt,parity RS encoding Y=RS(U),0.003034792
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,9,commitment,X,row Merkle tree or forest,0.004230708
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,9,commitment,X,Canopy hash-to-field,3.33e-7
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,9,commitment,X,Canopy constant RS commitment,2.416e-6
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,9,commitment,Y,row Merkle tree or forest,0.001385042
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,9,commitment,Y,Canopy hash-to-field,3.33e-7
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,9,commitment,Y,Canopy constant RS commitment,2.792e-6
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,9,opening,Bolt,partial evaluation g,0.005886833
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,9,opening,Bolt,column projections x=Xr and u=Ur,0.001197208
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,9,opening,common WHIR,WHIR configuration,3.375e-6
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,9,opening,x,common WHIR RS encode and oracle commitment,0.001744708
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,9,opening,u,common WHIR RS encode and oracle commitment,0.000593625
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,9,opening,Bolt,syndrome evaluation sigma,0.00014025
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,9,opening,Bolt,sample row queries,0.000072416
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,9,opening,X,copy and serialize queried row values,0.048424583
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,9,opening,X,collect and serialize row authentication paths,0.001470583
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,9,opening,Y,copy and serialize queried row values,0.00090875
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,9,opening,Y,collect and serialize row authentication paths,0.000102958
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,9,opening,Bolt,project queried rows and sample batching challenges,0.00549525
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,9,opening,Bolt,systematic query covector,0.000699583
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,9,opening,Bolt,parity query covector and transpose RS FFT,0.0006985
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,9,opening,Bolt,public H transpose covector,0.0007425
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,9,opening,x,common WHIR constrained proof,0.006751166
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,9,opening,u,common WHIR constrained proof,0.001497917
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,9,opening,X,Canopy ancestor claims,0.000017917
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,9,opening,X,Canopy constant opening,3.34e-7
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,9,opening,Y,Canopy ancestor claims,7.5e-7
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,9,opening,Y,Canopy constant opening,3.34e-7
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,9,commitment,other,unassigned phase work and timing overhead,6.660000000015959e-7
+equal_blocks,18,16,bolt_max_canopy_equal_blocks,14,12,4778121654452702769,8,9,opening,other,unassigned phase work and timing overhead,3.751999999981881e-6
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,9,commitment,Bolt,sparse syndrome U=HX,0.003336084
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,9,commitment,Bolt,parity RS encoding Y=RS(U),0.002814417
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,9,commitment,X,row Merkle tree or forest,0.004251709
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,9,commitment,X,Merkle root transcript,3.33e-7
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,9,commitment,Y,row Merkle tree or forest,0.001438833
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,9,commitment,Y,Merkle root transcript,5e-7
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,9,opening,Bolt,partial evaluation g,0.005779667
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,9,opening,Bolt,column projections x=Xr and u=Ur,0.001368459
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,9,opening,common WHIR,WHIR configuration,3.166e-6
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,9,opening,x,common WHIR RS encode and oracle commitment,0.00174925
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,9,opening,u,common WHIR RS encode and oracle commitment,0.000594917
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,9,opening,Bolt,syndrome evaluation sigma,0.000125083
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,9,opening,Bolt,sample row queries,0.000075083
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,9,opening,X,copy and serialize queried row values,0.044019959
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,9,opening,X,collect and serialize row authentication paths,0.0014755
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,9,opening,Y,copy and serialize queried row values,0.000861875
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,9,opening,Y,collect and serialize row authentication paths,0.000131958
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,9,opening,Bolt,project queried rows and sample batching challenges,0.005460458
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,9,opening,Bolt,systematic query covector,0.000679875
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,9,opening,Bolt,parity query covector and transpose RS FFT,0.000679292
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,9,opening,Bolt,public H transpose covector,0.000740667
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,9,opening,x,common WHIR constrained proof,0.006775
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,9,opening,u,common WHIR constrained proof,0.001855916
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,9,commitment,other,unassigned phase work and timing overhead,1.248999999998307e-6
+equal_blocks,18,16,bolt_max_merkle,,,4778121654452702769,8,9,opening,other,unassigned phase work and timing overhead,3.2080000000045406e-6

@@ -1,17 +1,24 @@
 //! Canopy, Merkle, and executable WHIR benchmarks over a 256-bit field.
 
 pub mod benchmark;
+pub mod bolt;
+pub mod bolt_experiment;
 pub mod canopy;
 pub mod executable_whir;
+pub mod field_benchmark;
 pub mod merkle;
 pub mod paper_experiments;
 pub mod reed_solomon;
 pub mod separate_benchmark;
 pub mod whir;
+#[cfg(feature = "whir-tracing")]
+pub mod whir_trace;
 
 use ark_ff::{Fp256, Fp64, MontBackend, MontConfig};
 
-/// The 256-bit FFT-friendly prime field used by all paper experiments.
+/// The 256-bit FFT-friendly prime field used by executable benchmarks and
+/// prime-field proof estimates. The separate binary-field executable lives in
+/// `experiments/binary-whir` and does not change this field or Bolt.
 ///
 /// The modulus is `2^256 - 43 * 2^32 + 1`. Its two-adicity is 32, which
 /// supports the largest rate-1/2 WHIR domain in the proof-size grid (`2^31`).
@@ -61,3 +68,33 @@ mod tests {
         assert_eq!(CanopyLayerFr64::TWO_ADICITY, 32);
     }
 }
+
+/// Register the prime-field RS backend used by the shared timing harness.
+pub fn register_benchmark_ntt() {
+    use std::sync::{Arc, Once};
+    use whir_ref::{algebra::ntt::{NTT, ReedSolomon}, buffer::DefaultRs};
+    static REGISTER: Once = Once::new();
+    REGISTER.call_once(|| {
+        NTT.insert(Arc::new(DefaultRs::<Fr>::new_from_fftfield()) as Arc<dyn ReedSolomon<Fr>>);
+    });
+}
+
+/// Reproducible full-width benchmark data; generation is outside the timers.
+pub fn benchmark_field_element(seed: u64, domain: u64, index: u64) -> Fr {
+    use ark_ff::Field;
+    for counter in 0u64.. {
+        let mut hasher = blake3::Hasher::new();
+        hasher.update(b"canopy-system/field-comparison-input/v1");
+        for value in [seed, domain, index, counter] { hasher.update(&value.to_le_bytes()); }
+        if let Some(value) = Fr::from_random_bytes(hasher.finalize().as_bytes()) { return value; }
+    }
+    unreachable!()
+}
+
+/// Identity recorded in the shared field-comparison timing reports.
+pub const BENCHMARK_FIELD_LABEL: &str = "Fp(2^256 - 43*2^32 + 1), multiplicative RS";
+
+pub const FIELD_MODULUS_LABEL: &str = "115792089237316195423570985008687907853269984665640564039457584007728446046209";
+pub const FIELD_DOMAIN_KIND: &str = "multiplicative radix-2";
+pub const FIELD_TWO_ADICITY: usize = 32;
+pub const FIELD_MAX_DOMAIN_LOG: usize = 32;

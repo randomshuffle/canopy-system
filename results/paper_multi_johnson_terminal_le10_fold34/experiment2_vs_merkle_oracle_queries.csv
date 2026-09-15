@@ -1,0 +1,187 @@
+experiment,scheme,input_oracles,log_message_length,oracle_role,commitment_kind,oracle_count,shared_query_positions,shared_authentication,message_log,codeword_log,log_inverse_rate,field_bits,leaf_width,leaf_count,requested_queries,samples,mean_unique_queries,mean_auth_hashes,mean_answer_fields
+0,merkle_whir_batched_after_second,4,22,SZ-batched second-oracle claim initial oracle,separate source roots; one recursive root,4,true,false,19,22,3,256,8,524288,90,100,89.99,4183.64,2879.68
+0,merkle_whir_batched_after_second,4,22,SZ-batched second-oracle claim recursive oracle 1,separate source roots; one recursive root,1,false,false,16,21,5,256,16,131072,53,100,52.97,550.75,847.52
+0,merkle_whir_batched_after_second,4,22,SZ-batched second-oracle claim recursive oracle 2,separate source roots; one recursive root,1,false,false,12,20,8,256,16,65536,33,100,32.99,333.65,527.84
+0,merkle_whir_batched_after_second,4,22,independent first Merkle oracles,independent Merkle roots,4,false,false,22,23,1,256,8,1048576,298,100,297.97,13000.84,9535.04
+0,merkle_whir_batched_after_second,4,24,SZ-batched second-oracle claim initial oracle,separate source roots; one recursive root,4,true,false,21,24,3,256,8,2097152,90,100,90.0,4901.52,2880.0
+0,merkle_whir_batched_after_second,4,24,SZ-batched second-oracle claim recursive oracle 1,separate source roots; one recursive root,1,false,false,18,23,5,256,8,1048576,53,100,53.0,709.77,424.0
+0,merkle_whir_batched_after_second,4,24,SZ-batched second-oracle claim recursive oracle 2,separate source roots; one recursive root,1,false,false,15,22,7,256,8,524288,38,100,38.0,489.23,304.0
+0,merkle_whir_batched_after_second,4,24,SZ-batched second-oracle claim recursive oracle 3,separate source roots; one recursive root,1,false,false,12,21,9,256,16,131072,29,100,29.0,327.79,464.0
+0,merkle_whir_batched_after_second,4,24,independent first Merkle oracles,independent Merkle roots,4,false,false,24,25,1,256,8,4194304,298,100,298.0,15376.52,9536.0
+0,merkle_whir_batched_after_second,4,26,SZ-batched second-oracle claim initial oracle,separate source roots; one recursive root,4,true,false,23,26,3,256,8,8388608,90,100,90.0,5625.32,2880.0
+0,merkle_whir_batched_after_second,4,26,SZ-batched second-oracle claim recursive oracle 1,separate source roots; one recursive root,1,false,false,20,25,5,256,8,4194304,53,100,53.0,816.21,424.0
+0,merkle_whir_batched_after_second,4,26,SZ-batched second-oracle claim recursive oracle 2,separate source roots; one recursive root,1,false,false,17,24,7,256,8,2097152,38,100,38.0,564.64,304.0
+0,merkle_whir_batched_after_second,4,26,SZ-batched second-oracle claim recursive oracle 3,separate source roots; one recursive root,1,false,false,14,23,9,256,8,1048576,29,100,29.0,413.76,232.0
+0,merkle_whir_batched_after_second,4,26,SZ-batched second-oracle claim recursive oracle 4,separate source roots; one recursive root,1,false,false,11,22,11,256,8,524288,24,100,24.0,325.2,192.0
+0,merkle_whir_batched_after_second,4,26,independent first Merkle oracles,independent Merkle roots,4,false,false,26,27,1,256,8,16777216,298,100,298.0,17747.56,9536.0
+0,merkle_whir_batched_after_second,4,28,SZ-batched second-oracle claim initial oracle,separate source roots; one recursive root,4,true,false,25,28,3,256,8,33554432,90,100,90.0,6344.88,2880.0
+0,merkle_whir_batched_after_second,4,28,SZ-batched second-oracle claim recursive oracle 1,separate source roots; one recursive root,1,false,false,22,27,5,256,16,8388608,53,100,53.0,867.54,848.0
+0,merkle_whir_batched_after_second,4,28,SZ-batched second-oracle claim recursive oracle 2,separate source roots; one recursive root,1,false,false,18,26,8,256,8,8388608,33,100,33.0,562.8,264.0
+0,merkle_whir_batched_after_second,4,28,SZ-batched second-oracle claim recursive oracle 3,separate source roots; one recursive root,1,false,false,15,25,10,256,16,2097152,26,100,26.0,400.9,416.0
+0,merkle_whir_batched_after_second,4,28,SZ-batched second-oracle claim recursive oracle 4,separate source roots; one recursive root,1,false,false,11,24,13,256,8,2097152,20,100,20.0,317.07,160.0
+0,merkle_whir_batched_after_second,4,28,independent first Merkle oracles,independent Merkle roots,4,false,false,28,29,1,256,8,67108864,298,100,298.0,20138.88,9536.0
+0,merkle_whir_batched_after_second,4,30,SZ-batched second-oracle claim initial oracle,separate source roots; one recursive root,4,true,false,27,30,3,256,8,134217728,90,100,90.0,7071.68,2880.0
+0,merkle_whir_batched_after_second,4,30,SZ-batched second-oracle claim recursive oracle 1,separate source roots; one recursive root,1,false,false,24,29,5,256,16,33554432,53,100,53.0,974.8,848.0
+0,merkle_whir_batched_after_second,4,30,SZ-batched second-oracle claim recursive oracle 2,separate source roots; one recursive root,1,false,false,20,28,8,256,16,16777216,33,100,33.0,596.92,528.0
+0,merkle_whir_batched_after_second,4,30,SZ-batched second-oracle claim recursive oracle 3,separate source roots; one recursive root,1,false,false,16,27,11,256,16,8388608,24,100,24.0,420.72,384.0
+0,merkle_whir_batched_after_second,4,30,SZ-batched second-oracle claim recursive oracle 4,separate source roots; one recursive root,1,false,false,12,26,14,256,16,4194304,19,100,19.0,321.25,304.0
+0,merkle_whir_batched_after_second,4,30,independent first Merkle oracles,independent Merkle roots,4,false,false,30,31,1,256,8,268435456,298,100,298.0,22514.52,9536.0
+0,merkle_whir_batched_after_second,8,22,SZ-batched second-oracle claim initial oracle,separate source roots; one recursive root,8,true,false,19,22,3,256,8,524288,90,100,89.99,8369.36,5759.36
+0,merkle_whir_batched_after_second,8,22,SZ-batched second-oracle claim recursive oracle 1,separate source roots; one recursive root,1,false,false,16,21,5,256,16,131072,53,100,52.99,551.55,847.84
+0,merkle_whir_batched_after_second,8,22,SZ-batched second-oracle claim recursive oracle 2,separate source roots; one recursive root,1,false,false,12,20,8,256,16,65536,33,100,32.98,332.91,527.68
+0,merkle_whir_batched_after_second,8,22,independent first Merkle oracles,independent Merkle roots,8,false,false,22,23,1,256,8,1048576,298,100,297.97,25954.56,19070.08
+0,merkle_whir_batched_after_second,8,24,SZ-batched second-oracle claim initial oracle,separate source roots; one recursive root,8,true,false,21,24,3,256,8,2097152,90,100,90.0,9802.08,5760.0
+0,merkle_whir_batched_after_second,8,24,SZ-batched second-oracle claim recursive oracle 1,separate source roots; one recursive root,1,false,false,18,23,5,256,8,1048576,53,100,53.0,709.79,424.0
+0,merkle_whir_batched_after_second,8,24,SZ-batched second-oracle claim recursive oracle 2,separate source roots; one recursive root,1,false,false,15,22,7,256,8,524288,38,100,38.0,490.66,304.0
+0,merkle_whir_batched_after_second,8,24,SZ-batched second-oracle claim recursive oracle 3,separate source roots; one recursive root,1,false,false,12,21,9,256,16,131072,29,100,29.0,327.47,464.0
+0,merkle_whir_batched_after_second,8,24,independent first Merkle oracles,independent Merkle roots,8,false,false,24,25,1,256,8,4194304,298,100,297.96,30732.72,19069.44
+0,merkle_whir_batched_after_second,8,26,SZ-batched second-oracle claim initial oracle,separate source roots; one recursive root,8,true,false,23,26,3,256,8,8388608,90,100,90.0,11250.16,5760.0
+0,merkle_whir_batched_after_second,8,26,SZ-batched second-oracle claim recursive oracle 1,separate source roots; one recursive root,1,false,false,20,25,5,256,8,4194304,53,100,53.0,815.69,424.0
+0,merkle_whir_batched_after_second,8,26,SZ-batched second-oracle claim recursive oracle 2,separate source roots; one recursive root,1,false,false,17,24,7,256,8,2097152,38,100,38.0,565.32,304.0
+0,merkle_whir_batched_after_second,8,26,SZ-batched second-oracle claim recursive oracle 3,separate source roots; one recursive root,1,false,false,14,23,9,256,8,1048576,29,100,29.0,414.2,232.0
+0,merkle_whir_batched_after_second,8,26,SZ-batched second-oracle claim recursive oracle 4,separate source roots; one recursive root,1,false,false,11,22,11,256,8,524288,24,100,24.0,325.94,192.0
+0,merkle_whir_batched_after_second,8,26,independent first Merkle oracles,independent Merkle roots,8,false,false,26,27,1,256,8,16777216,298,100,297.99,35499.12,19071.36
+0,merkle_whir_batched_after_second,8,28,SZ-batched second-oracle claim initial oracle,separate source roots; one recursive root,8,true,false,25,28,3,256,8,33554432,90,100,90.0,12684.72,5760.0
+0,merkle_whir_batched_after_second,8,28,SZ-batched second-oracle claim recursive oracle 1,separate source roots; one recursive root,1,false,false,22,27,5,256,16,8388608,53,100,53.0,868.03,848.0
+0,merkle_whir_batched_after_second,8,28,SZ-batched second-oracle claim recursive oracle 2,separate source roots; one recursive root,1,false,false,18,26,8,256,8,8388608,33,100,33.0,563.3,264.0
+0,merkle_whir_batched_after_second,8,28,SZ-batched second-oracle claim recursive oracle 3,separate source roots; one recursive root,1,false,false,15,25,10,256,16,2097152,26,100,26.0,401.58,416.0
+0,merkle_whir_batched_after_second,8,28,SZ-batched second-oracle claim recursive oracle 4,separate source roots; one recursive root,1,false,false,11,24,13,256,8,2097152,20,100,20.0,317.45,160.0
+0,merkle_whir_batched_after_second,8,28,independent first Merkle oracles,independent Merkle roots,8,false,false,28,29,1,256,8,67108864,298,100,298.0,40259.28,19072.0
+0,merkle_whir_batched_after_second,8,30,SZ-batched second-oracle claim initial oracle,separate source roots; one recursive root,8,true,false,27,30,3,256,8,134217728,90,100,90.0,14130.88,5760.0
+0,merkle_whir_batched_after_second,8,30,SZ-batched second-oracle claim recursive oracle 1,separate source roots; one recursive root,1,false,false,24,29,5,256,16,33554432,53,100,53.0,974.92,848.0
+0,merkle_whir_batched_after_second,8,30,SZ-batched second-oracle claim recursive oracle 2,separate source roots; one recursive root,1,false,false,20,28,8,256,16,16777216,33,100,33.0,595.34,528.0
+0,merkle_whir_batched_after_second,8,30,SZ-batched second-oracle claim recursive oracle 3,separate source roots; one recursive root,1,false,false,16,27,11,256,16,8388608,24,100,24.0,421.78,384.0
+0,merkle_whir_batched_after_second,8,30,SZ-batched second-oracle claim recursive oracle 4,separate source roots; one recursive root,1,false,false,12,26,14,256,16,4194304,19,100,19.0,321.92,304.0
+0,merkle_whir_batched_after_second,8,30,independent first Merkle oracles,independent Merkle roots,8,false,false,30,31,1,256,8,268435456,298,100,298.0,45057.44,19072.0
+0,merkle_whir_independent,4,22,independent WHIR initial oracle,independent Merkle roots,4,false,false,22,23,1,256,8,1048576,298,100,297.95,12987.16,9534.4
+0,merkle_whir_independent,4,22,independent WHIR recursive oracle 1,independent Merkle roots,4,false,false,19,22,3,256,8,524288,90,100,89.99,4185.24,2879.68
+0,merkle_whir_independent,4,22,independent WHIR recursive oracle 2,independent Merkle roots,4,false,false,16,21,5,256,16,131072,53,100,52.99,2204.8,3391.36
+0,merkle_whir_independent,4,22,independent WHIR recursive oracle 3,independent Merkle roots,4,false,false,12,20,8,256,16,65536,33,100,32.99,1336.28,2111.36
+0,merkle_whir_independent,4,24,independent WHIR initial oracle,independent Merkle roots,4,false,false,24,25,1,256,8,4194304,298,100,297.99,15390.2,9535.68
+0,merkle_whir_independent,4,24,independent WHIR recursive oracle 1,independent Merkle roots,4,false,false,21,24,3,256,8,2097152,90,100,90.0,4909.68,2880.0
+0,merkle_whir_independent,4,24,independent WHIR recursive oracle 2,independent Merkle roots,4,false,false,18,23,5,256,8,1048576,53,100,53.0,2839.04,1696.0
+0,merkle_whir_independent,4,24,independent WHIR recursive oracle 3,independent Merkle roots,4,false,false,15,22,7,256,8,524288,38,100,38.0,1955.28,1216.0
+0,merkle_whir_independent,4,24,independent WHIR recursive oracle 4,independent Merkle roots,4,false,false,12,21,9,256,16,131072,29,100,29.0,1304.96,1856.0
+0,merkle_whir_independent,4,26,independent WHIR initial oracle,independent Merkle roots,4,false,false,26,27,1,256,8,16777216,298,100,297.99,17765.36,9535.68
+0,merkle_whir_independent,4,26,independent WHIR recursive oracle 1,independent Merkle roots,4,false,false,23,26,3,256,8,8388608,90,100,90.0,5629.0,2880.0
+0,merkle_whir_independent,4,26,independent WHIR recursive oracle 2,independent Merkle roots,4,false,false,20,25,5,256,8,4194304,53,100,53.0,3260.16,1696.0
+0,merkle_whir_independent,4,26,independent WHIR recursive oracle 3,independent Merkle roots,4,false,false,17,24,7,256,8,2097152,38,100,38.0,2267.16,1216.0
+0,merkle_whir_independent,4,26,independent WHIR recursive oracle 4,independent Merkle roots,4,false,false,14,23,9,256,8,1048576,29,100,29.0,1655.0,928.0
+0,merkle_whir_independent,4,26,independent WHIR recursive oracle 5,independent Merkle roots,4,false,false,11,22,11,256,8,524288,24,100,24.0,1297.84,768.0
+0,merkle_whir_independent,4,28,independent WHIR initial oracle,independent Merkle roots,4,false,false,28,29,1,256,8,67108864,298,100,298.0,20132.04,9536.0
+0,merkle_whir_independent,4,28,independent WHIR recursive oracle 1,independent Merkle roots,4,false,false,25,28,3,256,8,33554432,90,100,90.0,6348.28,2880.0
+0,merkle_whir_independent,4,28,independent WHIR recursive oracle 2,independent Merkle roots,4,false,false,22,27,5,256,16,8388608,53,100,53.0,3474.08,3392.0
+0,merkle_whir_independent,4,28,independent WHIR recursive oracle 3,independent Merkle roots,4,false,false,18,26,8,256,8,8388608,33,100,33.0,2253.44,1056.0
+0,merkle_whir_independent,4,28,independent WHIR recursive oracle 4,independent Merkle roots,4,false,false,15,25,10,256,16,2097152,26,100,26.0,1609.08,1664.0
+0,merkle_whir_independent,4,28,independent WHIR recursive oracle 5,independent Merkle roots,4,false,false,11,24,13,256,8,2097152,20,100,20.0,1265.36,640.0
+0,merkle_whir_independent,4,30,independent WHIR initial oracle,independent Merkle roots,4,false,false,30,31,1,256,8,268435456,298,100,298.0,22508.48,9536.0
+0,merkle_whir_independent,4,30,independent WHIR recursive oracle 1,independent Merkle roots,4,false,false,27,30,3,256,16,67108864,90,100,90.0,6708.64,5760.0
+0,merkle_whir_independent,4,30,independent WHIR recursive oracle 2,independent Merkle roots,4,false,false,23,29,6,256,16,33554432,44,100,44.0,3290.08,2816.0
+0,merkle_whir_independent,4,30,independent WHIR recursive oracle 3,independent Merkle roots,4,false,false,19,28,9,256,16,16777216,29,100,29.0,2117.64,1856.0
+0,merkle_whir_independent,4,30,independent WHIR recursive oracle 4,independent Merkle roots,4,false,false,15,27,12,256,16,8388608,22,100,22.0,1557.68,1408.0
+0,merkle_whir_independent,4,30,independent WHIR recursive oracle 5,independent Merkle roots,4,false,false,11,26,15,256,16,4194304,18,100,18.0,1225.84,1152.0
+0,merkle_whir_independent,8,22,independent WHIR initial oracle,independent Merkle roots,8,false,false,22,23,1,256,8,1048576,298,100,297.94,26003.04,19068.16
+0,merkle_whir_independent,8,22,independent WHIR recursive oracle 1,independent Merkle roots,8,false,false,19,22,3,256,8,524288,90,100,90.0,8379.52,5760.0
+0,merkle_whir_independent,8,22,independent WHIR recursive oracle 2,independent Merkle roots,8,false,false,16,21,5,256,16,131072,53,100,53.0,4404.96,6784.0
+0,merkle_whir_independent,8,22,independent WHIR recursive oracle 3,independent Merkle roots,8,false,false,12,20,8,256,16,65536,33,100,33.0,2670.0,4224.0
+0,merkle_whir_independent,8,24,independent WHIR initial oracle,independent Merkle roots,8,false,false,24,25,1,256,8,4194304,298,100,297.97,30707.04,19070.08
+0,merkle_whir_independent,8,24,independent WHIR recursive oracle 1,independent Merkle roots,8,false,false,21,24,3,256,8,2097152,90,100,90.0,9824.0,5760.0
+0,merkle_whir_independent,8,24,independent WHIR recursive oracle 2,independent Merkle roots,8,false,false,18,23,5,256,8,1048576,53,100,53.0,5672.16,3392.0
+0,merkle_whir_independent,8,24,independent WHIR recursive oracle 3,independent Merkle roots,8,false,false,15,22,7,256,8,524288,38,100,37.99,3927.36,2431.36
+0,merkle_whir_independent,8,24,independent WHIR recursive oracle 4,independent Merkle roots,8,false,false,12,21,9,256,16,131072,29,100,29.0,2614.64,3712.0
+0,merkle_whir_independent,8,26,independent WHIR initial oracle,independent Merkle roots,8,false,false,26,27,1,256,8,16777216,298,100,298.0,35546.32,19072.0
+0,merkle_whir_independent,8,26,independent WHIR recursive oracle 1,independent Merkle roots,8,false,false,23,26,3,256,8,8388608,90,100,90.0,11249.92,5760.0
+0,merkle_whir_independent,8,26,independent WHIR recursive oracle 2,independent Merkle roots,8,false,false,20,25,5,256,8,4194304,53,100,53.0,6522.32,3392.0
+0,merkle_whir_independent,8,26,independent WHIR recursive oracle 3,independent Merkle roots,8,false,false,17,24,7,256,8,2097152,38,100,38.0,4523.44,2432.0
+0,merkle_whir_independent,8,26,independent WHIR recursive oracle 4,independent Merkle roots,8,false,false,14,23,9,256,8,1048576,29,100,29.0,3316.24,1856.0
+0,merkle_whir_independent,8,26,independent WHIR recursive oracle 5,independent Merkle roots,8,false,false,11,22,11,256,8,524288,24,100,24.0,2604.72,1536.0
+0,merkle_whir_independent,8,28,independent WHIR initial oracle,independent Merkle roots,8,false,false,28,29,1,256,8,67108864,298,100,298.0,40278.08,19072.0
+0,merkle_whir_independent,8,28,independent WHIR recursive oracle 1,independent Merkle roots,8,false,false,25,28,3,256,8,33554432,90,100,90.0,12727.6,5760.0
+0,merkle_whir_independent,8,28,independent WHIR recursive oracle 2,independent Merkle roots,8,false,false,22,27,5,256,16,8388608,53,100,53.0,6953.04,6784.0
+0,merkle_whir_independent,8,28,independent WHIR recursive oracle 3,independent Merkle roots,8,false,false,18,26,8,256,8,8388608,33,100,33.0,4509.68,2112.0
+0,merkle_whir_independent,8,28,independent WHIR recursive oracle 4,independent Merkle roots,8,false,false,15,25,10,256,16,2097152,26,100,26.0,3218.4,3328.0
+0,merkle_whir_independent,8,28,independent WHIR recursive oracle 5,independent Merkle roots,8,false,false,11,24,13,256,8,2097152,20,100,20.0,2528.64,1280.0
+0,merkle_whir_independent,8,30,independent WHIR initial oracle,independent Merkle roots,8,false,false,30,31,1,256,8,268435456,298,100,298.0,45031.44,19072.0
+0,merkle_whir_independent,8,30,independent WHIR recursive oracle 1,independent Merkle roots,8,false,false,27,30,3,256,16,67108864,90,100,90.0,13425.2,11520.0
+0,merkle_whir_independent,8,30,independent WHIR recursive oracle 2,independent Merkle roots,8,false,false,23,29,6,256,16,33554432,44,100,44.0,6564.48,5632.0
+0,merkle_whir_independent,8,30,independent WHIR recursive oracle 3,independent Merkle roots,8,false,false,19,28,9,256,16,16777216,29,100,29.0,4235.2,3712.0
+0,merkle_whir_independent,8,30,independent WHIR recursive oracle 4,independent Merkle roots,8,false,false,15,27,12,256,16,8388608,22,100,22.0,3107.44,2816.0
+0,merkle_whir_independent,8,30,independent WHIR recursive oracle 5,independent Merkle roots,8,false,false,11,26,15,256,16,4194304,18,100,18.0,2447.2,2304.0
+2,canopy_unbatched,4,22,Canopy claim WHIR initial oracle,independent Merkle roots,4,false,false,14,23,9,256,8,1048576,29,100,29.0,1659.16,928.0
+2,canopy_unbatched,4,22,Canopy claim WHIR recursive oracle 1,independent Merkle roots,4,false,false,11,22,11,256,8,524288,24,100,24.0,1301.32,768.0
+2,canopy_unbatched,4,22,outer first oracle via Canopy,independent Canopy bottom forests,4,false,false,22,23,1,256,8,1048576,298,100,297.96,7119.48,9534.72
+2,canopy_unbatched,4,22,outer second-oracle WHIR initial oracle,independent Merkle roots,4,false,false,19,23,4,256,8,1048576,67,100,67.0,3498.4,2144.0
+2,canopy_unbatched,4,22,outer second-oracle WHIR recursive oracle 1,independent Merkle roots,4,false,false,16,22,6,256,16,262144,44,100,44.0,2056.56,2816.0
+2,canopy_unbatched,4,22,outer second-oracle WHIR recursive oracle 2,independent Merkle roots,4,false,false,12,21,9,256,16,131072,29,100,29.0,1310.6,1856.0
+2,canopy_unbatched,4,24,Canopy claim WHIR initial oracle,independent Merkle roots,4,false,false,16,25,9,256,16,2097152,29,100,29.0,1773.6,1856.0
+2,canopy_unbatched,4,24,Canopy claim WHIR recursive oracle 1,independent Merkle roots,4,false,false,12,24,12,256,16,1048576,22,100,22.0,1292.08,1408.0
+2,canopy_unbatched,4,24,outer first oracle via Canopy,independent Canopy bottom forests,4,false,false,24,25,1,256,8,4194304,298,100,297.97,7144.88,9535.04
+2,canopy_unbatched,4,24,outer second-oracle WHIR initial oracle,independent Merkle roots,4,false,false,21,25,4,256,8,4194304,67,100,67.0,4028.84,2144.0
+2,canopy_unbatched,4,24,outer second-oracle WHIR recursive oracle 1,independent Merkle roots,4,false,false,18,24,6,256,8,2097152,44,100,44.0,2578.88,1408.0
+2,canopy_unbatched,4,24,outer second-oracle WHIR recursive oracle 2,independent Merkle roots,4,false,false,15,23,8,256,8,1048576,33,100,33.0,1856.52,1056.0
+2,canopy_unbatched,4,24,outer second-oracle WHIR recursive oracle 3,independent Merkle roots,4,false,false,12,22,10,256,16,262144,26,100,26.0,1293.12,1664.0
+2,canopy_unbatched,4,26,Canopy claim WHIR initial oracle,independent Merkle roots,4,false,false,18,27,9,256,16,8388608,29,100,29.0,2010.52,1856.0
+2,canopy_unbatched,4,26,Canopy claim WHIR recursive oracle 1,independent Merkle roots,4,false,false,14,26,12,256,8,8388608,22,100,22.0,1557.12,704.0
+2,canopy_unbatched,4,26,Canopy claim WHIR recursive oracle 2,independent Merkle roots,4,false,false,11,25,14,256,8,4194304,19,100,19.0,1285.92,608.0
+2,canopy_unbatched,4,26,outer first oracle via Canopy,independent Canopy bottom forests,4,false,false,26,27,1,256,8,16777216,298,100,298.0,7149.56,9536.0
+2,canopy_unbatched,4,26,outer second-oracle WHIR initial oracle,independent Merkle roots,4,false,false,23,27,4,256,16,8388608,67,100,67.0,4308.92,4288.0
+2,canopy_unbatched,4,26,outer second-oracle WHIR recursive oracle 1,independent Merkle roots,4,false,false,19,26,7,256,16,4194304,38,100,38.0,2416.64,2432.0
+2,canopy_unbatched,4,26,outer second-oracle WHIR recursive oracle 2,independent Merkle roots,4,false,false,15,25,10,256,16,2097152,26,100,26.0,1602.72,1664.0
+2,canopy_unbatched,4,26,outer second-oracle WHIR recursive oracle 3,independent Merkle roots,4,false,false,11,24,13,256,8,2097152,20,100,20.0,1266.16,640.0
+2,canopy_unbatched,4,28,Canopy claim WHIR initial oracle,independent Merkle roots,4,false,false,19,29,10,256,16,33554432,26,100,26.0,2024.36,1664.0
+2,canopy_unbatched,4,28,Canopy claim WHIR recursive oracle 1,independent Merkle roots,4,false,false,15,28,13,256,16,16777216,20,100,20.0,1513.12,1280.0
+2,canopy_unbatched,4,28,Canopy claim WHIR recursive oracle 2,independent Merkle roots,4,false,false,11,27,16,256,16,8388608,17,100,17.0,1230.48,1088.0
+2,canopy_unbatched,4,28,outer first oracle via Canopy,independent Canopy bottom forests,4,false,false,28,29,1,256,8,67108864,298,100,298.0,8343.48,9536.0
+2,canopy_unbatched,4,28,outer second-oracle WHIR initial oracle,independent Merkle roots,4,false,false,25,29,4,256,16,33554432,67,100,67.0,4835.32,4288.0
+2,canopy_unbatched,4,28,outer second-oracle WHIR recursive oracle 1,independent Merkle roots,4,false,false,21,28,7,256,16,16777216,38,100,38.0,2712.64,2432.0
+2,canopy_unbatched,4,28,outer second-oracle WHIR recursive oracle 2,independent Merkle roots,4,false,false,17,27,10,256,8,16777216,26,100,26.0,1918.96,832.0
+2,canopy_unbatched,4,28,outer second-oracle WHIR recursive oracle 3,independent Merkle roots,4,false,false,14,26,12,256,8,8388608,22,100,22.0,1552.96,704.0
+2,canopy_unbatched,4,28,outer second-oracle WHIR recursive oracle 4,independent Merkle roots,4,false,false,11,25,14,256,8,4194304,19,100,19.0,1287.24,608.0
+2,canopy_unbatched,4,30,Canopy claim WHIR initial oracle,independent Merkle roots,4,false,false,20,31,11,256,16,134217728,24,100,24.0,2072.76,1536.0
+2,canopy_unbatched,4,30,Canopy claim WHIR recursive oracle 1,independent Merkle roots,4,false,false,16,30,14,256,16,67108864,19,100,19.0,1583.72,1216.0
+2,canopy_unbatched,4,30,Canopy claim WHIR recursive oracle 2,independent Merkle roots,4,false,false,12,29,17,256,16,33554432,16,100,16.0,1287.96,1024.0
+2,canopy_unbatched,4,30,outer first oracle via Canopy,independent Canopy bottom forests,4,false,false,30,31,1,256,8,268435456,298,100,298.0,9535.6,9536.0
+2,canopy_unbatched,4,30,outer second-oracle WHIR initial oracle,independent Merkle roots,4,false,false,27,31,4,256,16,134217728,67,100,67.0,5377.48,4288.0
+2,canopy_unbatched,4,30,outer second-oracle WHIR recursive oracle 1,independent Merkle roots,4,false,false,23,30,7,256,16,67108864,38,100,38.0,3029.08,2432.0
+2,canopy_unbatched,4,30,outer second-oracle WHIR recursive oracle 2,independent Merkle roots,4,false,false,19,29,10,256,16,33554432,26,100,26.0,2019.0,1664.0
+2,canopy_unbatched,4,30,outer second-oracle WHIR recursive oracle 3,independent Merkle roots,4,false,false,15,28,13,256,16,16777216,20,100,20.0,1508.12,1280.0
+2,canopy_unbatched,4,30,outer second-oracle WHIR recursive oracle 4,independent Merkle roots,4,false,false,11,27,16,256,16,8388608,17,100,17.0,1227.92,1088.0
+2,canopy_unbatched,8,22,Canopy claim WHIR initial oracle,independent Merkle roots,8,false,false,14,23,9,256,8,1048576,29,100,29.0,3318.32,1856.0
+2,canopy_unbatched,8,22,Canopy claim WHIR recursive oracle 1,independent Merkle roots,8,false,false,11,22,11,256,8,524288,24,100,24.0,2602.64,1536.0
+2,canopy_unbatched,8,22,outer first oracle via Canopy,independent Canopy bottom forests,8,false,false,22,23,1,256,8,1048576,298,100,297.93,14242.24,19067.52
+2,canopy_unbatched,8,22,outer second-oracle WHIR initial oracle,independent Merkle roots,8,false,false,19,23,4,256,8,1048576,67,100,67.0,6996.32,4288.0
+2,canopy_unbatched,8,22,outer second-oracle WHIR recursive oracle 1,independent Merkle roots,8,false,false,16,22,6,256,16,262144,44,100,44.0,4120.4,5632.0
+2,canopy_unbatched,8,22,outer second-oracle WHIR recursive oracle 2,independent Merkle roots,8,false,false,12,21,9,256,16,131072,29,100,29.0,2625.44,3712.0
+2,canopy_unbatched,8,24,Canopy claim WHIR initial oracle,independent Merkle roots,8,false,false,16,25,9,256,16,2097152,29,100,29.0,3547.2,3712.0
+2,canopy_unbatched,8,24,Canopy claim WHIR recursive oracle 1,independent Merkle roots,8,false,false,12,24,12,256,16,1048576,22,100,22.0,2584.16,2816.0
+2,canopy_unbatched,8,24,outer first oracle via Canopy,independent Canopy bottom forests,8,false,false,24,25,1,256,8,4194304,298,100,297.99,14287.44,19071.36
+2,canopy_unbatched,8,24,outer second-oracle WHIR initial oracle,independent Merkle roots,8,false,false,21,25,4,256,8,4194304,67,100,67.0,8067.76,4288.0
+2,canopy_unbatched,8,24,outer second-oracle WHIR recursive oracle 1,independent Merkle roots,8,false,false,18,24,6,256,8,2097152,44,100,44.0,5151.84,2816.0
+2,canopy_unbatched,8,24,outer second-oracle WHIR recursive oracle 2,independent Merkle roots,8,false,false,15,23,8,256,8,1048576,33,100,32.99,3718.8,2111.36
+2,canopy_unbatched,8,24,outer second-oracle WHIR recursive oracle 3,independent Merkle roots,8,false,false,12,22,10,256,16,262144,26,100,26.0,2583.28,3328.0
+2,canopy_unbatched,8,26,Canopy claim WHIR initial oracle,independent Merkle roots,8,false,false,18,27,9,256,16,8388608,29,100,29.0,4021.04,3712.0
+2,canopy_unbatched,8,26,Canopy claim WHIR recursive oracle 1,independent Merkle roots,8,false,false,14,26,12,256,8,8388608,22,100,22.0,3114.24,1408.0
+2,canopy_unbatched,8,26,Canopy claim WHIR recursive oracle 2,independent Merkle roots,8,false,false,11,25,14,256,8,4194304,19,100,19.0,2571.84,1216.0
+2,canopy_unbatched,8,26,outer first oracle via Canopy,independent Canopy bottom forests,8,false,false,26,27,1,256,8,16777216,298,100,298.0,14301.6,19072.0
+2,canopy_unbatched,8,26,outer second-oracle WHIR initial oracle,independent Merkle roots,8,false,false,23,27,4,256,16,8388608,67,100,67.0,8610.16,8576.0
+2,canopy_unbatched,8,26,outer second-oracle WHIR recursive oracle 1,independent Merkle roots,8,false,false,19,26,7,256,16,4194304,38,100,38.0,4815.76,4864.0
+2,canopy_unbatched,8,26,outer second-oracle WHIR recursive oracle 2,independent Merkle roots,8,false,false,15,25,10,256,16,2097152,26,100,26.0,3214.16,3328.0
+2,canopy_unbatched,8,26,outer second-oracle WHIR recursive oracle 3,independent Merkle roots,8,false,false,11,24,13,256,8,2097152,20,100,20.0,2532.16,1280.0
+2,canopy_unbatched,8,28,Canopy claim WHIR initial oracle,independent Merkle roots,8,false,false,19,29,10,256,16,33554432,26,100,26.0,4048.72,3328.0
+2,canopy_unbatched,8,28,Canopy claim WHIR recursive oracle 1,independent Merkle roots,8,false,false,15,28,13,256,16,16777216,20,100,20.0,3026.24,2560.0
+2,canopy_unbatched,8,28,Canopy claim WHIR recursive oracle 2,independent Merkle roots,8,false,false,11,27,16,256,16,8388608,17,100,17.0,2460.96,2176.0
+2,canopy_unbatched,8,28,outer first oracle via Canopy,independent Canopy bottom forests,8,false,false,28,29,1,256,8,67108864,298,100,297.99,16685.6,19071.36
+2,canopy_unbatched,8,28,outer second-oracle WHIR initial oracle,independent Merkle roots,8,false,false,25,29,4,256,16,33554432,67,100,67.0,9665.6,8576.0
+2,canopy_unbatched,8,28,outer second-oracle WHIR recursive oracle 1,independent Merkle roots,8,false,false,21,28,7,256,16,16777216,38,100,38.0,5439.76,4864.0
+2,canopy_unbatched,8,28,outer second-oracle WHIR recursive oracle 2,independent Merkle roots,8,false,false,17,27,10,256,8,16777216,26,100,26.0,3841.52,1664.0
+2,canopy_unbatched,8,28,outer second-oracle WHIR recursive oracle 3,independent Merkle roots,8,false,false,14,26,12,256,8,8388608,22,100,22.0,3105.76,1408.0
+2,canopy_unbatched,8,28,outer second-oracle WHIR recursive oracle 4,independent Merkle roots,8,false,false,11,25,14,256,8,4194304,19,100,19.0,2563.2,1216.0
+2,canopy_unbatched,8,30,Canopy claim WHIR initial oracle,independent Merkle roots,8,false,false,20,31,11,256,16,134217728,24,100,24.0,4145.52,3072.0
+2,canopy_unbatched,8,30,Canopy claim WHIR recursive oracle 1,independent Merkle roots,8,false,false,16,30,14,256,16,67108864,19,100,19.0,3167.44,2432.0
+2,canopy_unbatched,8,30,Canopy claim WHIR recursive oracle 2,independent Merkle roots,8,false,false,12,29,17,256,16,33554432,16,100,16.0,2575.92,2048.0
+2,canopy_unbatched,8,30,outer first oracle via Canopy,independent Canopy bottom forests,8,false,false,30,31,1,256,8,268435456,298,100,298.0,19070.8,19072.0
+2,canopy_unbatched,8,30,outer second-oracle WHIR initial oracle,independent Merkle roots,8,false,false,27,31,4,256,16,134217728,67,100,67.0,10742.8,8576.0
+2,canopy_unbatched,8,30,outer second-oracle WHIR recursive oracle 1,independent Merkle roots,8,false,false,23,30,7,256,16,67108864,38,100,38.0,6047.04,4864.0
+2,canopy_unbatched,8,30,outer second-oracle WHIR recursive oracle 2,independent Merkle roots,8,false,false,19,29,10,256,16,33554432,26,100,26.0,4041.44,3328.0
+2,canopy_unbatched,8,30,outer second-oracle WHIR recursive oracle 3,independent Merkle roots,8,false,false,15,28,13,256,16,16777216,20,100,20.0,3009.2,2560.0
+2,canopy_unbatched,8,30,outer second-oracle WHIR recursive oracle 4,independent Merkle roots,8,false,false,11,27,16,256,16,8388608,17,100,17.0,2461.2,2176.0

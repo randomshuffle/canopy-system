@@ -7,7 +7,7 @@
 
 use std::collections::BTreeSet;
 
-use anyhow::{ensure, Result};
+use anyhow::{ensure, Context, Result};
 use rand::{Rng, RngCore, SeedableRng};
 use rand_chacha::ChaCha20Rng;
 use serde::Serialize;
@@ -116,15 +116,15 @@ pub const FIELD_128: WhirFieldProfile = WhirFieldProfile {
     max_domain_log: 30,
 };
 
-/// The executable 256-bit FFT-friendly field `2^256 - 43*2^32 + 1`.
+/// The executable field selected by the crate containing this shared module.
 pub const FIELD_256: WhirFieldProfile = WhirFieldProfile {
     bits: 256,
-    modulus: "115792089237316195423570985008687907853269984665640564039457584007728446046209",
+    modulus: crate::FIELD_MODULUS_LABEL,
     log2_size: 256.0,
     element_bytes: 32,
-    two_adicity: 32,
-    domain_kind: "multiplicative radix-2",
-    max_domain_log: 32,
+    two_adicity: crate::FIELD_TWO_ADICITY,
+    domain_kind: crate::FIELD_DOMAIN_KIND,
+    max_domain_log: crate::FIELD_MAX_DOMAIN_LOG,
 };
 
 pub fn field_profile(bits: usize, codeword_log_length: usize) -> Result<WhirFieldProfile> {
@@ -175,6 +175,12 @@ pub struct WhirRoundParameters {
 }
 
 #[derive(Clone, Debug, Serialize)]
+pub struct WhirRbrEvent {
+    pub event: String,
+    pub security_bits: f64,
+}
+
+#[derive(Clone, Debug, Serialize)]
 pub struct WhirParameters {
     pub decoding_regime: WhirDecodingRegime,
     pub max_terminal_message_variables: usize,
@@ -189,6 +195,9 @@ pub struct WhirParameters {
     pub codeword_log_length: usize,
     pub folding_log: usize,
     pub folding_factor: usize,
+    /// Initial and recursive folding widths in transcript order. Empty means
+    /// the committed polynomial is already at the terminal size.
+    pub folding_schedule: Vec<usize>,
     /// Logarithmic shrinkage from the initial codeword to the first
     /// recursively committed codeword. Standard WHIR uses one; the
     /// zero-shortening Canopy alignment uses zero.
@@ -283,7 +292,6 @@ fn list_size_bits(
     }
 }
 
-#[cfg(test)]
 fn rbr_ood_sample(
     regime: WhirDecodingRegime,
     message_variables: usize,
@@ -320,11 +328,11 @@ fn folding_security_bits_per_challenge(
 ) -> f64 {
     let list = list_size_bits(regime, message_variables, log_inverse_rate);
     let prox_gaps_error = match regime {
-        // BCSS25: eps ~= (2*10.5^5/3) * k * rho^(-5/2) / |F|.
+        // BCSS25, Theorem 4.6. Here gamma is the agreement gap used by
+        // WHIR, M=1 because the folding curve is linear, and n is the RS
+        // block length. We retain eta=sqrt(rho)/20, hence m=20.
         WhirDecodingRegime::Johnson => {
-            let bcss25_constant = (2.0 * 10.5_f64.powi(5) / 3.0).log2();
-            field_log2_size
-                - (bcss25_constant + message_variables as f64 + 2.5 * log_inverse_rate as f64)
+            field_log2_size - johnson_exceptional_set_log2(message_variables, log_inverse_rate)
         }
         // STIR Conj. 5.6: eps ~= d / (eta rho^2 |F|), eta = rho/20.
         WhirDecodingRegime::Capacity => {
@@ -334,6 +342,20 @@ fn folding_security_bits_per_challenge(
     };
     let sumcheck_error = field_log2_size - (list + 1.0);
     prox_gaps_error.min(sumcheck_error)
+}
+
+fn johnson_exceptional_set_log2(message_variables: usize, log_inverse_rate: usize) -> f64 {
+    let rho = 2.0_f64.powi(-(log_inverse_rate as i32));
+    let sqrt_rho = rho.sqrt();
+    let eta = sqrt_rho / 20.0;
+    let gamma = 1.0 - sqrt_rho - eta;
+    let multiplicity = (sqrt_rho / eta).ceil().max(3.0);
+    let shifted = multiplicity + 0.5;
+    let block_length = 2.0_f64.powi((message_variables + log_inverse_rate) as i32);
+    let leading = (2.0 * shifted.powi(5) + 3.0 * shifted * gamma * rho) / (3.0 * rho.powf(1.5))
+        * block_length;
+    let additive = shifted / sqrt_rho;
+    (leading + additive).log2()
 }
 
 fn query_distance(regime: WhirDecodingRegime, log_inverse_rate: usize) -> f64 {
@@ -367,6 +389,105 @@ fn query_combination_security(
 }
 
 impl WhirParameters {
+    /// Conservative correlated-list exponent used by the concrete RBR model
+    /// at this invocation's initial code and proximity radius.
+    pub fn initial_list_size_bits(&self) -> f64 {
+        list_size_bits(
+            self.decoding_regime,
+            self.message_variables,
+            self.log_inverse_rate,
+        )
+    }
+
+    /// Concrete bad-event exponents used by the round-by-round model.
+    pub fn rbr_security_events(&self) -> Vec<WhirRbrEvent> {
+        let mut events = Vec::new();
+        let mut message_variables = self.message_variables;
+        let mut log_inverse_rate = self.log_inverse_rate;
+
+        if !self.folding_schedule.is_empty() {
+            events.push(WhirRbrEvent {
+                event: "initial folding / sumcheck".to_owned(),
+                security_bits: self.initial_folding_security_bits_per_challenge,
+            });
+            events.push(WhirRbrEvent {
+                event: "initial OOD sampling".to_owned(),
+                security_bits: rbr_ood_sample(
+                    self.decoding_regime,
+                    message_variables,
+                    log_inverse_rate,
+                    self.field_log2_size,
+                    self.commitment_ood_samples,
+                ),
+            });
+        }
+
+        for (oracle, requested_queries) in self.all_query_counts().into_iter().enumerate() {
+            let query_bits = if oracle < self.rounds.len() {
+                self.rounds[oracle].query_security_bits_per_query
+            } else {
+                self.final_query_security_bits_per_query
+            };
+            events.push(WhirRbrEvent {
+                event: format!("oracle {oracle} proximity queries"),
+                security_bits: requested_queries as f64 * query_bits,
+            });
+        }
+
+        for round in &self.rounds {
+            message_variables = round.message_variables;
+            log_inverse_rate = round.log_inverse_rate_after;
+            events.push(WhirRbrEvent {
+                event: format!("recursive round {} folding / sumcheck", round.round + 1),
+                security_bits: round.folding_security_bits_per_challenge,
+            });
+            events.push(WhirRbrEvent {
+                event: format!("recursive round {} claim combination", round.round + 1),
+                security_bits: round.combination_security_bits_per_challenge,
+            });
+            events.push(WhirRbrEvent {
+                event: format!("recursive round {} OOD sampling", round.round + 1),
+                security_bits: rbr_ood_sample(
+                    self.decoding_regime,
+                    message_variables,
+                    log_inverse_rate,
+                    self.field_log2_size,
+                    round.ood_samples,
+                ),
+            });
+        }
+        events.push(WhirRbrEvent {
+            event: "terminal sumcheck".to_owned(),
+            security_bits: self.final_sumcheck_security_bits_per_challenge,
+        });
+        events
+    }
+
+    /// Initial-transition events only. This is useful when a caller replaces
+    /// all later rounds with a separately parameterized recursive proof.
+    pub fn initial_rbr_security_events(&self) -> Vec<WhirRbrEvent> {
+        self.rbr_security_events()
+            .into_iter()
+            .filter(|event| {
+                event.event == "initial folding / sumcheck"
+                    || event.event == "initial OOD sampling"
+                    || event.event == "oracle 0 proximity queries"
+            })
+            .collect()
+    }
+
+    /// Smallest concrete round-by-round security exponent recorded for this
+    /// invocation. Query, OOD, folding, claim-combination, and terminal
+    /// sumcheck events are included. This is a per-event minimum, not an
+    /// end-to-end union bound.
+    pub fn minimum_rbr_security_bits(&self) -> f64 {
+        self.rbr_security_events()
+            .into_iter()
+            .map(|event| event.security_bits)
+            .reduce(f64::min)
+            .unwrap_or(f64::INFINITY)
+    }
+
     /// Create the Canopy-specific WHIR configuration.
     ///
     /// `message_variables = n-h`, `log_inverse_rate = h`, and hence the
@@ -506,6 +627,29 @@ impl WhirParameters {
         )
     }
 
+    /// Construct WHIR from an explicit folding schedule and require that it
+    /// terminates at exactly `terminal_message_variables`.
+    pub fn with_regime_and_terminal_and_schedule(
+        message_variables: usize,
+        log_inverse_rate: usize,
+        decoding_regime: WhirDecodingRegime,
+        terminal_message_variables: usize,
+        folding_schedule: &[usize],
+        initial_codeword_log_reduction: usize,
+    ) -> Result<Self> {
+        let codeword_log_length = message_variables + log_inverse_rate;
+        let field = field_profile(DEFAULT_FIELD_BITS, codeword_log_length)?;
+        Self::with_regime_and_field_and_terminal_and_schedule(
+            message_variables,
+            log_inverse_rate,
+            field,
+            decoding_regime,
+            terminal_message_variables,
+            folding_schedule,
+            initial_codeword_log_reduction,
+        )
+    }
+
     pub fn johnson_bound_with_field(
         message_variables: usize,
         log_inverse_rate: usize,
@@ -584,6 +728,28 @@ impl WhirParameters {
         )
     }
 
+    #[allow(clippy::too_many_arguments)]
+    pub fn with_regime_and_field_and_terminal_and_schedule(
+        message_variables: usize,
+        log_inverse_rate: usize,
+        field: WhirFieldProfile,
+        decoding_regime: WhirDecodingRegime,
+        terminal_message_variables: usize,
+        folding_schedule: &[usize],
+        initial_codeword_log_reduction: usize,
+    ) -> Result<Self> {
+        Self::with_regime_and_field_and_schedule_internal(
+            message_variables,
+            log_inverse_rate,
+            field,
+            decoding_regime,
+            terminal_message_variables,
+            folding_schedule,
+            initial_codeword_log_reduction,
+            true,
+        )
+    }
+
     pub fn with_regime_and_field_and_terminal_and_initial_folding(
         message_variables: usize,
         log_inverse_rate: usize,
@@ -645,11 +811,70 @@ impl WhirParameters {
             message_variables >= initial_folding_log,
             "message must contain enough variables for the initial fold"
         );
-        ensure!(log_inverse_rate > 0, "WHIR rate must be below one");
+        let mut folding_schedule = vec![initial_folding_log];
+        let mut remaining_variables = message_variables - initial_folding_log;
+        while remaining_variables > max_terminal_message_variables {
+            ensure!(
+                remaining_variables >= recursive_folding_log,
+                "recursive fold exceeds the remaining message"
+            );
+            folding_schedule.push(recursive_folding_log);
+            remaining_variables -= recursive_folding_log;
+        }
+        Self::with_regime_and_field_and_schedule_internal(
+            message_variables,
+            log_inverse_rate,
+            field,
+            decoding_regime,
+            max_terminal_message_variables,
+            &folding_schedule,
+            initial_codeword_log_reduction,
+            false,
+        )
+    }
+
+    #[allow(clippy::too_many_arguments)]
+    fn with_regime_and_field_and_schedule_internal(
+        message_variables: usize,
+        log_inverse_rate: usize,
+        field: WhirFieldProfile,
+        decoding_regime: WhirDecodingRegime,
+        max_terminal_message_variables: usize,
+        folding_schedule: &[usize],
+        initial_codeword_log_reduction: usize,
+        require_exact_terminal: bool,
+    ) -> Result<Self> {
         ensure!(
-            initial_codeword_log_reduction < log_inverse_rate + initial_folding_log,
-            "first recursive codeword must have rate below one"
+            folding_schedule.iter().all(|&fold| fold > 0),
+            "folding widths must be positive"
         );
+        let folded_variables = folding_schedule
+            .iter()
+            .try_fold(0usize, |sum, &fold| sum.checked_add(fold))
+            .context("folding schedule length overflow")?;
+        ensure!(
+            folded_variables <= message_variables,
+            "folding schedule exceeds the message"
+        );
+        let terminal_message_variables = message_variables - folded_variables;
+        if require_exact_terminal {
+            ensure!(
+                terminal_message_variables == max_terminal_message_variables,
+                "folding schedule terminates at 2^{terminal_message_variables}, not exactly 2^{max_terminal_message_variables}"
+            );
+        } else {
+            ensure!(
+                terminal_message_variables <= max_terminal_message_variables,
+                "folding schedule does not reach the terminal cap"
+            );
+        }
+        ensure!(log_inverse_rate > 0, "WHIR rate must be below one");
+        if let Some(&initial_folding_log) = folding_schedule.first() {
+            ensure!(
+                initial_codeword_log_reduction < log_inverse_rate + initial_folding_log,
+                "first recursive codeword must have rate below one"
+            );
+        }
         let codeword_log_length = message_variables + log_inverse_rate;
         ensure!(
             field.max_domain_log >= codeword_log_length,
@@ -668,40 +893,48 @@ impl WhirParameters {
         let hash_bits = HASH_BYTES * 8;
         let hash_collision_security_bits = hash_bits / 2;
         let effective_security_bits = effective_security_bits();
-        let commitment_ood_samples = ood_samples(
-            decoding_regime,
-            effective_security_bits,
-            message_variables,
-            log_inverse_rate,
-            field_log2_size,
-        );
-        let initial_folding_security_bits_per_challenge = folding_security_bits_per_challenge(
-            decoding_regime,
-            field_log2_size,
-            message_variables,
-            log_inverse_rate,
-        );
-        // One 256-bit-field sumcheck transcript. We deliberately do not model
+        let has_initial_fold = !folding_schedule.is_empty();
+        let commitment_ood_samples = if has_initial_fold {
+            ood_samples(
+                decoding_regime,
+                effective_security_bits,
+                message_variables,
+                log_inverse_rate,
+                field_log2_size,
+            )
+        } else {
+            0
+        };
+        let initial_folding_security_bits_per_challenge = if has_initial_fold {
+            folding_security_bits_per_challenge(
+                decoding_regime,
+                field_log2_size,
+                message_variables,
+                log_inverse_rate,
+            )
+        } else {
+            f64::INFINITY
+        };
+        // One large-field sumcheck transcript. We deliberately do not model
         // parallel repetition: independent folds produce different recursive
         // oracles, so multiplying only the scalar sumcheck messages would
         // undercount the transcript.
-        let initial_sumcheck_repetitions = 1;
+        let initial_sumcheck_repetitions = usize::from(has_initial_fold);
 
         let mut rounds = Vec::new();
+        let initial_folding_log = folding_schedule.first().copied().unwrap_or(0);
         let mut variables = message_variables - initial_folding_log;
         let mut rate = log_inverse_rate;
         let mut previous_folding_log = initial_folding_log;
-        let mut previous_oracle_leaf_width = 1usize << previous_folding_log;
+        let mut previous_oracle_leaf_width = 1usize << initial_folding_log;
         let mut previous_oracle_leaf_count = 1usize << (codeword_log_length - previous_folding_log);
-        while variables > max_terminal_message_variables {
-            let round = rounds.len();
+        for (round, &round_folding_log) in folding_schedule.iter().skip(1).enumerate() {
             let codeword_log_reduction = if round == 0 {
                 initial_codeword_log_reduction
             } else {
                 1
             };
             let next_rate = rate + previous_folding_log - codeword_log_reduction;
-            let round_folding_log = recursive_folding_log;
             let query_distance = query_distance(decoding_regime, rate);
             let query_security_bits_per_query =
                 query_security_bits_per_query(decoding_regime, rate);
@@ -748,14 +981,14 @@ impl WhirParameters {
 
             // The new oracle encodes `variables` message variables at
             // `next_rate` and groups all values needed by its next fold
-            // into one column. Every recursive fold has the same width.
+            // into one column.
             previous_oracle_leaf_width = 1usize << round_folding_log;
             previous_oracle_leaf_count = 1usize << (variables + next_rate - round_folding_log);
             variables -= round_folding_log;
             rate = next_rate;
             previous_folding_log = round_folding_log;
         }
-        debug_assert!(variables <= max_terminal_message_variables);
+        debug_assert_eq!(variables, terminal_message_variables);
         let final_sumcheck_rounds = variables;
 
         let final_query_distance = query_distance(decoding_regime, rate);
@@ -780,8 +1013,9 @@ impl WhirParameters {
             codeword_log_length,
             folding_log: initial_folding_log,
             folding_factor: 1usize << initial_folding_log,
+            folding_schedule: folding_schedule.to_vec(),
             initial_codeword_log_reduction,
-            terminal_message_variables: variables,
+            terminal_message_variables,
             hash_bits,
             hash_collision_security_bits,
             effective_security_bits,
@@ -826,31 +1060,41 @@ impl WhirParameters {
     }
 
     pub fn all_ood_counts(&self) -> Vec<usize> {
-        std::iter::once(self.commitment_ood_samples)
-            .chain(self.rounds.iter().map(|round| round.ood_samples))
-            .collect()
+        if self.folding_schedule.is_empty() {
+            Vec::new()
+        } else {
+            std::iter::once(self.commitment_ood_samples)
+                .chain(self.rounds.iter().map(|round| round.ood_samples))
+                .collect()
+        }
     }
 
     pub fn all_folding_logs(&self) -> Vec<usize> {
-        std::iter::once(self.folding_log)
-            .chain(self.rounds.iter().map(|round| round.folding_log))
-            .collect()
+        self.folding_schedule.clone()
     }
 
     pub fn all_sumcheck_repetitions(&self) -> Vec<usize> {
-        std::iter::once(self.initial_sumcheck_repetitions)
-            .chain(self.rounds.iter().map(|round| round.sumcheck_repetitions))
-            .collect()
+        if self.folding_schedule.is_empty() {
+            Vec::new()
+        } else {
+            std::iter::once(self.initial_sumcheck_repetitions)
+                .chain(self.rounds.iter().map(|round| round.sumcheck_repetitions))
+                .collect()
+        }
     }
 
     pub fn all_folding_security_bits_per_challenge(&self) -> Vec<f64> {
-        std::iter::once(self.initial_folding_security_bits_per_challenge)
-            .chain(
-                self.rounds
-                    .iter()
-                    .map(|round| round.folding_security_bits_per_challenge),
-            )
-            .collect()
+        if self.folding_schedule.is_empty() {
+            Vec::new()
+        } else {
+            std::iter::once(self.initial_folding_security_bits_per_challenge)
+                .chain(
+                    self.rounds
+                        .iter()
+                        .map(|round| round.folding_security_bits_per_challenge),
+                )
+                .collect()
+        }
     }
 
     /// Smallest analytic bit estimate among the single-challenge folding,
@@ -1079,24 +1323,27 @@ pub fn estimate_parallel_separate_initial_proofs(
     Ok(result)
 }
 
-/// Estimate the one-challenge Schwartz--Zippel batch of two aligned claims.
+/// Estimate the one-challenge Schwartz--Zippel batch of aligned claims.
 ///
-/// The two initial vectors retain independent Merkle roots. Their initial
-/// query positions are shared, but both authentication frontiers and both
-/// folding columns are transmitted. Before the batching challenge the prover
-/// sends the single cross-term sum
-/// `L_0(v_1) + L_1(v_0)`. The verifier then reduces the two distinct-linear-
-/// form claims to one degree-two identity and WHIR carries only one combined
-/// vector, one combined linear form, and one recursive oracle thereafter.
+/// The `source_claims` initial vectors retain independent Merkle roots. Their
+/// initial query positions are shared, but every authentication frontier and
+/// folding column is transmitted. Before the batching challenge the prover
+/// sends the `2*source_claims-3` non-endpoint cross-term coefficients when
+/// there are multiple claims (and none for a single claim). The
+/// verifier then checks one degree-`2*(source_claims-1)` identity, after which
+/// WHIR carries only one combined vector, linear form, and recursive oracle.
 pub fn estimate_schwartz_zippel_batched_initial_proofs(
     params: &WhirParameters,
+    source_claims: usize,
     seed: [u8; 32],
 ) -> Result<WhirProofSize> {
+    ensure!(source_claims >= 1, "at least one source claim is required");
     let mut result = estimate_proof_internal(params, seed, 1, &[])?;
     let initial_auth = result.auth_hashes_by_oracle[0];
-    result.auth_hashes_by_oracle[0] += initial_auth;
-    result.merkle_auth_hashes += initial_auth;
-    result.hash_count += initial_auth;
+    let extra_auth = initial_auth * (source_claims - 1);
+    result.auth_hashes_by_oracle[0] += extra_auth;
+    result.merkle_auth_hashes += extra_auth;
+    result.hash_count += extra_auth;
 
     let initial_leaf_width = params
         .rounds
@@ -1104,13 +1351,16 @@ pub fn estimate_schwartz_zippel_batched_initial_proofs(
         .map_or(params.final_oracle_leaf_width, |round| {
             round.query_leaf_width
         });
-    result.query_answer_fields += result.unique_queries_by_oracle[0] * initial_leaf_width;
+    result.query_answer_fields +=
+        (source_claims - 1) * result.unique_queries_by_oracle[0] * initial_leaf_width;
 
     // Both input commitments provide their initial OOD evaluations. All OOD
     // constraints attached to recursively committed oracles are for the one
     // combined vector and are already counted by the single proof above.
-    result.ood_fields += params.commitment_ood_samples;
-    result.batching_fields += 1;
+    result.ood_fields += (source_claims - 1) * params.commitment_ood_samples;
+    if source_claims > 1 {
+        result.batching_fields += 2 * source_claims - 3;
+    }
     recompute_field_count(&mut result);
     Ok(result)
 }
@@ -1230,6 +1480,11 @@ mod tests {
     }
 
     #[test]
+    fn retired_192_bit_profile_is_unavailable() {
+        assert!(field_profile(192, 20).is_err());
+    }
+
+    #[test]
     fn canopy_parameters_have_expected_rate_and_length() {
         let params = WhirParameters::johnson_bound(18, 4).unwrap();
         assert_eq!(params.codeword_log_length, 22);
@@ -1345,6 +1600,41 @@ mod tests {
     }
 
     #[test]
+    fn explicit_schedule_terminates_at_exact_target() {
+        let schedule = [3, 4, 3, 4, 3, 3];
+        let params = WhirParameters::with_regime_and_terminal_and_schedule(
+            30,
+            1,
+            WhirDecodingRegime::Johnson,
+            10,
+            &schedule,
+            1,
+        )
+        .unwrap();
+        assert_eq!(params.all_folding_logs(), schedule);
+        assert_eq!(params.terminal_message_variables, 10);
+        assert_eq!(params.final_sumcheck_rounds, 10);
+    }
+
+    #[test]
+    fn exact_terminal_without_folding_is_supported() {
+        let params = WhirParameters::with_regime_and_terminal_and_schedule(
+            10,
+            5,
+            WhirDecodingRegime::Capacity,
+            10,
+            &[],
+            1,
+        )
+        .unwrap();
+        assert!(params.all_folding_logs().is_empty());
+        assert_eq!(params.commitment_ood_samples, 0);
+        assert_eq!(params.final_oracle_leaf_width, 1);
+        let proof = estimate_proof(&params, expand_seed(17)).unwrap();
+        assert_eq!(proof.final_coefficient_fields, 1 << 10);
+    }
+
+    #[test]
     fn zero_reduction_keeps_the_first_recursive_codeword_length() {
         let params = WhirParameters::with_regime_and_terminal_and_initial_transition(
             22,
@@ -1371,7 +1661,7 @@ mod tests {
                 .unwrap();
         let seed = expand_seed(13);
         let single = estimate_proof(&params, seed).unwrap();
-        let batched = estimate_schwartz_zippel_batched_initial_proofs(&params, seed).unwrap();
+        let batched = estimate_schwartz_zippel_batched_initial_proofs(&params, 2, seed).unwrap();
         assert_eq!(batched.batching_fields, 1);
         assert_eq!(
             batched.ood_fields,
@@ -1390,6 +1680,68 @@ mod tests {
             batched.auth_hashes_by_oracle[1..],
             single.auth_hashes_by_oracle[1..]
         );
+    }
+
+    #[test]
+    fn generalized_schwartz_zippel_batch_scales_only_the_source_opening() {
+        let params =
+            WhirParameters::with_regime_and_terminal(18, 4, WhirDecodingRegime::Capacity, 8)
+                .unwrap();
+        let seed = expand_seed(14);
+        let single = estimate_proof(&params, seed).unwrap();
+        let source_claims = 8;
+        let batched =
+            estimate_schwartz_zippel_batched_initial_proofs(&params, source_claims, seed).unwrap();
+
+        assert_eq!(batched.batching_fields, 2 * source_claims - 3);
+        assert_eq!(
+            batched.ood_fields,
+            single.ood_fields + (source_claims - 1) * params.commitment_ood_samples
+        );
+        assert_eq!(
+            batched.auth_hashes_by_oracle[0],
+            source_claims * single.auth_hashes_by_oracle[0]
+        );
+        assert_eq!(
+            batched.query_answer_fields,
+            single.query_answer_fields
+                + (source_claims - 1)
+                    * single.unique_queries_by_oracle[0]
+                    * params.rounds[0].query_leaf_width
+        );
+        assert_eq!(
+            batched.auth_hashes_by_oracle[1..],
+            single.auth_hashes_by_oracle[1..]
+        );
+    }
+
+    #[test]
+    fn one_claim_batch_is_the_ordinary_proof() {
+        let params =
+            WhirParameters::with_regime_and_terminal(18, 4, WhirDecodingRegime::Capacity, 8)
+                .unwrap();
+        let seed = expand_seed(15);
+        let single = estimate_proof(&params, seed).unwrap();
+        let batched = estimate_schwartz_zippel_batched_initial_proofs(&params, 1, seed).unwrap();
+        assert_eq!(batched.hash_count, single.hash_count);
+        assert_eq!(batched.field_count, single.field_count);
+        assert_eq!(batched.batching_fields, 0);
+    }
+
+    #[test]
+    fn theorem_4_6_uses_multiplicity_twenty_for_the_canonical_slack() {
+        let message_variables = 30;
+        let log_inverse_rate = 1;
+        let rho = 0.5_f64;
+        let sqrt_rho = rho.sqrt();
+        let eta = sqrt_rho / 20.0;
+        assert_eq!((sqrt_rho / eta).ceil(), 20.0);
+
+        let exact = johnson_exceptional_set_log2(message_variables, log_inverse_rate);
+        let old_approximation =
+            (2.0 * 10.5_f64.powi(5) / 3.0).log2() + message_variables as f64 + 2.5;
+        assert!(exact > old_approximation + 4.0);
+        assert!(exact < old_approximation + 6.0);
     }
 
     #[test]

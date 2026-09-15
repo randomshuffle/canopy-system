@@ -1,0 +1,41 @@
+{
+  "field": "binary",
+  "command": [
+    "/Users/anubhavbaweja/Desktop/Research/research-git/canopy-system/experiments/binary-whir/target/release/canopy-binary-whir",
+    "--log-length",
+    "22",
+    "--warmups",
+    "1",
+    "--repetitions",
+    "5",
+    "--seed",
+    "73947765755993",
+    "--output-dir",
+    "/Users/anubhavbaweja/Desktop/Research/research-git/canopy-system/results/whir_field_comparison_n22/binary",
+    "--threads",
+    "8"
+  ],
+  "binary_sha256": "009124b0a0ac62b514fff31447ce4c4343b7a1fd78b462e5cbde424af408986e",
+  "platform": "macOS-14.0-arm64-arm-64bit-Mach-O",
+  "machine": "arm64",
+  "threads": 8,
+  "seed": 73947765755993,
+  "log_length": 22,
+  "input_polynomials": [
+    1,
+    2,
+    4,
+    8
+  ],
+  "warmups": 1,
+  "repetitions": 5,
+  "exit_code": 0,
+  "wall_seconds": 218.3959099999629,
+  "peak_rss_bytes": 7757316096,
+  "peak_rss_gib": 7.2245635986328125,
+  "user_seconds": 1174.636061,
+  "system_seconds": 85.876825,
+  "major_faults": 0,
+  "minor_faults": 20512544,
+  "memory_boundary": "Whole process, all schemes sequentially, including setup and verification; not a per-scheme prover peak."
+}

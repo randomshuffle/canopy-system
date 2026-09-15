@@ -1,0 +1,226 @@
+//! Backend-agnostic buffers for protocol data.
+//!
+//! Protocol code uses the [`Buffer`] alias to select the backend at
+//! compile time. Buffers are owned, backend-managed storage: on the CPU
+//! backend they wrap a `Vec`, on an accelerator backend they would own
+//! device memory and only [`BufferOps::to_slice`] (and the other readback
+//! methods) force a host copy.
+//!
+//! [`BufferOps`] covers host-to-backend and backend-to-host communication,
+//! while [`Buffer`] provides backend-specific field arithmetic. The traits
+//! are independent so callers can require only the capabilities they use.
+//!
+//! [`DefaultRs`] selects the Reed-Solomon encoder for the active backend.
+
+pub mod cpu;
+
+use ark_ff::Field;
+use ark_std::rand::{
+    distributions::{Distribution, Standard},
+    CryptoRng, RngCore,
+};
+pub use cpu::CpuBuffer;
+
+use crate::algebra::{embedding::Embedding, linear_form::LinearForm};
+
+/// Compile-time-selected prover backend.
+///
+/// Keep the storage and Reed-Solomon families in one module so they cannot be
+/// selected independently. A GPU backend replaces this module as a unit.
+mod active_backend {
+    pub type Buffer<T> = super::CpuBuffer<T>;
+    pub type ReedSolomon<T> = crate::algebra::ntt::NttEngine<T>;
+}
+
+pub type Buffer<T> = active_backend::Buffer<T>;
+pub type DefaultRs<T> = active_backend::ReedSolomon<T>;
+
+/// Host communication for owned buffers over any copyable element type.
+///
+/// Construction uses the standard [`From`] implementations of each backend.
+/// Field arithmetic lives independently on [`Buffer`].
+pub trait BufferOps<T: Copy> {
+    /// Read back the buffer contents as a host slice.
+    fn to_slice(&self) -> &[T];
+    /// Consume the buffer and return its contents as an owned host `Vec`.
+    ///
+    /// The dual of the `From<Vec<T>>` constructor: on the CPU backend this is a
+    /// zero-copy move of the backing storage; an accelerator backend would copy
+    /// device memory back to the host once.
+    fn into_vec(self) -> Vec<T>
+    where
+        Self: Sized;
+    fn len(&self) -> usize;
+    fn is_empty(&self) -> bool {
+        self.len() == 0
+    }
+    /// Read the contiguous range `range` into a host `Vec`.
+    fn read_range(&self, range: std::ops::Range<usize>) -> Vec<T>;
+    /// Gather full rows `indices[i] * num_cols .. (indices[i] + 1) * num_cols`.
+    fn read_rows(&self, num_cols: usize, indices: &[usize]) -> Vec<T>;
+    /// Gather elements at arbitrary indices.
+    fn gather_at_indices(&self, indices: &[usize]) -> Vec<T>;
+    fn get(&self, index: usize) -> Option<&T>;
+    /// Concatenation `[self, other]` into a single buffer of length
+    /// `self.len() + other.len()`.
+    #[must_use]
+    fn concat(&self, other: &Self) -> Self;
+
+    /// Best-effort in-place zeroization of the buffer's contents.
+    ///
+    /// Used to scrub secret material (blinding masks, witness randomness)
+    /// before the buffer is dropped. On the CPU backend this zeroizes the
+    /// backing storage; accelerator backends would override with a device wipe.
+    fn wipe(&mut self)
+    where
+        T: zeroize::Zeroize;
+}
+
+/// Field operations on owned buffers.
+pub trait BufferMath<F: Field>: Clone {
+    /// Same-backend owned buffer over another field.
+    ///
+    /// Used by the `mixed_*` operations that lift base-field data into an
+    /// extension field through an [`Embedding`].
+    type TargetBuffer<T: Field>: BufferMath<T>;
+
+    fn zeros(length: usize) -> Self;
+
+    /// Buffer of `length` copies of `F::ONE`, filled on the backend.
+    ///
+    /// Prefer this over `from(vec![F::ONE; length])`, which uploads a host
+    /// buffer to the backend.
+    fn ones(length: usize) -> Self;
+
+    fn random<R>(rng: &mut R, length: usize) -> Self
+    where
+        R: RngCore + CryptoRng,
+        Standard: Distribution<F>;
+
+    /// Change the logical length, filling newly exposed entries with zeroes.
+    /// Backends may reuse capacity or allocate/copy entirely on-device.
+    fn resize_zeroed(&mut self, new_len: usize);
+
+    /// Inner product with another buffer of the same length.
+    fn dot(&self, other: &Self) -> F;
+
+    /// Bilinear form over `self`, a row-major matrix with `rows.len()` rows
+    /// and `cols.len()` columns:
+    /// `Σ_i rows[i] · Σ_j cols[j] · self[i · cols.len() + j]`.
+    ///
+    /// Equivalently `rowsᵀ · self · cols`. Generalizes [`Buffer::dot`] to a
+    /// weighted reduction of a matrix; `dot` is the special case where `self`
+    /// is the identity.
+    fn bilinear_form(&self, rows: &Self, cols: &Self) -> F;
+
+    /// Tensor (outer) product `self ⊗ other`, row-major: length
+    /// `self.len() · other.len()` with entry `[i · other.len() + j] = self[i] · other[j]`.
+    #[must_use]
+    fn tensor_product(&self, other: &Self) -> Self;
+
+    /// Equality-polynomial weights `eq(point, ·)` over the Boolean hypercube
+    /// `{0,1}^{point.len()}`, as a buffer of length `1 << point.len()`.
+    ///
+    /// `point` holds host-side transcript challenges; the weights live on the
+    /// backend so downstream reductions never force a readback.
+    fn eq_weights(point: &[F]) -> Self;
+
+    /// Sumcheck round coefficients `(c0, c2)` for `dot(self, other)`.
+    fn sumcheck_polynomial(&self, other: &Self) -> (F, F);
+
+    fn fold(&mut self, weight: F);
+
+    /// backends should override this to avoid two fold calls
+    fn fold_pair(&mut self, other: &mut Self, weight: F) {
+        self.fold(weight);
+        other.fold(weight);
+    }
+
+    /// backends should override this and use a single kernel
+    fn fold_pair_sumcheck_polynomial(&mut self, other: &mut Self, weight: F) -> (F, F) {
+        self.fold_pair(other, weight);
+        self.sumcheck_polynomial(other)
+    }
+
+    /// In-place scalar multiplication: `self[i] *= weight`.
+    fn scalar_mul(&mut self, weight: F);
+
+    /// Accumulate `Σ_j scalars[j] · points[j]^i` into entry `i` for the
+    /// first `prefix_len` entries of the buffer.
+    fn accumulate_geometric(&mut self, points: &[F], scalars: &Self, prefix_len: usize);
+
+    /// Random linear combination of linear forms into a covector buffer.
+    fn linear_forms_rlc(
+        size: usize,
+        linear_forms: &mut [Box<dyn LinearForm<F>>],
+        rlc_coeffs: &Self,
+    ) -> Self;
+
+    fn geometric_challenge<G: Field>(current: G, base: G, length: usize) -> Self::TargetBuffer<G>;
+
+    /// Univariate evaluation at a target-field point.
+    fn mixed_univariate_evaluate<M: Embedding<Source = F>>(
+        &self,
+        embedding: &M,
+        point: M::Target,
+    ) -> M::Target;
+
+    /// Lift every element into the target field without host materialization.
+    #[must_use]
+    fn mixed_lift<M: Embedding<Source = F>>(&self, embedding: &M) -> Self::TargetBuffer<M::Target>;
+
+    /// Inner product with a target-field buffer.
+    fn mixed_dot<M: Embedding<Source = F>>(
+        &self,
+        embedding: &M,
+        other: &Self::TargetBuffer<M::Target>,
+    ) -> M::Target;
+
+    /// Mixed-field matrix-vector product. `self` is a row-major source-field
+    /// matrix with `vector.len()` columns; the result contains one target-field
+    /// inner product per row.
+    #[must_use]
+    fn mixed_mat_vec<M: Embedding<Source = F>>(
+        &self,
+        embedding: &M,
+        vector: &Self::TargetBuffer<M::Target>,
+    ) -> Self::TargetBuffer<M::Target>;
+
+    /// Sumcheck round coefficients `(c0, c2)` for the mixed inner product of
+    /// source-field `self` against a target-field covector.
+    ///
+    /// Embedding-aware [`Self::sumcheck_polynomial`]: same result as lifting
+    /// `self` first, without materializing the lift.
+    fn mixed_sumcheck_polynomial<M: Embedding<Source = F>>(
+        &self,
+        embedding: &M,
+        other: &Self::TargetBuffer<M::Target>,
+    ) -> (M::Target, M::Target);
+
+    /// Fold source-field `self` at a target-field weight, lifting the result
+    /// into the target field.
+    ///
+    /// Embedding-aware [`Self::fold`]: same result as lifting `self` first,
+    /// without materializing the lift.
+    #[must_use]
+    fn mixed_fold<M: Embedding<Source = F>>(
+        &self,
+        embedding: &M,
+        weight: M::Target,
+    ) -> Self::TargetBuffer<M::Target>;
+
+    /// `accumulator += weight * self`, lifted into the target field.
+    fn mixed_scalar_mul_add_to<M: Embedding<Source = F>>(
+        &self,
+        embedding: &M,
+        accumulator: &mut Self::TargetBuffer<M::Target>,
+        weight: M::Target,
+    );
+
+    /// Random linear combination of vectors, lifted into the target field.
+    fn mixed_linear_combination<M: Embedding<Source = F>>(
+        embedding: &M,
+        vectors: &[&Self],
+        coeffs: &Self::TargetBuffer<M::Target>,
+    ) -> Self::TargetBuffer<M::Target>;
+}
