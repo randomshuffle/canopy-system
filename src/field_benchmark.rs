@@ -19,7 +19,7 @@ use whir_ref::{
     buffer::{Buffer, BufferOps, DefaultRs},
 };
 
-use crate::Fr;
+use crate::PrimeFr as Fr;
 
 /// BN254 scalar field. These are the parameters used by arkworks' `ark-bn254`.
 #[derive(MontConfig)]

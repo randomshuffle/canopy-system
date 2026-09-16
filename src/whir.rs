@@ -389,6 +389,47 @@ fn query_combination_security(
 }
 
 impl WhirParameters {
+    /// Increase the local algebraic/query budget without changing the hash
+    /// collision target. Composed experiments reserve margin above 128 bits.
+    pub fn with_algebraic_budget(mut self, bits: usize) -> Result<Self> {
+        ensure!(
+            bits >= self.effective_security_bits,
+            "budget must not decrease"
+        );
+        self.security_bits = bits;
+        self.effective_security_bits = bits;
+        if self.folding_log > 0 {
+            self.commitment_ood_samples = ood_samples(
+                self.decoding_regime,
+                bits,
+                self.message_variables,
+                self.log_inverse_rate,
+                self.field_log2_size,
+            );
+        }
+        for round in &mut self.rounds {
+            round.requested_queries =
+                queries(self.decoding_regime, bits, round.log_inverse_rate_before);
+            round.ood_samples = ood_samples(
+                self.decoding_regime,
+                bits,
+                round.message_variables,
+                round.log_inverse_rate_after,
+                self.field_log2_size,
+            );
+            round.combination_security_bits_per_challenge = query_combination_security(
+                self.decoding_regime,
+                self.field_log2_size,
+                round.message_variables,
+                round.log_inverse_rate_after,
+                round.ood_samples,
+                round.requested_queries,
+            );
+        }
+        self.final_requested_queries =
+            queries(self.decoding_regime, bits, self.final_log_inverse_rate);
+        Ok(self)
+    }
     /// Conservative correlated-list exponent used by the concrete RBR model
     /// at this invocation's initial code and proximity radius.
     pub fn initial_list_size_bits(&self) -> f64 {

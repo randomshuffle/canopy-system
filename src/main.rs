@@ -29,11 +29,11 @@ struct Cli {
 
 #[derive(Subcommand, Debug)]
 enum Command {
-    /// Search Bolt initial interleaving widths and Canopy heights; time each width.
+    /// Historical single-input adapter; the active batched suite is gf256_bolt_suite.
     BoltGrid {
         #[arg(long, value_enum, default_value_t = canopy_system::bolt_experiment::CanopyLayout::QuarterEach)]
         canopy_layout: canopy_system::bolt_experiment::CanopyLayout,
-        #[arg(long, value_delimiter = ',', default_values_t = vec![4, 8, 16])]
+        #[arg(long, value_delimiter = ',', default_values_t = vec![4])]
         interleavings: Vec<usize>,
         #[arg(long, value_delimiter = ',', default_values_t = vec![22, 26, 30])]
         log_lengths: Vec<usize>,
@@ -55,11 +55,11 @@ enum Command {
         #[arg(long, default_value = "results/bolt_max_canopy_quarter")]
         output_dir: PathBuf,
     },
-    /// Estimate prime-field Bolt-max with separate Canopy RS layers.
+    /// Estimate GF(2^256) Bolt-max with separate Canopy RS layers.
     BoltEstimate {
         #[arg(long, value_enum, default_value_t = canopy_system::bolt_experiment::CanopyLayout::QuarterEach)]
         canopy_layout: canopy_system::bolt_experiment::CanopyLayout,
-        #[arg(long, default_value_t = canopy_system::bolt::DEFAULT_INTERLEAVING)]
+        #[arg(long, default_value_t = 4)]
         interleaving: usize,
         #[arg(long, value_delimiter = ',', default_values_t = vec![22, 26, 30])]
         log_lengths: Vec<usize>,
@@ -74,7 +74,7 @@ enum Command {
     BoltTime {
         #[arg(long, value_enum, default_value_t = canopy_system::bolt_experiment::CanopyLayout::QuarterEach)]
         canopy_layout: canopy_system::bolt_experiment::CanopyLayout,
-        #[arg(long, default_value_t = canopy_system::bolt::DEFAULT_INTERLEAVING)]
+        #[arg(long, default_value_t = 4)]
         interleaving: usize,
         #[arg(long, default_value_t = 22)]
         log_length: usize,
@@ -118,7 +118,7 @@ enum Command {
         #[arg(long, default_value = "results/profile_whir_trace_johnson_n18")]
         output_dir: PathBuf,
     },
-    /// Generate all three baselines and Experiments 2--3 with the proved Johnson bound.
+    /// Generate the two batched baselines and Canopy Exp3 with the proved Johnson bound.
     PaperEstimate {
         #[arg(long, default_value_t = 100)]
         samples: usize,
@@ -130,7 +130,7 @@ enum Command {
         )]
         output_dir: PathBuf,
     },
-    /// Generate all three baselines and Experiments 2--3 with the conjectural capacity bound.
+    /// Generate the two batched baselines and Canopy Exp3 with the conjectural capacity bound.
     PaperCapacityEstimate {
         #[arg(long, default_value_t = 100)]
         samples: usize,
@@ -151,7 +151,7 @@ enum Command {
         #[arg(long, default_value = "results/paper_capacity_terminal8_batch128")]
         output_dir: PathBuf,
     },
-    /// Search {3,4} folds for all capacity-bound baselines and Experiments 2--3.
+    /// Search {3,4} folds for the batched capacity-bound baselines and Canopy Exp3.
     PaperCapacityTerminal10HybridEstimate {
         #[arg(long, default_value_t = 100)]
         samples: usize,
@@ -163,7 +163,7 @@ enum Command {
         )]
         output_dir: PathBuf,
     },
-    /// Search {3,4} folds for all Johnson-bound baselines and Experiments 2--3.
+    /// Search {3,4} folds for the batched Johnson-bound baselines and Canopy Exp3.
     PaperTerminal10HybridEstimate {
         #[arg(long, default_value_t = 100)]
         samples: usize,
@@ -175,7 +175,7 @@ enum Command {
         )]
         output_dir: PathBuf,
     },
-    /// Run the executable 2^18 prover benchmarks for all baselines and Experiments 2--3.
+    /// Run the executable 2^18 prover benchmarks for the batched baselines and Canopy Exp3.
     PaperTime {
         #[arg(long, default_value_t = 18)]
         log_length: usize,
@@ -352,7 +352,10 @@ fn main() -> Result<()> {
         }
         Command::BoltBreakdown { output_dir } => {
             canopy_system::bolt_experiment::write_proof_breakdown(&output_dir)?;
-            println!("wrote reconciled Bolt-max proof breakdown to {}", output_dir.display());
+            println!(
+                "wrote reconciled Bolt-max proof breakdown to {}",
+                output_dir.display()
+            );
         }
         Command::BoltEstimate {
             canopy_layout,

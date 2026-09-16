@@ -1,0 +1,28 @@
+{
+  "field": "GF(2^256)",
+  "command": [
+    "/Users/anubhavbaweja/Desktop/Research/research-git/canopy-system/target/release/canopy-system",
+    "paper-time",
+    "--log-length",
+    "18",
+    "--warmups",
+    "1",
+    "--repetitions",
+    "5",
+    "--seed",
+    "73947765755993",
+    "--output-dir",
+    "/Users/anubhavbaweja/Desktop/Research/research-git/canopy-system/results/gf256_batched_suite/whir/timing_n18"
+  ],
+  "binary_sha256": "2c8426e97af33c40387330a22e31e7deb709adf168e10b51a4f10bc276170b30",
+  "threads": 8,
+  "platform": "macOS-14.0-arm64-arm-64bit-Mach-O",
+  "started_unix": 1789505991.946989,
+  "wall_seconds": 12.604004859924316,
+  "exit_code": 0,
+  "peak_rss_bytes": 914800640,
+  "peak_rss_gib": 0.8519744873046875,
+  "user_seconds": 60.70191,
+  "system_seconds": 6.657016,
+  "memory_boundary": "Whole child process, including setup and verification; schemes run sequentially."
+}

@@ -1,0 +1,22 @@
+{
+  "field": "GF(2^256)",
+  "command": [
+    "target/release/canopy-system",
+    "paper-estimate",
+    "--samples",
+    "100",
+    "--output-dir",
+    "results/gf256_batched_suite/whir/proof_sizes"
+  ],
+  "binary_sha256": "dd9ebcf87ab73c1c0e569fd2dd2ddbd921806f5a7c9d881c0177fc3e8d6f62a4",
+  "threads": 8,
+  "platform": "macOS-14.0-arm64-arm-64bit-Mach-O",
+  "started_unix": 1789506388.535279,
+  "wall_seconds": 224.41785717010498,
+  "exit_code": 0,
+  "peak_rss_bytes": 11010048,
+  "peak_rss_gib": 0.01025390625,
+  "user_seconds": 221.047202,
+  "system_seconds": 0.5759879999999999,
+  "memory_boundary": "Whole child process, including setup and verification; schemes run sequentially."
+}

@@ -89,9 +89,12 @@ pub struct FinalClaim<F: Field> {
     pub evaluation_point: Vec<F>,
     /// The random linear combination coefficients.
     pub rlc_coefficients: Vec<F>,
-    /// Claimed value of the rlc of the mle of the linears forms in the point.
+    /// Claimed product of the polynomial evaluation and the linear-form RLC.
     /// Note: not computed on the prover side, set to zero instead.
     pub linear_form_rlc: F,
+    /// Multiply the deferred linear-form RLC by this polynomial evaluation.
+    /// Keeping the product avoids division by zero for zero polynomials.
+    pub polynomial_evaluation: F,
 }
 
 impl<F: Field> FinalClaim<F> {
@@ -102,7 +105,7 @@ impl<F: Field> FinalClaim<F> {
         let rlc = zip_strict(&self.rlc_coefficients, linear_forms)
             .map(|(&c, l)| c * l.mle_evaluate(&self.evaluation_point))
             .sum::<F>();
-        verify!(rlc == self.linear_form_rlc);
+        verify!(rlc * self.polynomial_evaluation == self.linear_form_rlc);
         Ok(())
     }
 }

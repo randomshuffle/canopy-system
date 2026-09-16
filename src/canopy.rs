@@ -2,7 +2,7 @@ use std::collections::BTreeMap;
 use std::time::{Duration, Instant};
 
 use anyhow::{ensure, Result};
-use ark_ff::{BigInt, PrimeField};
+use ark_ff::BigInt;
 use rayon::prelude::*;
 use whir_ref::{
     buffer::BufferOps,
@@ -25,10 +25,8 @@ use crate::{Fr, FIELD_BYTES, HASH_BYTES};
 pub const WHIR_LEAF_WIDTH: usize = DEFAULT_FOLDING_FACTOR;
 
 pub(crate) fn hash_bytes_to_field(root: &[u8; HASH_BYTES]) -> Fr {
-    // The paper field modulus is only `43 * 2^32 - 1` below `2^256`, so a
-    // uniformly random 256-bit candidate is rejected with probability below
-    // 2^-218. Rejection sampling is exactly uniform and avoids a 512-bit XOF
-    // plus generic wide modular reduction on essentially every invocation.
+    // All 256-bit strings represent binary-field elements. Keep the v2 input
+    // framing (including counter zero) to preserve the measured H2F workload.
     for counter in 0u32.. {
         let mut hasher = blake3::Hasher::new();
         hasher.update(b"canopy-system/hash-to-field/v2");

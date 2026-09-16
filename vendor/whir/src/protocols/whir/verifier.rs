@@ -250,7 +250,7 @@ impl<M: Embedding> Config<M> {
         // Compute the claimed rlc of the linear form mles from the sumcheck invariant.
         let poly_eval = MultilinearExtension::new(final_sumcheck_randomness)
             .evaluate(&Identity::new(), &final_vector);
-        let mut linear_form_rlc = the_sum / poly_eval;
+        let mut linear_form_rlc = the_sum;
 
         // Subtract all internal linear forms.
         for (round, (weights_rlc_coeffs, weights)) in round_constraints.into_iter().enumerate() {
@@ -260,7 +260,8 @@ impl<M: Embedding> Config<M> {
             );
             let start = evaluation_point.len().saturating_sub(num_variables);
             for (rlc_coeff, weights) in zip_strict(weights_rlc_coeffs, weights) {
-                linear_form_rlc -= rlc_coeff * weights.mle_evaluate(&evaluation_point[start..]);
+                linear_form_rlc -=
+                    poly_eval * rlc_coeff * weights.mle_evaluate(&evaluation_point[start..]);
             }
         }
 
@@ -269,6 +270,7 @@ impl<M: Embedding> Config<M> {
             evaluation_point,
             rlc_coefficients: initial_form_rlc_coeffs.to_vec(),
             linear_form_rlc,
+            polynomial_evaluation: poly_eval,
         })
     }
 }

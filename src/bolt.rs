@@ -1,12 +1,10 @@
-//! Prime-field Bolt-max experiment primitives.
+//! GF(2^256) Bolt-max experiment primitives.
 //!
 //! The degree-8, compression-8, all-one ensemble follows `bolt-xor` in
 //! bcc-research/bolt-rs at 3832e47b24e7b3e10525c9c5bcfc1cfe66d525f2.
-//! Its binary-field distance is NOT a theorem about this prime-field port.
+//! The experiment explicitly assumes the ensemble distance gamma = 0.013.
 
 use anyhow::{ensure, Result};
-use ark_ff::AdditiveGroup;
-use ark_poly::{EvaluationDomain, Radix2EvaluationDomain};
 use rand::{seq::SliceRandom, SeedableRng};
 use rand_chacha::ChaCha20Rng;
 use rayon::prelude::*;
@@ -26,7 +24,7 @@ pub struct EncodedBolt {
 }
 
 /// Public experiment setup. Parallel edges are retained, as in the reference
-/// ensemble; over this field they add with their integer multiplicity.
+/// ensemble; repeated edges cancel in characteristic two.
 pub struct BoltMaxEncoder {
     pub message_rows: usize,
     pub interleaving: usize,
@@ -108,8 +106,7 @@ pub fn validate_interleaving(width: usize) -> Result<()> {
     Ok(())
 }
 
-/// Ordinary coefficient-basis, rate-1/2 multiplicative RS, one column at a time.
-/// No binary-field arithmetic or additive FFT is reused in this prime-field port.
+/// Monomial-basis, rate-1/2 additive RS, one column at a time.
 pub fn encode_columns(values: &[Fr], width: usize) -> Result<Vec<Fr>> {
     ensure!(
         width > 0 && values.len().is_multiple_of(width),
@@ -120,17 +117,14 @@ pub fn encode_columns(values: &[Fr], width: usize) -> Result<Vec<Fr>> {
         rows.is_power_of_two(),
         "RS message row count must be a power of two"
     );
-    let domain = Radix2EvaluationDomain::<Fr>::new(2 * rows)
-        .ok_or_else(|| anyhow::anyhow!("unsupported Bolt RS domain"))?;
     let columns = (0..width)
         .into_par_iter()
         .map(|col| {
-            let mut v = vec![Fr::ZERO; 2 * rows];
+            let mut v = vec![Fr::ZERO; rows];
             for row in 0..rows {
                 v[row] = values[row * width + col];
             }
-            domain.fft_in_place(&mut v);
-            v
+            crate::additive_rs::encode(&v, 2 * rows)
         })
         .collect::<Vec<_>>();
     let mut output = vec![Fr::ZERO; 2 * values.len()];
@@ -158,27 +152,27 @@ mod tests {
     use super::*;
 
     #[test]
-    fn prime_field_encoder_is_linear_and_rs_matches_direct_evaluation() {
+    fn binary_field_encoder_is_linear_and_rs_matches_direct_evaluation() {
         let width = 16;
         let enc = BoltMaxEncoder::new(64, width, 42).unwrap();
         let x = (0..64 * width)
-            .map(|i| Fr::from(i as u64))
+            .map(|i| crate::benchmark_field_element(42, 1, i as u64))
             .collect::<Vec<_>>();
         let weights = (0..width)
-            .map(|i| Fr::from((i + 2) as u64))
+            .map(|i| crate::benchmark_field_element(42, 2, i as u64))
             .collect::<Vec<_>>();
         let encoded = enc.encode(&x).unwrap();
         let projected = project_rows(&x, &weights);
         let u = enc.syndrome(&projected, 1).unwrap();
         assert_eq!(u, project_rows(&encoded.syndrome, &weights));
         let y = project_rows(&encoded.parity, &weights);
-        let domain = Radix2EvaluationDomain::<Fr>::new(y.len()).unwrap();
-        for (point, &expected) in domain.elements().zip(&y) {
+        for (index, &expected) in y.iter().enumerate() {
+            let point = crate::additive_rs::point(index);
             let actual = u.iter().rev().fold(Fr::ZERO, |a, &c| a * point + c);
             assert_eq!(actual, expected);
         }
         let r = (0..8)
-            .map(|i| Fr::from((3 * i + 1) as u64))
+            .map(|i| crate::benchmark_field_element(42, 3, i as u64))
             .collect::<Vec<_>>();
         let lhs: Fr = u.iter().zip(&r).map(|(&a, &b)| a * b).sum();
         let rhs: Fr = projected

@@ -1325,7 +1325,7 @@ fn linear_combination_coefficients(
     (0..combinations)
         .map(|_| {
             (0..commitment_count)
-                .map(|_| Fr::from(rng.gen::<u64>()))
+                .map(|_| Fr::from_bits(rng.gen::<[u64; 4]>()))
                 .collect()
         })
         .collect()
@@ -1475,7 +1475,9 @@ pub fn run_separate_commitment_timings(
     let vectors: Vec<Vec<Fr>> = (0..commitment_count)
         .map(|vector| {
             (0..vector_len)
-                .map(|index| Fr::from((vector * vector_len + index) as u64))
+                .map(|index| {
+                    crate::benchmark_field_element(0x43414e4f5059, vector as u64, index as u64)
+                })
                 .collect()
         })
         .collect();

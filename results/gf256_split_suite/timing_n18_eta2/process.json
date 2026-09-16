@@ -1,0 +1,28 @@
+{
+  "field": "GF(2^256)",
+  "command": [
+    "/private/tmp/canopy-gf256-bolt-split-timing",
+    "time",
+    "--log",
+    "18",
+    "--inputs",
+    "2",
+    "--warmups",
+    "1",
+    "--repetitions",
+    "5",
+    "--output",
+    "/Users/anubhavbaweja/Desktop/Research/research-git/canopy-system/results/gf256_split_suite/timing_n18_eta2"
+  ],
+  "binary_sha256": "755ea59d7728a80e9dd07d848e86513daaf531c8f8cdd474a3fdb751ff58b46f",
+  "threads": 8,
+  "platform": "macOS-14.0-arm64-arm-64bit-Mach-O",
+  "started_unix": 1789528276.572587,
+  "wall_seconds": 5.362447023391724,
+  "exit_code": 0,
+  "peak_rss_bytes": 203276288,
+  "peak_rss_gib": 0.1893157958984375,
+  "user_seconds": 11.343677,
+  "system_seconds": 1.775349,
+  "memory_boundary": "Whole child process, including setup and verification; schemes run sequentially."
+}

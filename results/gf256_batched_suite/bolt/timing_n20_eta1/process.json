@@ -1,0 +1,30 @@
+{
+  "field": "GF(2^256)",
+  "command": [
+    "/Users/anubhavbaweja/Desktop/Research/research-git/canopy-system/target/release/examples/gf256_bolt_suite",
+    "time",
+    "--log",
+    "20",
+    "--inputs",
+    "1",
+    "--warmups",
+    "1",
+    "--repetitions",
+    "5",
+    "--estimates",
+    "/Users/anubhavbaweja/Desktop/Research/research-git/canopy-system/results/gf256_batched_suite/bolt/proof_sizes",
+    "--output",
+    "/Users/anubhavbaweja/Desktop/Research/research-git/canopy-system/results/gf256_batched_suite/bolt/timing_n20_eta1"
+  ],
+  "binary_sha256": "f2b807104b92f24a3c84ec768b29dcb74b8973216c552a23c473d968c08edbd9",
+  "threads": 8,
+  "platform": "macOS-14.0-arm64-arm-64bit-Mach-O",
+  "started_unix": 1789512799.535358,
+  "wall_seconds": 3.184065103530884,
+  "exit_code": 0,
+  "peak_rss_bytes": 345784320,
+  "peak_rss_gib": 0.3220367431640625,
+  "user_seconds": 9.912372,
+  "system_seconds": 0.9742149999999999,
+  "memory_boundary": "Whole child process, including setup and verification; schemes run sequentially."
+}

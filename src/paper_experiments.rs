@@ -9,13 +9,16 @@ use std::{
 
 use anyhow::{ensure, Context, Result};
 use rayon::prelude::*;
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
+
+#[path = "paper_fiat_shamir.rs"]
+pub mod fiat_shamir;
 
 use crate::{
     canopy::CanopyVectorCommitment,
     executable_whir::{
         commit_matrix_with_whir, encode_interleaved_with_whir, encode_many_interleaved_with_whir,
-        execute_benchmark_with_regime_and_folding as execute_whir,
+        execute_benchmark_with_security, ExecutableWhirRun,
     },
     merkle::frontier_hash_count,
     whir::{
@@ -26,7 +29,7 @@ use crate::{
     Fr, FIELD_BITS, FIELD_BYTES, HASH_BYTES,
 };
 
-pub const PAPER_LOG_LENGTHS: &[usize] = &[18, 22, 26, 30];
+pub const PAPER_LOG_LENGTHS: &[usize] = &[18, 20, 22, 24, 26, 28, 30];
 pub const PAPER_INPUT_ORACLE_COUNTS: &[usize] = &[1, 2, 4, 8];
 pub const CANOPY_HYBRID_CODEWORD_REDUCTION: usize = 0;
 pub const PAPER_FOLDING_CHOICES: &[usize] = &[3, 4];
@@ -36,6 +39,32 @@ pub const PAPER_TIMING_FOLDING_LOG: usize = 3;
 pub const CANOPY_HYBRID_HEIGHT: usize = PAPER_TIMING_FOLDING_LOG + 1;
 pub const OUTER_STARTING_LOG_INV_RATE: usize = 1;
 pub const QUARTER_RATE_STARTING_LOG_INV_RATE: usize = 2;
+
+/// Eight bits of local margin for the union of queries and algebraic events.
+pub const PAPER_LOCAL_SECURITY_BITS: usize = 136;
+
+fn paper_parameters(
+    n: usize,
+    rate: usize,
+    regime: WhirDecodingRegime,
+    terminal: usize,
+    schedule: &[usize],
+    reduction: usize,
+) -> Result<WhirParameters> {
+    WhirParameters::with_regime_and_terminal_and_schedule(
+        n, rate, regime, terminal, schedule, reduction,
+    )?
+    .with_algebraic_budget(PAPER_LOCAL_SECURITY_BITS)
+}
+
+fn execute_whir(
+    vectors: &[Vec<Fr>],
+    rate: usize,
+    regime: WhirDecodingRegime,
+    folding: usize,
+) -> Result<ExecutableWhirRun> {
+    execute_benchmark_with_security(vectors, rate, regime, folding, PAPER_LOCAL_SECURITY_BITS)
+}
 
 fn aligned_source_oracles(input_oracles: usize) -> usize {
     2 * input_oracles
@@ -81,7 +110,7 @@ fn schedule_label(schedule: &[usize]) -> String {
     }
 }
 
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct HybridProofSizeRow {
     pub experiment: usize,
     pub scheme: String,
@@ -102,9 +131,14 @@ pub struct HybridProofSizeRow {
     pub aligned_log_inverse_rate: Option<usize>,
     pub samples: usize,
     pub recursive_field_bits: usize,
+    pub local_algebraic_budget_bits: usize,
     pub minimum_rbr_security_bits: f64,
     pub algebraic_rbr_union_bound_bits: f64,
     pub meets_128_bit_rbr: bool,
+    pub verifier_leaf_hashes: f64,
+    pub verifier_parent_hashes: f64,
+    pub verifier_auth_hashes: f64,
+    pub verifier_hash_to_field: f64,
     pub mean_root_hashes: f64,
     pub mean_auth_hashes: f64,
     pub mean_hash_count: f64,
@@ -147,6 +181,10 @@ pub struct OracleQueryBreakdownRow {
     pub requested_queries: usize,
     pub samples: usize,
     pub mean_unique_queries: f64,
+    pub verifier_leaf_hashes: f64,
+    pub verifier_parent_hashes: f64,
+    pub verifier_auth_hashes: f64,
+    pub verifier_hash_to_field: f64,
     pub mean_auth_hashes: f64,
     pub mean_answer_fields: f64,
 }
@@ -347,17 +385,13 @@ fn union_bound_security(events: &[TaggedRbrEvent]) -> f64 {
             .log2()
 }
 
-struct CachedCanopyTail {
-    height: usize,
-    schedule: Vec<usize>,
-    params: WhirParameters,
-    proofs: Vec<WhirProofSize>,
-}
-
 fn best_rbr_candidate(candidates: &[ProofCandidate]) -> &ProofCandidate {
     if let Some(candidate) = candidates
         .iter()
-        .filter(|candidate| candidate.minimum_rbr_security_bits >= DEFAULT_SECURITY_BITS as f64)
+        .filter(|candidate| {
+            candidate.minimum_rbr_security_bits >= DEFAULT_SECURITY_BITS as f64
+                && candidate.algebraic_rbr_union_bound_bits >= DEFAULT_SECURITY_BITS as f64
+        })
         .min_by_key(|candidate| {
             (
                 candidate.totals.bytes(),
@@ -400,7 +434,21 @@ impl QueryAccumulator {
         self.samples += 1;
     }
 
+    fn verifier_work(&self) -> (f64, f64, f64) {
+        let d = self.descriptor.as_ref().expect("query descriptor");
+        let leaves = (self.unique_queries * d.oracle_count) as f64;
+        if d.commitment == "independent Canopy bottom forests" {
+            // Exp3 aligns h=initial_fold+1, hence one level above row leaves.
+            // reconstruct_roots hashes once per child, including paired siblings.
+            (leaves, leaves, (leaves + self.auth_hashes as f64) / 2.0)
+        } else {
+            let roots = (d.oracle_count * self.samples) as f64;
+            (leaves, leaves + self.auth_hashes as f64 - roots, 0.0)
+        }
+    }
+
     fn row(self) -> OracleQueryBreakdownRow {
+        let (leaf, parent, h2f) = self.verifier_work();
         let descriptor = self.descriptor.expect("query descriptor");
         let samples = self.samples as f64;
         OracleQueryBreakdownRow {
@@ -422,6 +470,10 @@ impl QueryAccumulator {
             requested_queries: descriptor.requested_queries,
             samples: self.samples,
             mean_unique_queries: self.unique_queries as f64 / samples,
+            verifier_leaf_hashes: leaf / samples,
+            verifier_parent_hashes: parent / samples,
+            verifier_auth_hashes: (leaf + parent) / samples,
+            verifier_hash_to_field: h2f / samples,
             mean_auth_hashes: self.auth_hashes as f64 / samples,
             mean_answer_fields: self.answer_fields as f64 / samples,
         }
@@ -612,9 +664,15 @@ fn proof_row(
             .map(|_| initial_folding_log + 1 - CANOPY_HYBRID_CODEWORD_REDUCTION),
         samples,
         recursive_field_bits,
+        local_algebraic_budget_bits: PAPER_LOCAL_SECURITY_BITS,
         minimum_rbr_security_bits,
         algebraic_rbr_union_bound_bits,
-        meets_128_bit_rbr: minimum_rbr_security_bits >= DEFAULT_SECURITY_BITS as f64,
+        meets_128_bit_rbr: minimum_rbr_security_bits >= DEFAULT_SECURITY_BITS as f64
+            && algebraic_rbr_union_bound_bits >= DEFAULT_SECURITY_BITS as f64,
+        verifier_leaf_hashes: 0.0,
+        verifier_parent_hashes: 0.0,
+        verifier_auth_hashes: 0.0,
+        verifier_hash_to_field: 0.0,
         mean_root_hashes: totals.root_hashes as f64 / samples as f64,
         mean_auth_hashes: totals.auth_hashes as f64 / samples as f64,
         mean_hash_count: mean_hashes,
@@ -709,7 +767,7 @@ fn candidate_row(
     independent_baseline_bytes: f64,
     batched_baseline_bytes: f64,
 ) -> HybridProofSizeRow {
-    proof_row(
+    let mut row = proof_row(
         experiment,
         scheme,
         candidate.input_oracles,
@@ -727,10 +785,18 @@ fn candidate_row(
         candidate.recursive_field_bits,
         candidate.minimum_rbr_security_bits,
         candidate.algebraic_rbr_union_bound_bits,
-    )
+    );
+    for query in candidate.queries.values() {
+        let (leaf, parent, h2f) = query.verifier_work();
+        row.verifier_leaf_hashes += leaf / samples as f64;
+        row.verifier_parent_hashes += parent / samples as f64;
+        row.verifier_hash_to_field += h2f / samples as f64;
+    }
+    row.verifier_auth_hashes = row.verifier_leaf_hashes + row.verifier_parent_hashes;
+    row
 }
 
-/// Generate the multi-input proof-size and query grids for Experiments 2 and 3.
+/// Generate the batched WHIR baselines and Canopy Exp3 proof-size/query grids.
 pub fn run_proof_estimates(output_dir: &Path, samples: usize, seed: u64) -> Result<()> {
     run_proof_estimates_with_regime(output_dir, samples, seed, WhirDecodingRegime::Johnson)
 }
@@ -774,45 +840,10 @@ pub fn run_proof_estimates_with_regime_and_terminal(
     let mut query_accumulators = BTreeMap::<String, QueryAccumulator>::new();
 
     for &n in PAPER_LOG_LENGTHS {
-        let mut cached_canopy_tails = Vec::new();
-        for canopy_height in 1..=n {
-            let canopy_message_variables = n + 1 - canopy_height;
-            for canopy_schedule in folding_schedules_up_to(canopy_message_variables) {
-                let terminal =
-                    terminal_message_variables(canopy_message_variables, &canopy_schedule);
-                let params = WhirParameters::with_regime_and_terminal_and_schedule(
-                    canopy_message_variables,
-                    canopy_height,
-                    decoding_regime,
-                    terminal,
-                    &canopy_schedule,
-                    1,
-                )?;
-                let proofs = (0..samples)
-                    .map(|sample| {
-                        estimate_proof(
-                            &params,
-                            expand_seed(derive_u64(
-                                seed,
-                                &[n, canopy_height, sample, 0x4341_4e4f_5059],
-                            )),
-                        )
-                    })
-                    .collect::<Result<Vec<_>>>()?;
-                cached_canopy_tails.push(CachedCanopyTail {
-                    height: canopy_height,
-                    schedule: canopy_schedule,
-                    params,
-                    proofs,
-                });
-            }
-        }
-
         for &input_oracles in PAPER_INPUT_ORACLE_COUNTS {
             let mut independent_candidates = Vec::new();
             let mut batched_baseline_candidates = Vec::new();
             let mut quarter_rate_batched_baseline_candidates = Vec::new();
-            let mut experiment2_candidates = Vec::new();
             let mut experiment3_candidates = Vec::new();
 
             for outer_schedule in folding_schedules_up_to(n) {
@@ -820,7 +851,7 @@ pub fn run_proof_estimates_with_regime_and_terminal(
                 let outer_tail_schedule = &outer_schedule[1..];
                 let outer_terminal = terminal_message_variables(n, &outer_schedule);
 
-                let ordinary_outer = WhirParameters::with_regime_and_terminal_and_schedule(
+                let ordinary_outer = paper_parameters(
                     n,
                     OUTER_STARTING_LOG_INV_RATE,
                     decoding_regime,
@@ -828,7 +859,7 @@ pub fn run_proof_estimates_with_regime_and_terminal(
                     &outer_schedule,
                     1,
                 )?;
-                let ordinary_tail = WhirParameters::with_regime_and_terminal_and_schedule(
+                let ordinary_tail = paper_parameters(
                     n - initial_folding_log,
                     initial_folding_log,
                     decoding_regime,
@@ -854,55 +885,60 @@ pub fn run_proof_estimates_with_regime_and_terminal(
                     })
                     .collect::<Vec<_>>();
 
-                let mut independent = Totals::default();
-                let mut independent_queries = BTreeMap::new();
-                for sample in 0..samples {
-                    let proof = estimate_proof(
-                        &ordinary_outer,
-                        expand_seed(derive_u64(
-                            seed,
-                            &[0, input_oracles, n, sample, 0x0049_4e44_4550],
-                        )),
-                    )?;
-                    for _ in 0..input_oracles {
-                        independent.add_whir_with_initial_root(&proof);
+                if input_oracles == 1 {
+                    let mut independent = Totals::default();
+                    let mut independent_queries = BTreeMap::new();
+                    for sample in 0..samples {
+                        let proof = estimate_proof(
+                            &ordinary_outer,
+                            expand_seed(derive_u64(
+                                seed,
+                                &[0, input_oracles, n, sample, 0x0049_4e44_4550],
+                            )),
+                        )?;
+                        for _ in 0..input_oracles {
+                            independent.add_whir_with_initial_root(&proof);
+                        }
+                        accumulate_whir_queries(
+                            &mut independent_queries,
+                            0,
+                            "merkle_whir_batched_after_second",
+                            input_oracles,
+                            n,
+                            "independent WHIR",
+                            "independent Merkle roots",
+                            &ordinary_outer,
+                            &proof,
+                            input_oracles,
+                            input_oracles,
+                            input_oracles,
+                            input_oracles,
+                            false,
+                            true,
+                        );
                     }
-                    accumulate_whir_queries(
-                        &mut independent_queries,
-                        0,
-                        "merkle_whir_independent",
-                        input_oracles,
-                        n,
+                    let independent_events = repeated_rbr_events(
                         "independent WHIR",
-                        "independent Merkle roots",
                         &ordinary_outer,
-                        &proof,
-                        input_oracles,
-                        input_oracles,
-                        input_oracles,
-                        input_oracles,
                         false,
-                        true,
+                        input_oracles,
                     );
+                    independent_candidates.push(ProofCandidate {
+                        input_oracles,
+                        batched_source_oracles: 0,
+                        starting_log_inverse_rate: OUTER_STARTING_LOG_INV_RATE,
+                        initial_folding_log,
+                        canopy_height: None,
+                        outer_folding_schedule: outer_schedule.clone(),
+                        canopy_folding_schedule: None,
+                        recursive_field_bits: FIELD_BITS,
+                        minimum_rbr_security_bits: minimum_event_security(&independent_events),
+                        algebraic_rbr_union_bound_bits: union_bound_security(&independent_events),
+                        rbr_events: independent_events,
+                        totals: independent,
+                        queries: independent_queries,
+                    });
                 }
-                let independent_events =
-                    repeated_rbr_events("independent WHIR", &ordinary_outer, false, input_oracles);
-                independent_candidates.push(ProofCandidate {
-                    input_oracles,
-                    batched_source_oracles: 0,
-                    starting_log_inverse_rate: OUTER_STARTING_LOG_INV_RATE,
-                    initial_folding_log,
-                    canopy_height: None,
-                    outer_folding_schedule: outer_schedule.clone(),
-                    canopy_folding_schedule: None,
-                    recursive_field_bits: FIELD_BITS,
-                    minimum_rbr_security_bits: minimum_event_security(&independent_events),
-                    algebraic_rbr_union_bound_bits: union_bound_security(&independent_events),
-                    rbr_events: independent_events,
-                    totals: independent,
-                    queries: independent_queries,
-                });
-
                 let mut batched_baseline = Totals::default();
                 let mut batched_baseline_queries = BTreeMap::new();
                 for (sample, first_queries) in ordinary_first_queries.iter().enumerate() {
@@ -996,7 +1032,7 @@ pub fn run_proof_estimates_with_regime_and_terminal(
                     queries: batched_baseline_queries,
                 });
 
-                let quarter_outer = WhirParameters::with_regime_and_terminal_and_schedule(
+                let quarter_outer = paper_parameters(
                     n,
                     QUARTER_RATE_STARTING_LOG_INV_RATE,
                     decoding_regime,
@@ -1006,7 +1042,7 @@ pub fn run_proof_estimates_with_regime_and_terminal(
                 )?;
                 let quarter_tail_log_inverse_rate =
                     QUARTER_RATE_STARTING_LOG_INV_RATE + initial_folding_log - 1;
-                let quarter_tail = WhirParameters::with_regime_and_terminal_and_schedule(
+                let quarter_tail = paper_parameters(
                     n - initial_folding_log,
                     quarter_tail_log_inverse_rate,
                     decoding_regime,
@@ -1032,6 +1068,7 @@ pub fn run_proof_estimates_with_regime_and_terminal(
                     .collect::<Vec<_>>();
                 let mut quarter_rate_batched_baseline = Totals::default();
                 let mut quarter_rate_direct = Totals::default();
+                let mut quarter_direct_queries = BTreeMap::new();
                 let mut quarter_rate_batched_baseline_queries = BTreeMap::new();
                 for (sample, first_queries) in quarter_first_queries.iter().enumerate() {
                     let first_auth = frontier_hash_count(
@@ -1065,6 +1102,23 @@ pub fn run_proof_estimates_with_regime_and_terminal(
                             )),
                         )?;
                         quarter_rate_direct.add_whir_with_initial_root(&direct);
+                        accumulate_whir_queries(
+                            &mut quarter_direct_queries,
+                            0,
+                            "merkle_whir_batched_rate_quarter_after_second",
+                            input_oracles,
+                            n,
+                            "single-input WHIR",
+                            "independent Merkle roots",
+                            &quarter_outer,
+                            &direct,
+                            1,
+                            1,
+                            1,
+                            1,
+                            false,
+                            true,
+                        );
                     }
                     accumulate_front_queries(
                         &mut quarter_rate_batched_baseline_queries,
@@ -1120,6 +1174,7 @@ pub fn run_proof_estimates_with_regime_and_terminal(
                 ));
                 if input_oracles == 1 {
                     quarter_rate_batched_baseline = quarter_rate_direct;
+                    quarter_rate_batched_baseline_queries = quarter_direct_queries;
                     quarter_rate_events = tagged_rbr_events("rate-1/4 WHIR", &quarter_outer, false);
                 }
                 quarter_rate_batched_baseline_candidates.push(ProofCandidate {
@@ -1138,7 +1193,7 @@ pub fn run_proof_estimates_with_regime_and_terminal(
                     queries: quarter_rate_batched_baseline_queries,
                 });
 
-                let hybrid_outer = WhirParameters::with_regime_and_terminal_and_schedule(
+                let hybrid_outer = paper_parameters(
                     n,
                     OUTER_STARTING_LOG_INV_RATE,
                     decoding_regime,
@@ -1146,7 +1201,7 @@ pub fn run_proof_estimates_with_regime_and_terminal(
                     &outer_schedule,
                     CANOPY_HYBRID_CODEWORD_REDUCTION,
                 )?;
-                let hybrid_tail = WhirParameters::with_regime_and_terminal_and_schedule(
+                let hybrid_tail = paper_parameters(
                     n - initial_folding_log,
                     initial_folding_log + 1,
                     decoding_regime,
@@ -1171,17 +1226,6 @@ pub fn run_proof_estimates_with_regime_and_terminal(
                         )
                     })
                     .collect::<Vec<_>>();
-                let outer_tail_proofs = (0..samples)
-                    .map(|sample| {
-                        estimate_proof(
-                            &hybrid_tail,
-                            expand_seed(derive_u64(
-                                seed,
-                                &[2, input_oracles, n, sample, 0x004f_5554_4552],
-                            )),
-                        )
-                    })
-                    .collect::<Result<Vec<_>>>()?;
                 let bottom_hashes_by_height = (1..=n)
                     .map(|height| {
                         hybrid_first_queries
@@ -1200,101 +1244,6 @@ pub fn run_proof_estimates_with_regime_and_terminal(
                             .collect::<Result<Vec<_>>>()
                     })
                     .collect::<Result<Vec<_>>>()?;
-
-                for canopy_tail in &cached_canopy_tails {
-                    let mut totals = Totals::default();
-                    let mut queries = BTreeMap::new();
-                    for sample in 0..samples {
-                        let first_queries = &hybrid_first_queries[sample];
-                        let bottom_hashes = bottom_hashes_by_height[canopy_tail.height - 1][sample];
-                        let first_fields = first_queries.len() * first_width;
-                        for _ in 0..input_oracles {
-                            totals.add_hybrid_front(&hybrid_outer, bottom_hashes, first_fields);
-                            totals.add_whir_with_existing_root(&canopy_tail.proofs[sample]);
-                            totals.add_whir_with_existing_root(&outer_tail_proofs[sample]);
-                        }
-                        accumulate_front_queries(
-                            &mut queries,
-                            2,
-                            "canopy_unbatched",
-                            input_oracles,
-                            n,
-                            "outer first oracle via Canopy",
-                            "independent Canopy bottom forests",
-                            hybrid_first_geometry,
-                            first_queries.len(),
-                            input_oracles * bottom_hashes,
-                            input_oracles * first_fields,
-                        );
-                        accumulate_whir_queries(
-                            &mut queries,
-                            2,
-                            "canopy_unbatched",
-                            input_oracles,
-                            n,
-                            "Canopy claim WHIR",
-                            "independent Merkle roots",
-                            &canopy_tail.params,
-                            &canopy_tail.proofs[sample],
-                            input_oracles,
-                            input_oracles,
-                            input_oracles,
-                            input_oracles,
-                            false,
-                            true,
-                        );
-                        accumulate_whir_queries(
-                            &mut queries,
-                            2,
-                            "canopy_unbatched",
-                            input_oracles,
-                            n,
-                            "outer second-oracle WHIR",
-                            "independent Merkle roots",
-                            &hybrid_tail,
-                            &outer_tail_proofs[sample],
-                            input_oracles,
-                            input_oracles,
-                            input_oracles,
-                            input_oracles,
-                            false,
-                            true,
-                        );
-                    }
-                    let mut events = repeated_rbr_events(
-                        "outer initial transition",
-                        &hybrid_outer,
-                        true,
-                        input_oracles,
-                    );
-                    events.extend(repeated_rbr_events(
-                        "outer second-oracle WHIR",
-                        &hybrid_tail,
-                        false,
-                        input_oracles,
-                    ));
-                    events.extend(repeated_rbr_events(
-                        "Canopy claim WHIR",
-                        &canopy_tail.params,
-                        false,
-                        input_oracles,
-                    ));
-                    experiment2_candidates.push(ProofCandidate {
-                        input_oracles,
-                        batched_source_oracles: 0,
-                        starting_log_inverse_rate: OUTER_STARTING_LOG_INV_RATE,
-                        initial_folding_log,
-                        canopy_height: Some(canopy_tail.height),
-                        outer_folding_schedule: outer_schedule.clone(),
-                        canopy_folding_schedule: Some(canopy_tail.schedule.clone()),
-                        recursive_field_bits: FIELD_BITS,
-                        minimum_rbr_security_bits: minimum_event_security(&events),
-                        algebraic_rbr_union_bound_bits: union_bound_security(&events),
-                        rbr_events: events,
-                        totals,
-                        queries,
-                    });
-                }
 
                 let canopy_height = aligned_canopy_height(initial_folding_log);
                 let source_oracles = aligned_source_oracles(input_oracles);
@@ -1396,20 +1345,18 @@ pub fn run_proof_estimates_with_regime_and_terminal(
                     batched.algebraic_rbr_union_bound_bits =
                         independent.algebraic_rbr_union_bound_bits;
                     batched.rbr_events = independent.rbr_events.clone();
+                    batched.queries = independent.queries.clone();
                 }
             }
 
-            let independent = best_rbr_candidate(&independent_candidates);
             let batched_baseline = best_rbr_candidate(&batched_baseline_candidates);
             let quarter_rate_batched_baseline =
                 best_rbr_candidate(&quarter_rate_batched_baseline_candidates);
-            let experiment2 = best_rbr_candidate(&experiment2_candidates);
             let experiment3 = best_rbr_candidate(&experiment3_candidates);
-            let baseline_bytes = independent.totals.bytes() as f64 / samples as f64;
+            let baseline_bytes = batched_baseline.totals.bytes() as f64 / samples as f64;
             let batched_baseline_bytes = batched_baseline.totals.bytes() as f64 / samples as f64;
 
             for (experiment, scheme, candidates) in [
-                (0, "merkle_whir_independent", &independent_candidates),
                 (
                     0,
                     "merkle_whir_batched_after_second",
@@ -1420,7 +1367,6 @@ pub fn run_proof_estimates_with_regime_and_terminal(
                     "merkle_whir_batched_rate_quarter_after_second",
                     &quarter_rate_batched_baseline_candidates,
                 ),
-                (2, "canopy_unbatched", &experiment2_candidates),
                 (3, "canopy_schwartz_zippel", &experiment3_candidates),
             ] {
                 folding_grid_rows.extend(candidates.iter().map(|candidate| {
@@ -1437,14 +1383,12 @@ pub fn run_proof_estimates_with_regime_and_terminal(
             }
 
             for (experiment, scheme, candidate) in [
-                (0, "merkle_whir_independent", independent),
                 (0, "merkle_whir_batched_after_second", batched_baseline),
                 (
                     0,
                     "merkle_whir_batched_rate_quarter_after_second",
                     quarter_rate_batched_baseline,
                 ),
-                (2, "canopy_unbatched", experiment2),
                 (3, "canopy_schwartz_zippel", experiment3),
             ] {
                 proof_rows.push(candidate_row(
@@ -1485,7 +1429,7 @@ pub fn run_proof_estimates_with_regime_and_terminal(
         &rbr_security_rows,
     )?;
 
-    for experiment in [2usize, 3] {
+    for experiment in [3usize] {
         let experiment_proofs = proof_rows
             .iter()
             .filter(|row| row.experiment == 0 || row.experiment == experiment)
@@ -1529,44 +1473,24 @@ fn write_multi_input_summary(
     let mut file = File::create(path)?;
     writeln!(
         file,
-        "# Multi-input Experiments 2 and 3 ({})\n",
+        "# Batched WHIR and Canopy Exp3 ({})\n",
         decoding_regime.label()
     )?;
-    writeln!(
-        file,
-        "This report uses `t in {{1,2,4,8}}` input oracles and `n in {{2^18,2^22,2^26,2^30}}`, no proof of work, 256-bit inputs, folding parameters in `{{3,4}}`, terminal messages of at most `2^10` elements, and the existing {} slack. The independent and original batched baselines start at rate 1/2; the additional batched baseline starts at rate 1/4.{} Proof sizes are means over {} deterministic query samples from seed `{:#x}`.\n",
-        if decoding_regime == WhirDecodingRegime::Johnson {
-            "Johnson eta=sqrt(rho)/20"
-        } else {
-            "capacity eta=rho/20"
-        },
-        if decoding_regime.is_conjectural() {
-            " The capacity-bound rows are conjectural."
-        } else {
-            " The Johnson folding bound uses the exact exceptional-set expression in Theorem 4.6."
-        },
-        samples,
-        seed,
-    )?;
-    writeln!(
-        file,
-        "The independent baseline contains `t` complete rate-1/2 Merkle-WHIR proofs. The two batched baselines, at initial rates 1/2 and 1/4, keep `t` independent first transitions and batch the `t` second-oracle claims into one tail (a no-op when `t=1`). Experiment 2 makes `2t` recursive claims and proves all independently. Experiment 3 batches its `2t` aligned 256-bit claims into one generalized Schwartz--Zippel identity, sending `2(2t)-3` cross-term coefficients before the challenge.\n"
-    )?;
-
+    writeln!(file, "Batched WHIR rates 1/2 and 1/4, and Canopy Exp3; GF(2^256), BLAKE3, 128-bit target with a 136-bit local algebraic/query budget. t=1,2,4,8; n=18,20,...,30. Fold logs 3/4 searched with terminal cap 10. {} deterministic query samples, seed {:#x}; {:?} decoding. Authentication counts are verifier leaf and parent calls; H2F is separate. WHIR proof models deduplicate query rows.\n", samples, seed, decoding_regime)?;
     writeln!(file, "## Selected proof sizes\n")?;
     writeln!(
         file,
         "Both relative columns use the corresponding Merkle-WHIR baseline at the same `t,n`.\n"
     )?;
-    writeln!(file, "| t | log2 n | scheme | rate | batched sources | folds | h | terminal | min event bits | union bits | 128-bit RBR? | KiB | vs independent | vs batched |")?;
+    writeln!(file, "| t | log2 n | scheme | rate | batched sources | folds | h | terminal | min event bits | union bits | 128-bit RBR? | KiB | verifier auth hashes | H2F | vs batched | vs batched |")?;
     writeln!(
         file,
-        "|---:|---:|---|---|---:|---|---:|---:|---:|---:|:---:|---:|---:|---:|"
+        "|---:|---:|---|---|---:|---|---:|---:|---:|---:|:---:|---:|---:|---:|---:|---:|"
     )?;
     for row in proof_rows {
         writeln!(
             file,
-            "| {} | {} | {} | {} | {} | {} | {} | {} | {:.2} | {:.2} | {} | {:.2} | {:.3}x | {:.3}x |",
+            "| {} | {} | {} | {} | {} | {} | {} | {} | {:.2} | {:.2} | {} | {:.2} | {:.2} | {:.2} | {:.3}x | {:.3}x |",
             row.input_oracles,
             row.log_message_length,
             row.scheme,
@@ -1580,22 +1504,27 @@ fn write_multi_input_summary(
             row.algebraic_rbr_union_bound_bits,
             if row.meets_128_bit_rbr { "yes" } else { "no" },
             row.mean_total_kib,
+            row.verifier_auth_hashes,
+            row.verifier_hash_to_field,
             row.relative_to_merkle_whir,
             row.relative_to_batched_merkle_whir,
         )?;
     }
 
     writeln!(file, "\n## Component breakdown\n")?;
-    writeln!(file, "All entries are KiB.\n")?;
-    writeln!(file, "| t | log2 n | scheme | roots | auth | OOD | sumcheck | batching | answers | coefficients | total |")?;
     writeln!(
         file,
-        "|---:|---:|---|---:|---:|---:|---:|---:|---:|---:|---:|"
+        "Size entries are KiB; authentication and H2F columns count hash calls.\n"
+    )?;
+    writeln!(file, "| t | log2 n | scheme | roots | auth | OOD | sumcheck | batching | answers | coefficients | total | verifier auth hashes | H2F |")?;
+    writeln!(
+        file,
+        "|---:|---:|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|"
     )?;
     for row in proof_rows {
         writeln!(
             file,
-            "| {} | {} | {} | {:.2} | {:.2} | {:.2} | {:.2} | {:.2} | {:.2} | {:.2} | {:.2} |",
+            "| {} | {} | {} | {:.2} | {:.2} | {:.2} | {:.2} | {:.2} | {:.2} | {:.2} | {:.2} | {:.2} | {:.2} |",
             row.input_oracles,
             row.log_message_length,
             row.scheme,
@@ -1607,6 +1536,8 @@ fn write_multi_input_summary(
             row.mean_query_answer_bytes / 1024.0,
             row.mean_final_coefficient_bytes / 1024.0,
             row.mean_total_kib,
+            row.verifier_auth_hashes,
+            row.verifier_hash_to_field,
         )?;
     }
 
@@ -1742,10 +1673,18 @@ fn stage_rows(
     scheme: &str,
     input_oracles: usize,
     log_input_length: usize,
-    total_mean: f64,
+    total_values: &[Duration],
     stages: BTreeMap<&'static str, Vec<Duration>>,
 ) -> Vec<PaperTimingStageRow> {
-    stages
+    let total_mean = duration_stats(total_values).0;
+    let mut adjustment: Vec<f64> = total_values
+        .iter()
+        .enumerate()
+        .map(|(i, total)| {
+            total.as_secs_f64() - stages.values().map(|v| v[i].as_secs_f64()).sum::<f64>()
+        })
+        .collect();
+    let mut rows: Vec<_> = stages
         .into_iter()
         .map(|(stage, values)| {
             let (mean, median, _, _) = duration_stats(&values);
@@ -1761,7 +1700,31 @@ fn stage_rows(
                 percent_of_mean_total: 100.0 * mean / total_mean,
             }
         })
-        .collect()
+        .collect();
+    // Independently timed tail subtraction can overlap measured substages.
+    // Report a signed adjustment; do not alter any measured duration.
+    if adjustment.iter().any(|x| x.abs() > 1e-9) {
+        let mean = adjustment.iter().sum::<f64>() / adjustment.len() as f64;
+        adjustment.sort_by(f64::total_cmp);
+        let middle = adjustment.len() / 2;
+        let median = if adjustment.len() % 2 == 0 {
+            (adjustment[middle - 1] + adjustment[middle]) / 2.0
+        } else {
+            adjustment[middle]
+        };
+        rows.push(PaperTimingStageRow {
+            experiment,
+            scheme: scheme.into(),
+            input_oracles,
+            log_input_length,
+            stage: "separately_measured_component_adjustment".into(),
+            repetitions: adjustment.len(),
+            mean_seconds: mean,
+            median_seconds: median,
+            percent_of_mean_total: 100.0 * mean / total_mean,
+        });
+    }
+    rows
 }
 
 /// Remove the reference implementation's native sub-`2^f` suffix so the
@@ -1794,23 +1757,10 @@ fn proving_time_until_paper_terminal(
     Ok(full_opening_time.saturating_sub(suffix.ood_time + suffix.proving_time))
 }
 
-// Heights selected by the existing 100-sample paper proof-size grids. Both
-// 256-bit fields have the same estimator geometry. The executable folding
-// schedule remains uniformly three variables, as in the historical timings.
-fn paper_timing_unbatched_height(n: usize, regime: WhirDecodingRegime) -> usize {
-    match (n, regime) {
-        (22, _) => 9,
-        (26, WhirDecodingRegime::Johnson) => 9,
-        (30, WhirDecodingRegime::Johnson) => 11,
-        (26 | 30, WhirDecodingRegime::Capacity) => 12,
-        _ => n,
-    }
-}
-
+// Optimize the actual executable (uniform fold-3) geometry, independently of
+// the {3,4} schedule search used for headline proof sizes. Cache outside timers.
 struct HybridIteration {
-    independent_one: Duration,
     initial_commitment: Duration,
-    independent_one_stages: BTreeMap<&'static str, Duration>,
     ordinary_first_transition: Duration,
     ordinary_first_transition_stages: BTreeMap<&'static str, Duration>,
     ordinary_tail: Duration,
@@ -1820,19 +1770,13 @@ struct HybridIteration {
     quarter_tail: Duration,
     quarter_tail_ood: Duration,
     quarter_first_transition_stages: BTreeMap<&'static str, Duration>,
-    experiment2_front: Duration,
-    experiment2_commitment: Duration,
-    hybrid_outer_tail: Duration,
-    experiment2_canopy_tail: Duration,
     outer_ood: Duration,
     hybrid_outer_front_after_ood: Duration,
-    experiment2_front_stages: BTreeMap<&'static str, Duration>,
     outer_second: Vec<Fr>,
 }
 
 fn run_hybrid_iteration(
     message: &[Fr],
-    first_oracle_row_indices: &[usize],
     decoding_regime: WhirDecodingRegime,
 ) -> Result<HybridIteration> {
     let outer = execute_whir(
@@ -1859,17 +1803,6 @@ fn run_hybrid_iteration(
         commit_matrix_with_whir(&first_oracle, first_oracle.row_width)?;
     std::hint::black_box(base_commitment.root);
     let initial_commitment = outer_rs + outer_merkle;
-    let independent_one = initial_commitment + outer_proving_time;
-    let independent_one_stages = BTreeMap::from([
-        ("initial_rs_encoding", outer_rs),
-        ("initial_merkle_tree", outer_merkle),
-        ("initial_ood_evaluations", outer.ood_time),
-        (
-            "whir_opening_proof_after_ood",
-            outer_proving_time.saturating_sub(outer.ood_time),
-        ),
-    ]);
-
     let quarter = execute_whir(
         &[message.to_vec()],
         QUARTER_RATE_STARTING_LOG_INV_RATE,
@@ -1893,39 +1826,6 @@ fn run_hybrid_iteration(
         commit_matrix_with_whir(&quarter_first_oracle, quarter_first_oracle.row_width)?;
     std::hint::black_box(quarter_commitment.root);
     let quarter_initial_commitment = quarter_rs + quarter_merkle;
-
-    let experiment2_height = paper_timing_unbatched_height(message.len().ilog2() as usize, decoding_regime);
-    let (_, experiment2_canopy, experiment2_profile) =
-        CanopyVectorCommitment::commit_whir_profiled(
-            &first_oracle,
-            experiment2_height,
-            CANOPY_HYBRID_CODEWORD_REDUCTION,
-            PAPER_TIMING_FOLDING_LOG,
-        )?;
-    let start = Instant::now();
-    let experiment2_opening = CanopyVectorCommitment::open_whir_bottom(
-        &experiment2_canopy,
-        &first_oracle,
-        first_oracle_row_indices,
-    )?;
-    std::hint::black_box(experiment2_opening.auth_hashes.len());
-    let experiment2_canopy_open = start.elapsed();
-    let experiment2_canopy_tail = if experiment2_canopy.canopy_message.len() <= 1 << PAPER_TERMINAL_MESSAGE_VARIABLES {
-        Duration::ZERO
-    } else {
-        let tail = execute_whir(
-            std::slice::from_ref(&experiment2_canopy.canopy_message),
-            experiment2_height - CANOPY_HYBRID_CODEWORD_REDUCTION,
-            decoding_regime, PAPER_TIMING_FOLDING_LOG,
-        )?;
-        proving_time_until_paper_terminal(
-            tail.ood_time + tail.proving_time,
-            &experiment2_canopy.canopy_message,
-            experiment2_height - CANOPY_HYBRID_CODEWORD_REDUCTION,
-            decoding_regime,
-        )?
-    };
-
     let aligned_len = message.len() >> PAPER_TIMING_FOLDING_LOG;
     let outer_second = message[..aligned_len].to_vec();
 
@@ -2004,33 +1904,8 @@ fn run_hybrid_iteration(
         ),
     ]);
     let hybrid_outer_front = outer_proving_time.saturating_sub(hybrid_outer_tail_proving_time);
-    let experiment2_front =
-        outer_rs + experiment2_profile.total + experiment2_canopy_open + hybrid_outer_front;
-
-    let experiment2_front_stages = BTreeMap::from([
-        ("outer_rs_encoding", outer_rs),
-        ("outer_ood_evaluations", outer.ood_time),
-        ("canopy_bottom_forest", experiment2_profile.bottom_forest),
-        ("canopy_hash_to_field", experiment2_profile.hash_to_field),
-        (
-            "canopy_rs_encoding",
-            experiment2_profile.reed_solomon_encoding,
-        ),
-        (
-            "canopy_codeword_merkle_tree",
-            experiment2_profile.codeword_merkle_tree,
-        ),
-        ("canopy_commitment_other", experiment2_profile.other()),
-        ("canopy_bottom_opening", experiment2_canopy_open),
-        (
-            "outer_initial_whir_stage_after_ood",
-            hybrid_outer_front.saturating_sub(outer.ood_time),
-        ),
-    ]);
     Ok(HybridIteration {
-        independent_one,
         initial_commitment,
-        independent_one_stages,
         ordinary_first_transition,
         ordinary_first_transition_stages,
         ordinary_tail: ordinary_tail_proving_time,
@@ -2040,13 +1915,8 @@ fn run_hybrid_iteration(
         quarter_tail: quarter_tail_proving_time,
         quarter_tail_ood: quarter_tail.ood_time,
         quarter_first_transition_stages,
-        experiment2_front,
-        experiment2_commitment: outer_rs + experiment2_profile.total,
-        hybrid_outer_tail: hybrid_outer_tail_proving_time,
-        experiment2_canopy_tail,
         outer_ood: outer.ood_time,
         hybrid_outer_front_after_ood: hybrid_outer_front.saturating_sub(outer.ood_time),
-        experiment2_front_stages,
         outer_second,
     })
 }
@@ -2081,7 +1951,13 @@ fn generalized_sz_cross_term_work(vectors: &[Vec<Fr>]) -> Duration {
     let points = (0..vectors.len())
         .map(|claim| {
             (0..variables)
-                .map(|variable| crate::benchmark_field_element(0x43414e4f5059, claim as u64 + 1, variable as u64))
+                .map(|variable| {
+                    crate::benchmark_field_element(
+                        0x43414e4f5059,
+                        claim as u64 + 1,
+                        variable as u64,
+                    )
+                })
                 .collect::<Vec<_>>()
         })
         .collect::<Vec<_>>();
@@ -2188,7 +2064,8 @@ pub fn run_prover_timings_with_regime(
     fs::create_dir_all(output_dir)?;
     let length = 1usize << log_length;
     let values: Vec<_> = (0..length as u64)
-        .map(|index| crate::benchmark_field_element(seed, 0, index)).collect();
+        .map(|index| crate::benchmark_field_element(seed, 0, index))
+        .collect();
 
     let mut timing_schedule = Vec::new();
     let mut remaining = log_length;
@@ -2196,7 +2073,7 @@ pub fn run_prover_timings_with_regime(
         timing_schedule.push(PAPER_TIMING_FOLDING_LOG);
         remaining -= PAPER_TIMING_FOLDING_LOG;
     }
-    let outer_params = WhirParameters::with_regime_and_terminal_and_schedule(
+    let outer_params = paper_parameters(
         log_length,
         OUTER_STARTING_LOG_INV_RATE,
         decoding_regime,
@@ -2210,10 +2087,17 @@ pub fn run_prover_timings_with_regime(
     let mut commitments = BTreeMap::<TimingKey, Vec<Duration>>::new();
     let mut stages = BTreeMap::<TimingKey, BTreeMap<&'static str, Vec<Duration>>>::new();
     for repetition in 0..warmups + repetitions {
-        eprintln!("paper timing iteration {}/{}: common stages", repetition + 1, warmups + repetitions);
-        let iteration = run_hybrid_iteration(&values, &first_query_leaves, decoding_regime)?;
+        eprintln!(
+            "paper timing iteration {}/{}: common stages",
+            repetition + 1,
+            warmups + repetitions
+        );
+        let iteration = run_hybrid_iteration(&values, decoding_regime)?;
         for &input_oracles in PAPER_INPUT_ORACLE_COUNTS {
-            eprintln!("paper timing iteration {}: t={input_oracles}", repetition + 1);
+            eprintln!(
+                "paper timing iteration {}: t={input_oracles}",
+                repetition + 1
+            );
             // Experiment 3's independent input codewords have identical
             // geometry, so schedule their NTTs concurrently on the shared
             // worker pool. The Canopy layer follows the same staged batch path.
@@ -2314,22 +2198,6 @@ pub fn run_prover_timings_with_regime(
                 continue;
             }
 
-            let independent_total = scale_duration(iteration.independent_one, input_oracles);
-            let independent_stages = iteration
-                .independent_one_stages
-                .iter()
-                .map(|(&stage, &duration)| (stage, scale_duration(duration, input_oracles)))
-                .collect();
-            record_timing(
-                &mut totals,
-                &mut commitments,
-                &mut stages,
-                (input_oracles, "merkle_whir_independent"),
-                independent_total,
-                scale_duration(iteration.initial_commitment, input_oracles),
-                independent_stages,
-            );
-
             let ordinary_front = scale_duration(iteration.ordinary_first_transition, input_oracles);
             let batched_total = ordinary_front + ordinary_cross_terms + ordinary_batch_tail;
             let mut ordinary_stages = iteration
@@ -2390,33 +2258,12 @@ pub fn run_prover_timings_with_regime(
                 quarter_stages,
             );
 
-            let experiment2_front = scale_duration(iteration.experiment2_front, input_oracles);
             let experiment3_outer_front =
                 iteration.outer_ood + iteration.hybrid_outer_front_after_ood;
             let experiment3_commitment = experiment3_outer_rs + experiment3_profile.total;
             let experiment3_front = experiment3_commitment
                 + experiment3_canopy_open
                 + scale_duration(experiment3_outer_front, input_oracles);
-            let hybrid_outer_tails = scale_duration(iteration.hybrid_outer_tail, input_oracles);
-            let experiment2_canopy_tails = scale_duration(iteration.experiment2_canopy_tail, input_oracles);
-            let experiment2_total = experiment2_front + hybrid_outer_tails + experiment2_canopy_tails;
-            let mut experiment2_stages = iteration
-                .experiment2_front_stages
-                .iter()
-                .map(|(&stage, &duration)| (stage, scale_duration(duration, input_oracles)))
-                .collect::<BTreeMap<_, _>>();
-            experiment2_stages.insert("outer_second_oracle_whirs", hybrid_outer_tails);
-            experiment2_stages.insert("canopy_claim_whirs", experiment2_canopy_tails);
-            record_timing(
-                &mut totals,
-                &mut commitments,
-                &mut stages,
-                (input_oracles, "canopy_unbatched"),
-                experiment2_total,
-                scale_duration(iteration.experiment2_commitment, input_oracles),
-                experiment2_stages,
-            );
-
             let experiment3_total =
                 experiment3_front + hybrid_cross_terms + hybrid_batch_tail_proving_time;
             let mut experiment3_stages = BTreeMap::from([
@@ -2459,12 +2306,6 @@ pub fn run_prover_timings_with_regime(
     let mut timing_rows = Vec::new();
     let mut all_stage_rows = Vec::new();
     for &input_oracles in PAPER_INPUT_ORACLE_COUNTS {
-        let independent_mean = duration_stats(
-            totals
-                .get(&(input_oracles, "merkle_whir_independent"))
-                .context("missing independent timing samples")?,
-        )
-        .0;
         let batched_mean = duration_stats(
             totals
                 .get(&(input_oracles, "merkle_whir_batched_after_second"))
@@ -2472,13 +2313,6 @@ pub fn run_prover_timings_with_regime(
         )
         .0;
         for (experiment, scheme, starting_log_inverse_rate, height, note) in [
-            (
-                0,
-                "merkle_whir_independent",
-                OUTER_STARTING_LOG_INV_RATE,
-                None,
-                "t independent verifier-checked WHIR provers",
-            ),
             (
                 0,
                 "merkle_whir_batched_after_second",
@@ -2494,13 +2328,6 @@ pub fn run_prover_timings_with_regime(
                 "rate-1/4 independent first transitions; distinct-functional SZ batching from the second oracle onward",
             ),
             (
-                2,
-                "canopy_unbatched",
-                OUTER_STARTING_LOG_INV_RATE,
-                Some(paper_timing_unbatched_height(log_length, decoding_regime)),
-                "t Canopy fronts followed by independent outer and Canopy claim tails",
-            ),
-            (
                 3,
                 "canopy_schwartz_zippel",
                 OUTER_STARTING_LOG_INV_RATE,
@@ -2510,7 +2337,6 @@ pub fn run_prover_timings_with_regime(
         ] {
             let key = (input_oracles, scheme);
             let values = totals.get(&key).context("missing timing samples")?;
-            let mean = duration_stats(values).0;
             timing_rows.push(timing_row(
                 experiment,
                 scheme,
@@ -2523,7 +2349,7 @@ pub fn run_prover_timings_with_regime(
                 commitments
                     .get(&key)
                     .context("missing commitment timing samples")?,
-                independent_mean,
+                batched_mean,
                 batched_mean,
                 note,
             ));
@@ -2532,21 +2358,33 @@ pub fn run_prover_timings_with_regime(
                 scheme,
                 input_oracles,
                 log_length,
-                mean,
+                values,
                 stages.remove(&key).context("missing timing stages")?,
             ));
         }
     }
 
     let mut samples = csv::Writer::from_path(output_dir.join("prover_timing_samples.csv"))?;
-    samples.write_record(["field", "input_oracles", "scheme", "repetition", "commitment_seconds", "opening_seconds", "prover_seconds"])?;
+    samples.write_record([
+        "field",
+        "input_oracles",
+        "scheme",
+        "repetition",
+        "commitment_seconds",
+        "opening_seconds",
+        "prover_seconds",
+    ])?;
     for (&(input_oracles, scheme), values) in &totals {
         for (repetition, &total) in values.iter().enumerate() {
             let commitment = commitments[&(input_oracles, scheme)][repetition];
             samples.write_record([
-                crate::BENCHMARK_FIELD_LABEL.to_owned(), input_oracles.to_string(), scheme.to_owned(),
-                (repetition + 1).to_string(), commitment.as_secs_f64().to_string(),
-                total.saturating_sub(commitment).as_secs_f64().to_string(), total.as_secs_f64().to_string(),
+                crate::BENCHMARK_FIELD_LABEL.to_owned(),
+                input_oracles.to_string(),
+                scheme.to_owned(),
+                (repetition + 1).to_string(),
+                commitment.as_secs_f64().to_string(),
+                total.saturating_sub(commitment).as_secs_f64().to_string(),
+                total.as_secs_f64().to_string(),
             ])?;
         }
     }
@@ -2578,28 +2416,19 @@ fn write_timing_summary(
             "Final Johnson-bound"
         }
     )?;
-    writeln!(file, "Field: **{}**. Inputs and evaluation points are deterministic full-width values.\n", crate::BENCHMARK_FIELD_LABEL)?;
     writeln!(
         file,
-        "Each input oracle has `2^{}` field elements. The rate-1/2 rows use a first codeword of `2^{}` elements, while the added rate-1/4 batched baseline uses `2^{}` elements. All WHIR components are generated and verifier-checked at 128-bit security over the configured 256-bit field, in {} mode, with no proof of work.{} Input generation, verification, and deallocation are excluded. Commitment time contains initial RS encoding and the initial Merkle/Canopy commitment; opening time contains OOD work, openings, recursive oracle commitments, Schwartz--Zippel preprocessing, and recursive WHIR. The selected initial fold is three: Experiment 3 therefore uses aligned Canopy height four, while Experiment 2 uses its independently optimized height `h={}` with its Canopy claim tail measured separately. To match the paper's at-most-`2^10` stopping rule, the reference implementation's native smaller suffix is separately executed and subtracted. Baseline and Experiment-2 independent stages are measured once per repetition and scaled by `t`. Experiment 3 executes its outer RS encodings, Canopy forests, H2F conversions, Canopy RS encodings, Merkle commitments, and bottom openings concurrently at the reported `t`; its transcript-dependent outer first transitions remain scaled independent work. Every batched recursive proof and generalized distinct-functional cross-evaluation stage is executed at the reported `t`.\n",
-        rows[0].log_input_length,
-        rows[0].log_input_length + OUTER_STARTING_LOG_INV_RATE,
-        rows[0].log_input_length + QUARTER_RATE_STARTING_LOG_INV_RATE,
-        decoding_regime.label(),
-        if decoding_regime.is_conjectural() {
-            " Capacity-bound soundness relies on STIR Conjecture 5.6 and is not proved."
-        } else {
-            ""
-        },
-        paper_timing_unbatched_height(rows[0].log_input_length, decoding_regime),
+        "Field: **{}**. Inputs and evaluation points are deterministic full-width values.\n",
+        crate::BENCHMARK_FIELD_LABEL
     )?;
+    writeln!(file, "Three batched schemes, 136-bit local security budget. Signed component adjustments reconcile separately measured substages without changing timed samples. Fold log 3; Exp3 height 4. Timings include commitment and opening, exclude input generation and verification. This component harness executes and verifies native WHIR components, subtracts the separately measured native suffix for the paper terminal cap, scales baseline front work by t, and executes batched tails and Exp3 commitments at t. It does not serialize a complete Exp3 proof.\n")?;
     writeln!(
         file,
         "The base code is shared exactly: WHIR's interleaved NTT produces the same row-major matrix for every scheme. Merkle-WHIR commits all of its rows with WHIR's matrix/Merkle commitment; Canopy starts its bottom forest from those same WHIR row hashes and also uses WHIR's interleaved NTT plus matrix/Merkle commitment for the Canopy-layer codeword. Initial OOD evaluations are accounted as opening work.\n"
     )?;
     writeln!(
         file,
-        "| experiment | t | scheme | rate | log2 codeword | h | repetitions | commitment s | opening s | total s | median total s | vs independent | vs batched |"
+        "| experiment | t | scheme | rate | log2 codeword | h | repetitions | commitment s | opening s | total s | median total s | vs batched | vs batched |"
     )?;
     writeln!(
         file,
@@ -2652,6 +2481,47 @@ mod tests {
     use tempfile::tempdir;
 
     use super::*;
+
+    #[test]
+    fn local_budget_covers_the_composed_batched_grid() {
+        for &n in PAPER_LOG_LENGTHS {
+            for schedule in folding_schedules_up_to(n) {
+                let fold = schedule[0];
+                let terminal = terminal_message_variables(n, &schedule);
+                for (rate, reduction, sources) in [(1, 1, 8), (2, 1, 8), (1, 0, 16)] {
+                    let outer = paper_parameters(
+                        n,
+                        rate,
+                        WhirDecodingRegime::Johnson,
+                        terminal,
+                        &schedule,
+                        reduction,
+                    )
+                    .unwrap();
+                    let tail = paper_parameters(
+                        n - fold,
+                        rate + fold - reduction,
+                        WhirDecodingRegime::Johnson,
+                        terminal,
+                        &schedule[1..],
+                        1,
+                    )
+                    .unwrap();
+                    let mut events = repeated_rbr_events("outer", &outer, true, 8);
+                    events.extend(tagged_rbr_events("tail", &tail, false));
+                    events.push(TaggedRbrEvent {
+                        phase: "batch".into(),
+                        event: "SZ".into(),
+                        security_bits: sz_batching_security_bits(&tail, sources),
+                    });
+                    assert!(
+                        union_bound_security(&events) >= DEFAULT_SECURITY_BITS as f64,
+                        "n={n}, rate={rate}, reduction={reduction}, schedule={schedule:?}"
+                    );
+                }
+            }
+        }
+    }
 
     #[test]
     fn aligned_hybrid_codes_match() {

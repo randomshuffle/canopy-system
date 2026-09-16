@@ -1087,7 +1087,9 @@ pub fn run_commitment_timings(
         "at least one Canopy timing configuration is required"
     );
     let vector_len = 1usize << log_length;
-    let values: Vec<Fr> = (0..vector_len as u64).map(Fr::from).collect();
+    let values: Vec<Fr> = (0..vector_len as u64)
+        .map(|i| crate::benchmark_field_element(0x43414e4f5059, 0, i))
+        .collect();
     let mut rows = Vec::new();
     let mut stage_rows = Vec::new();
 
@@ -1324,7 +1326,9 @@ pub fn run_timings(
 ) -> Result<Vec<TimingRow>> {
     ensure!(repetitions > 0, "repetitions must be positive");
     let vector_len = 1usize << log_length;
-    let values: Vec<Fr> = (0..vector_len as u64).map(Fr::from).collect();
+    let values: Vec<Fr> = (0..vector_len as u64)
+        .map(|i| crate::benchmark_field_element(0x43414e4f5059, 0, i))
+        .collect();
     let mut rows = Vec::new();
 
     let start = Instant::now();
@@ -1397,7 +1401,7 @@ pub fn run_timings(
                 let bottom = CanopyVectorCommitment::open_bottom(&data, &values, &indices)?;
                 prover_times.push(start.elapsed());
                 let start = Instant::now();
-                let gamma = Fr::from((repetition + 2) as u64);
+                let gamma = crate::benchmark_field_element(0x43414e4f5059, 31, repetition as u64);
                 let _instance = CanopyVectorCommitment::verify_bottom_and_reduce(
                     &commitment,
                     &indices,

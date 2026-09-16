@@ -1,0 +1,22 @@
+{
+  "field": "GF(2^256)",
+  "command": [
+    "/Users/anubhavbaweja/Desktop/Research/research-git/canopy-system/target/release/examples/gf256_bolt_suite",
+    "validate",
+    "--input",
+    "/Users/anubhavbaweja/Desktop/Research/research-git/canopy-system/results/gf256_split_w16_suite/shared/merkle_proof_sizes.csv",
+    "--output",
+    "/Users/anubhavbaweja/Desktop/Research/research-git/canopy-system/results/gf256_split_w16_suite/shared/fiat_shamir_validation.csv"
+  ],
+  "binary_sha256": "a185b5acdeda8a378fe79b2eafbcb4fcafca04161043788057f0715b3e7b6b9c",
+  "threads": 8,
+  "platform": "macOS-14.0-arm64-arm-64bit-Mach-O",
+  "started_unix": 1789532610.9351838,
+  "wall_seconds": 14.315560340881348,
+  "exit_code": 0,
+  "peak_rss_bytes": 2051702784,
+  "peak_rss_gib": 1.910797119140625,
+  "user_seconds": 24.727195,
+  "system_seconds": 2.064711,
+  "memory_boundary": "Whole child process, including setup and verification; schemes run sequentially."
+}

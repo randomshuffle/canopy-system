@@ -1,0 +1,22 @@
+{
+  "field": "GF(2^256)",
+  "command": [
+    "target/release/examples/gf256_bolt_suite",
+    "estimate",
+    "--samples",
+    "100",
+    "--output",
+    "results/gf256_batched_suite/bolt/proof_sizes"
+  ],
+  "binary_sha256": "62a839323f281131938b7c6db88233c5e494c1bc2d73fdf3f9809b1ce4b3743f",
+  "threads": 8,
+  "platform": "macOS-14.0-arm64-arm-64bit-Mach-O",
+  "started_unix": 1789506388.533964,
+  "wall_seconds": 38.80568504333496,
+  "exit_code": 0,
+  "peak_rss_bytes": 7798784,
+  "peak_rss_gib": 0.00726318359375,
+  "user_seconds": 38.120252,
+  "system_seconds": 0.066726,
+  "memory_boundary": "Whole child process, including setup and verification; schemes run sequentially."
+}

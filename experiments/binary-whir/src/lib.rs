@@ -1,8 +1,11 @@
 //! Isolated GF(2^256) runner. Shared WHIR/Canopy timing and commitment code;
 //! separate field and additive RS backend. No Bolt module is compiled here.
 #![allow(unused_imports)] // Shared source imports PrimeField for the prime-field build.
+#[path = "../../../src/additive_rs.rs"]
 pub mod additive;
+#[path = "../../../src/binary_field.rs"]
 pub mod field;
+pub use field as binary_field;
 pub use field::Binary256 as Fr;
 pub const FIELD_BITS: usize = 256;
 pub const FIELD_BYTES: usize = 32;

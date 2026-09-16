@@ -1,3 +1,5 @@
+> The main crate now uses this backend by default. Canonical sources are `src/binary_field.rs` and `src/additive_rs.rs`; the standalone runner remains available. The field-comparison commands below describe the historical experiment; the prime command requires its historical revision.
+
 # GF(2^256) WHIR/Canopy timing backend
 
 This isolated crate runs the same WHIR/Canopy component timing harness as the

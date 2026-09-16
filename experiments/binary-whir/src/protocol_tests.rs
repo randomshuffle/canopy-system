@@ -66,3 +66,16 @@ fn full_width_whir_proof_and_tampering() {
     )
     .unwrap();
 }
+
+#[test]
+fn zero_polynomial_whir_roundtrip() {
+    crate::register_benchmark_ntt();
+    let run = executable_whir::execute_benchmark_with_regime_and_folding(
+        &[vec![Fr::ZERO; 4096]],
+        1,
+        WhirDecodingRegime::Johnson,
+        3,
+    )
+    .unwrap();
+    assert!(run.proof_bytes > 0);
+}

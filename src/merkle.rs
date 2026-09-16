@@ -1,7 +1,7 @@
 use std::collections::{BTreeMap, BTreeSet};
 
 use anyhow::{bail, ensure, Result};
-use ark_ff::{BigInteger, PrimeField};
+use ark_ff::BigInteger;
 use rayon::prelude::*;
 
 use crate::{Fr, FIELD_BYTES, HASH_BYTES};
@@ -74,6 +74,51 @@ pub fn frontier_hash_count(indices: &[usize], universe: usize, height: usize) ->
         current = current.into_iter().map(|index| index >> 1).collect();
     }
     Ok(count)
+}
+
+/// Per-level geometry of a merged binary authentication proof, without a tree.
+/// `parents` counts distinct parent hashes (the native WHIR verifier); the
+/// forest verifier currently hashes once per current node, including siblings.
+#[derive(Clone, Copy, Debug, Default)]
+pub struct AuthenticationWork {
+    pub leaves: usize,
+    pub auth: usize,
+    pub parents: usize,
+    pub forest_parents: usize,
+    pub roots: usize,
+}
+
+pub fn authentication_work_by_height(
+    indices: &[usize],
+    universe: usize,
+) -> Result<Vec<AuthenticationWork>> {
+    ensure!(
+        universe.is_power_of_two(),
+        "universe must be a power of two"
+    );
+    ensure!(indices.iter().all(|&i| i < universe), "index out of range");
+    let mut current = indices.to_vec();
+    current.sort_unstable();
+    current.dedup();
+    let mut work = AuthenticationWork {
+        leaves: current.len(),
+        roots: current.len(),
+        ..Default::default()
+    };
+    let mut result = vec![work];
+    for _ in 0..universe.ilog2() {
+        let previous = current.len();
+        for i in &mut current {
+            *i >>= 1;
+        }
+        current.dedup();
+        work.auth += 2 * current.len() - previous;
+        work.parents += current.len();
+        work.forest_parents += previous;
+        work.roots = current.len();
+        result.push(work);
+    }
+    Ok(result)
 }
 
 /// Stored levels of either a complete Merkle tree or a truncated forest.
@@ -325,6 +370,25 @@ impl MerkleVectorCommitment {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn authentication_work_matches_every_small_multiproof() {
+        for mask in 1usize..256 {
+            let indices: Vec<_> = (0..8).filter(|i| mask & (1 << i) != 0).collect();
+            let work = authentication_work_by_height(&indices, 8).unwrap();
+            for (h, w) in work.iter().enumerate() {
+                assert_eq!(w.auth, frontier_hash_count(&indices, 8, h).unwrap());
+                assert_eq!(w.parents + w.roots, w.leaves + w.auth);
+                assert_eq!(w.forest_parents + w.roots, w.parents + w.leaves);
+            }
+        }
+        let work = authentication_work_by_height(&[0, 1, 4], 8).unwrap();
+        assert_eq!(
+            (work[3].leaves, work[3].parents, work[3].forest_parents),
+            (3, 5, 7)
+        );
+        assert_eq!(work[1].roots, 2);
+    }
 
     #[test]
     fn minimal_multiproof_round_trip() {

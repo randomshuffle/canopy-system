@@ -452,6 +452,7 @@ impl<M: Embedding> Config<M> {
             evaluation_point,
             rlc_coefficients: initial_forms_rlc_coeffs.to_slice().to_vec(),
             linear_form_rlc: M::Target::ZERO,
+            polynomial_evaluation: M::Target::ONE,
         }
     }
 }

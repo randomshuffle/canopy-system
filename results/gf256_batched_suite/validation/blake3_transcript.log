@@ -1,0 +1,14 @@
+   Compiling canopy-system v0.1.0 (/Users/anubhavbaweja/Desktop/Research/research-git/canopy-system)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.72s
+     Running unittests src/lib.rs (target/debug/deps/canopy_system-091f716dccb668a4)
+
+running 6 tests
+test executable_whir::tests::batch_rs_encoding_matches_individual_encodings ... ok
+test executable_whir::tests::shared_encoder_and_matrix_commit_match_whir_initial_commitment ... ok
+test executable_whir::tests::capacity_reference_whir_round_trip_without_pow ... ok
+test executable_whir::tests::reference_whir_round_trip_without_pow ... ok
+test executable_whir::tests::composed_budget_executes_and_verifies_with_more_queries ... ok
+test executable_whir::tests::two_independent_roots_can_be_batched ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 64 filtered out; finished in 0.03s
+

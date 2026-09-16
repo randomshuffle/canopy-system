@@ -1,6 +1,6 @@
 //! Compare encoding workloads at the same original input size and field.
 //! Run: cargo run --release --example bolt_encoder_audit -- 22 4 2 5
-use std::{hint::black_box, path::PathBuf, sync::Arc, time::Instant};
+use std::{hint::black_box, path::PathBuf, time::Instant};
 
 use anyhow::{ensure, Result};
 use ark_ff::UniformRand;
@@ -12,8 +12,8 @@ use rand::SeedableRng;
 use rand_chacha::ChaCha20Rng;
 use serde::Serialize;
 use whir_ref::{
-    algebra::ntt::{self, PolynomialSegment, Polynomials, ReedSolomon, NTT},
-    buffer::{Buffer, BufferOps, DefaultRs},
+    algebra::ntt::{self, PolynomialSegment, Polynomials},
+    buffer::{Buffer, BufferOps},
 };
 
 #[derive(Serialize)]
@@ -61,7 +61,7 @@ fn main() -> Result<()> {
     let encoder = BoltMaxEncoder::new(n / width, width, seed)?;
     let mut rng = ChaCha20Rng::seed_from_u64(seed ^ 0x4d53_47);
     let input = (0..n).map(|_| Fr::rand(&mut rng)).collect::<Vec<_>>();
-    NTT.insert(Arc::new(DefaultRs::<Fr>::new_from_fftfield()) as Arc<dyn ReedSolomon<Fr>>);
+    canopy_system::register_benchmark_ntt();
     // Prepare all source buffers outside the timers. Allocation of encoder
     // outputs/scratch is included; output destruction and hashing are excluded.
     let full_source = Buffer::from(input.as_slice());
@@ -89,7 +89,7 @@ fn main() -> Result<()> {
                     let elapsed = start.elapsed();
                     ensure!(result.len() == 2 * n, "wrong full RS shape");
                     black_box(&result);
-                    ("full_input_rs_arkworks", n, 2 * n, width, elapsed)
+                    ("full_input_rs_additive", n, 2 * n, width, elapsed)
                 }
                 2 => {
                     let result = native_rs(&full_source, width);
@@ -139,7 +139,7 @@ fn main() -> Result<()> {
     let mut report = format!("# Bolt versus full-input rate-1/2 RS encoding audit\n\nN=2^{log_input}, width {width}, 256-bit prime field, {} Rayon threads, {warmups} warmups and {repetitions} measured repetitions. Seed {seed}. Encoder only: no Merkle hashing, H2F, WHIR proof, or setup. Source preparation is excluded; output allocation and internal scratch are included, output destruction excluded. Four execution orders are rotated. Both full-input RS baselines have the same initial width as Bolt. The Canopy-sized RS call uses WHIR width 8.\n\nBolt emits N/4 parity elements plus the unchanged N-element systematic input; it also retains an N/8 syndrome scratch/witness. Its encoder does not copy the systematic input. Full RS emits 2N elements.\n\n| Encoder | Input field elements | New codeword elements | Mean ms | Median ms | Min ms | Max ms |\n|---|---:|---:|---:|---:|---:|---:|\n", rayon::current_num_threads());
     for scheme in [
         "bolt_max_encoding",
-        "full_input_rs_arkworks",
+        "full_input_rs_additive",
         "full_input_rs_whir_backend",
         "canopy_systematic_rs_only",
     ] {

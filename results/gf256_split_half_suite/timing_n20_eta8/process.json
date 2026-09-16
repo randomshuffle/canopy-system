@@ -1,0 +1,31 @@
+{
+  "field": "GF(2^256)",
+  "command": [
+    "/private/tmp/canopy-gf256-bolt-half-timing",
+    "time",
+    "--log",
+    "20",
+    "--inputs",
+    "8",
+    "--warmups",
+    "1",
+    "--repetitions",
+    "5",
+    "--estimates",
+    "/Users/anubhavbaweja/Desktop/Research/research-git/canopy-system/results/gf256_split_half_suite/proof_sizes",
+    "--paper-only",
+    "--output",
+    "/Users/anubhavbaweja/Desktop/Research/research-git/canopy-system/results/gf256_split_half_suite/timing_n20_eta8"
+  ],
+  "binary_sha256": "be3d9945e6f1cb366a658ea5163d8e9afef15b94ff062926d6dd0188e6e22a19",
+  "threads": 8,
+  "platform": "macOS-14.0-arm64-arm-64bit-Mach-O",
+  "started_unix": 1789531070.061255,
+  "wall_seconds": 28.69313097000122,
+  "exit_code": 0,
+  "peak_rss_bytes": 1322090496,
+  "peak_rss_gib": 1.231292724609375,
+  "user_seconds": 82.090745,
+  "system_seconds": 6.640585,
+  "memory_boundary": "Whole child process, including setup and verification; schemes run sequentially."
+}

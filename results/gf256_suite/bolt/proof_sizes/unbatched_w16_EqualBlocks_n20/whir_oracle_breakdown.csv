@@ -1,0 +1,10 @@
+log_input,proof,oracle,message_elements,codeword_elements,merkle_leaves,leaf_width,requested_queries,transmitted_rows,mean_distinct_rows,mean_authentication_hash_bytes,row_field_bytes
+20,common message WHIR,0,65536,131072,16384,8,328,328.0,324.72,50154.24,83968.0
+20,common message WHIR,1,8192,65536,8192,8,164,164.0,162.43,25109.44,41984.0
+20,common message WHIR,2,1024,32768,4096,8,143,143.0,140.59,18374.72,36608.0
+20,common message WHIR,3,128,16384,2048,8,138,138.0,133.5,13706.24,35328.0
+20,common message WHIR,4,16,8192,1024,8,137,137.0,127.78,9696.32,35072.0
+20,common syndrome WHIR,0,8192,16384,2048,8,328,328.0,303.36,20791.36,83968.0
+20,common syndrome WHIR,1,1024,8192,1024,8,164,164.0,152.14,10407.36,41984.0
+20,common syndrome WHIR,2,128,4096,512,8,143,143.0,125.24,6112.0,36608.0
+20,common syndrome WHIR,3,16,2048,256,8,138,138.0,106.82,3142.72,35328.0

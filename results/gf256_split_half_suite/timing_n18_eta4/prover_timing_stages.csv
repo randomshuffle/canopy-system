@@ -1,0 +1,1151 @@
+input_oracles,canopy_layout,log_input,interleaving,scheme,systematic_h,parity_h,setup_seed,rayon_threads,iteration,phase,part,stage,seconds
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,commitment,Bolt,sparse syndrome U=HX,0.001453666
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,commitment,Bolt,parity RS encoding Y=RS(U),0.002304916
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,commitment,X,row Merkle tree or forest,0.006783042
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,commitment,X,Canopy hash-to-field,4.17e-7
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,commitment,X,Canopy constant RS commitment,3.291e-6
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,commitment,Y,row Merkle tree or forest,0.001612583
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,commitment,Y,Canopy hash-to-field,0.000337042
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,commitment,Y,Canopy WHIR configuration,2.25e-6
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,commitment,Y,Canopy RS encode and WHIR oracle commitment,0.000886041
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,commitment,Bolt,sparse syndrome U=HX,0.00145825
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,commitment,Bolt,parity RS encoding Y=RS(U),0.00235625
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,commitment,X,row Merkle tree or forest,0.006461334
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,commitment,X,Canopy hash-to-field,3.75e-7
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,commitment,X,Canopy constant RS commitment,3.417e-6
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,commitment,Y,row Merkle tree or forest,0.001719042
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,commitment,Y,Canopy hash-to-field,0.000332542
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,commitment,Y,Canopy WHIR configuration,2.708e-6
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,commitment,Y,Canopy RS encode and WHIR oracle commitment,0.000854208
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,commitment,Bolt,sparse syndrome U=HX,0.001557375
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,commitment,Bolt,parity RS encoding Y=RS(U),0.001889834
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,commitment,X,row Merkle tree or forest,0.007032167
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,commitment,X,Canopy hash-to-field,3.33e-7
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,commitment,X,Canopy constant RS commitment,3.375e-6
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,commitment,Y,row Merkle tree or forest,0.001525375
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,commitment,Y,Canopy hash-to-field,0.000334083
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,commitment,Y,Canopy WHIR configuration,2.125e-6
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,commitment,Y,Canopy RS encode and WHIR oracle commitment,0.00091925
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,commitment,Bolt,sparse syndrome U=HX,0.00180725
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,commitment,Bolt,parity RS encoding Y=RS(U),0.002031208
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,commitment,X,row Merkle tree or forest,0.006614667
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,commitment,X,Canopy hash-to-field,3.33e-7
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,commitment,X,Canopy constant RS commitment,2.917e-6
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,commitment,Y,row Merkle tree or forest,0.001652667
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,commitment,Y,Canopy hash-to-field,0.000333792
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,commitment,Y,Canopy WHIR configuration,2.208e-6
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,commitment,Y,Canopy RS encode and WHIR oracle commitment,0.000895666
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,opening,Bolt,partial evaluation g,0.003282541
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,opening,Bolt,column projections x=Xr and u=Ur,0.001069375
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,opening,common WHIR,WHIR configuration,6.291e-6
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,opening,x,common WHIR RS encode and oracle commitment,0.004939834
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,opening,u,common WHIR RS encode and oracle commitment,0.000941666
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,opening,Bolt,syndrome evaluation sigma,0.000206417
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,opening,Bolt,sample row queries,0.006385291
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,opening,X,copy and serialize queried row values,0.004306833
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,opening,X,collect and serialize row authentication paths,0.004128917
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,opening,Y,copy and serialize queried row values,0.000082875
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,opening,Y,collect and serialize row authentication paths,0.000100209
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,opening,Bolt,project queried rows and sample batching challenges,0.001043333
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,opening,Bolt,systematic query covector,0.000535083
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,opening,Bolt,parity query covector and transpose RS FFT,0.001029083
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,opening,Bolt,public H transpose covector,0.000933667
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,opening,X,Canopy ancestor claims,0.000024625
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,opening,X,Canopy constant opening,2.5e-7
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,opening,Y,Canopy ancestor claims,3.125e-6
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,opening,Y,Canopy SEP batching covector,0.000068625
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,opening,Y,Canopy OOD evaluations,0.000062209
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,opening,Bolt,partial evaluation g,0.003265334
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,opening,Bolt,column projections x=Xr and u=Ur,0.00083025
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,opening,common WHIR,WHIR configuration,5.875e-6
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,opening,x,common WHIR RS encode and oracle commitment,0.00520725
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,opening,u,common WHIR RS encode and oracle commitment,0.000746542
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,opening,Bolt,syndrome evaluation sigma,0.000209458
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,opening,Bolt,sample row queries,0.006355541
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,opening,X,copy and serialize queried row values,0.005192333
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,opening,X,collect and serialize row authentication paths,0.004245458
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,opening,Y,copy and serialize queried row values,0.000141083
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,opening,Y,collect and serialize row authentication paths,0.000116
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,opening,Bolt,project queried rows and sample batching challenges,0.000960583
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,opening,Bolt,systematic query covector,0.000575
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,opening,Bolt,parity query covector and transpose RS FFT,0.0010385
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,opening,Bolt,public H transpose covector,0.000864875
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,opening,X,Canopy ancestor claims,0.000020334
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,opening,X,Canopy constant opening,3.75e-7
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,opening,Y,Canopy ancestor claims,2.833e-6
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,opening,Y,Canopy SEP batching covector,8.25e-6
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,opening,Y,Canopy OOD evaluations,0.000036458
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,opening,Bolt,partial evaluation g,0.003827042
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,opening,Bolt,column projections x=Xr and u=Ur,0.000793542
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,opening,common WHIR,WHIR configuration,6.416e-6
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,opening,x,common WHIR RS encode and oracle commitment,0.0048885
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,opening,u,common WHIR RS encode and oracle commitment,0.000926458
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,opening,Bolt,syndrome evaluation sigma,0.000242583
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,opening,Bolt,sample row queries,0.00617425
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,opening,X,copy and serialize queried row values,0.005449833
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,opening,X,collect and serialize row authentication paths,0.003996959
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,opening,Y,copy and serialize queried row values,0.000080167
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,opening,Y,collect and serialize row authentication paths,0.000098459
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,opening,Bolt,project queried rows and sample batching challenges,0.001064584
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,opening,Bolt,systematic query covector,0.000742791
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,opening,Bolt,parity query covector and transpose RS FFT,0.001001958
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,opening,Bolt,public H transpose covector,0.000958792
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,opening,X,Canopy ancestor claims,0.000021625
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,opening,X,Canopy constant opening,8.4e-8
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,opening,Y,Canopy ancestor claims,2.166e-6
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,opening,Y,Canopy SEP batching covector,8.833e-6
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,opening,Y,Canopy OOD evaluations,0.00003475
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,opening,Bolt,partial evaluation g,0.00338675
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,opening,Bolt,column projections x=Xr and u=Ur,0.001386584
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,opening,common WHIR,WHIR configuration,9.25e-6
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,opening,x,common WHIR RS encode and oracle commitment,0.005264083
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,opening,u,common WHIR RS encode and oracle commitment,0.000832167
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,opening,Bolt,syndrome evaluation sigma,0.000235917
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,opening,Bolt,sample row queries,0.0062275
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,opening,X,copy and serialize queried row values,0.004350916
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,opening,X,collect and serialize row authentication paths,0.0039415
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,opening,Y,copy and serialize queried row values,0.000076042
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,opening,Y,collect and serialize row authentication paths,0.000092584
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,opening,Bolt,project queried rows and sample batching challenges,0.000964542
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,opening,Bolt,systematic query covector,0.000529208
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,opening,Bolt,parity query covector and transpose RS FFT,0.001026916
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,opening,Bolt,public H transpose covector,0.001007208
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,opening,X,Canopy ancestor claims,0.0000295
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,opening,X,Canopy constant opening,5.42e-7
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,opening,Y,Canopy ancestor claims,3.416e-6
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,opening,Y,Canopy SEP batching covector,9.083e-6
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,opening,Y,Canopy OOD evaluations,0.000034083
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,opening,systematic tail,authenticated WHIR alignment and constraint combination,0.005339792
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,opening,systematic tail,authenticated WHIR alignment and constraint combination,0.005797084
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,opening,systematic tail,authenticated WHIR alignment and constraint combination,0.005858583
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,opening,systematic tail,authenticated WHIR alignment and constraint combination,0.005448708
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,opening,systematic tail,distinct-functional cross evaluations,0.00429025
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,opening,systematic tail,shared recursive WHIR proof,0.004931333
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,opening,parity tail,authenticated WHIR alignment and constraint combination,0.002064583
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,opening,parity tail,authenticated WHIR alignment and constraint combination,0.000064792
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,opening,parity tail,authenticated WHIR alignment and constraint combination,0.001696041
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,opening,parity tail,authenticated WHIR alignment and constraint combination,0.0000765
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,opening,parity tail,authenticated WHIR alignment and constraint combination,0.001902416
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,opening,parity tail,authenticated WHIR alignment and constraint combination,0.000071708
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,opening,parity tail,authenticated WHIR alignment and constraint combination,0.001885833
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,opening,parity tail,authenticated WHIR alignment and constraint combination,0.000080625
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,opening,parity tail,distinct-functional cross evaluations,0.002419292
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,opening,parity tail,shared recursive WHIR proof,0.002422541
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,commitment,other,unassigned phase work and timing overhead,0.000013251000000005786
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,0,opening,other,unassigned phase work and timing overhead,0.005210379999999987
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,0,commitment,Bolt,sparse syndrome U=HX,0.001622916
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,0,commitment,Bolt,parity RS encoding Y=RS(U),0.00221575
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,0,commitment,X,row Merkle tree or forest,0.006537625
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,0,commitment,X,Merkle root transcript,2.08e-7
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,0,commitment,Y,row Merkle tree or forest,0.004732333
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,0,commitment,Y,Merkle root transcript,5.41e-7
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,0,commitment,Bolt,sparse syndrome U=HX,0.001723208
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,0,commitment,Bolt,parity RS encoding Y=RS(U),0.002866792
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,0,commitment,X,row Merkle tree or forest,0.007473708
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,0,commitment,X,Merkle root transcript,5e-7
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,0,commitment,Y,row Merkle tree or forest,0.002488458
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,0,commitment,Y,Merkle root transcript,1.25e-7
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,0,commitment,Bolt,sparse syndrome U=HX,0.001563333
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,0,commitment,Bolt,parity RS encoding Y=RS(U),0.00210075
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,0,commitment,X,row Merkle tree or forest,0.006730875
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,0,commitment,X,Merkle root transcript,5e-7
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,0,commitment,Y,row Merkle tree or forest,0.002190125
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,0,commitment,Y,Merkle root transcript,2.09e-7
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,0,commitment,Bolt,sparse syndrome U=HX,0.002307791
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,0,commitment,Bolt,parity RS encoding Y=RS(U),0.00248825
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,0,commitment,X,row Merkle tree or forest,0.006775916
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,0,commitment,X,Merkle root transcript,1.25e-7
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,0,commitment,Y,row Merkle tree or forest,0.002019917
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,0,commitment,Y,Merkle root transcript,1.25e-7
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,0,opening,Bolt,partial evaluation g,0.003300583
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,0,opening,Bolt,column projections x=Xr and u=Ur,0.001017334
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,0,opening,common WHIR,WHIR configuration,4.959e-6
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,0,opening,x,common WHIR RS encode and oracle commitment,0.004369834
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,0,opening,u,common WHIR RS encode and oracle commitment,0.000638542
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,0,opening,Bolt,syndrome evaluation sigma,0.000211792
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,0,opening,Bolt,sample row queries,0.006236125
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,0,opening,X,copy and serialize queried row values,0.004187625
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,0,opening,X,collect and serialize row authentication paths,0.004405125
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,0,opening,Y,copy and serialize queried row values,0.000078708
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,0,opening,Y,collect and serialize row authentication paths,0.0001645
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,0,opening,Bolt,project queried rows and sample batching challenges,0.000976791
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,0,opening,Bolt,systematic query covector,0.000541125
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,0,opening,Bolt,parity query covector and transpose RS FFT,0.001010542
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,0,opening,Bolt,public H transpose covector,0.000857334
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,0,opening,Bolt,partial evaluation g,0.003773292
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,0,opening,Bolt,column projections x=Xr and u=Ur,0.000811792
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,0,opening,common WHIR,WHIR configuration,3.875e-6
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,0,opening,x,common WHIR RS encode and oracle commitment,0.004442625
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,0,opening,u,common WHIR RS encode and oracle commitment,0.000919458
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,0,opening,Bolt,syndrome evaluation sigma,0.000221708
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,0,opening,Bolt,sample row queries,0.006188458
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,0,opening,X,copy and serialize queried row values,0.005555959
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,0,opening,X,collect and serialize row authentication paths,0.004259541
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,0,opening,Y,copy and serialize queried row values,0.000077875
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,0,opening,Y,collect and serialize row authentication paths,0.000170875
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,0,opening,Bolt,project queried rows and sample batching challenges,0.001008375
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,0,opening,Bolt,systematic query covector,0.000542584
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,0,opening,Bolt,parity query covector and transpose RS FFT,0.00101175
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,0,opening,Bolt,public H transpose covector,0.000855958
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,0,opening,Bolt,partial evaluation g,0.004047208
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,0,opening,Bolt,column projections x=Xr and u=Ur,0.00081125
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,0,opening,common WHIR,WHIR configuration,4.959e-6
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,0,opening,x,common WHIR RS encode and oracle commitment,0.004023958
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,0,opening,u,common WHIR RS encode and oracle commitment,0.0009095
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,0,opening,Bolt,syndrome evaluation sigma,0.000244917
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,0,opening,Bolt,sample row queries,0.006166917
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,0,opening,X,copy and serialize queried row values,0.005127208
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,0,opening,X,collect and serialize row authentication paths,0.004008125
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,0,opening,Y,copy and serialize queried row values,0.000074708
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,0,opening,Y,collect and serialize row authentication paths,0.000171875
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,0,opening,Bolt,project queried rows and sample batching challenges,0.001003125
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,0,opening,Bolt,systematic query covector,0.000667792
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,0,opening,Bolt,parity query covector and transpose RS FFT,0.001007875
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,0,opening,Bolt,public H transpose covector,0.00087925
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,0,opening,Bolt,partial evaluation g,0.003338
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,0,opening,Bolt,column projections x=Xr and u=Ur,0.000897167
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,0,opening,common WHIR,WHIR configuration,4.542e-6
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,0,opening,x,common WHIR RS encode and oracle commitment,0.004465792
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,0,opening,u,common WHIR RS encode and oracle commitment,0.000663541
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,0,opening,Bolt,syndrome evaluation sigma,0.000219542
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,0,opening,Bolt,sample row queries,0.006249834
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,0,opening,X,copy and serialize queried row values,0.004022709
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,0,opening,X,collect and serialize row authentication paths,0.004118458
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,0,opening,Y,copy and serialize queried row values,0.000085375
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,0,opening,Y,collect and serialize row authentication paths,0.00018125
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,0,opening,Bolt,project queried rows and sample batching challenges,0.000984083
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,0,opening,Bolt,systematic query covector,0.0005195
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,0,opening,Bolt,parity query covector and transpose RS FFT,0.00099775
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,0,opening,Bolt,public H transpose covector,0.000881791
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,0,opening,source,authenticated WHIR alignment and constraint combination,0.004744625
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,0,opening,source,authenticated WHIR alignment and constraint combination,0.000378917
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,0,opening,source,authenticated WHIR alignment and constraint combination,0.005367
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,0,opening,source,authenticated WHIR alignment and constraint combination,0.000377417
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,0,opening,source,authenticated WHIR alignment and constraint combination,0.004983292
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,0,opening,source,authenticated WHIR alignment and constraint combination,0.000350959
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,0,opening,source,authenticated WHIR alignment and constraint combination,0.005031708
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,0,opening,source,authenticated WHIR alignment and constraint combination,0.000434709
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,0,opening,batched WHIR,distinct-functional cross evaluations,0.009579667
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,0,opening,batched WHIR,shared recursive WHIR proof,0.005347
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,0,commitment,other,unassigned phase work and timing overhead,6.962000000013124e-6
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,0,opening,other,unassigned phase work and timing overhead,0.006221369000000032
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,1,commitment,Bolt,sparse syndrome U=HX,0.001415291
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,1,commitment,Bolt,parity RS encoding Y=RS(U),0.001970666
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,1,commitment,X,row Merkle tree or forest,0.006677791
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,1,commitment,X,Merkle root transcript,1.66e-7
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,1,commitment,Y,row Merkle tree or forest,0.002307625
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,1,commitment,Y,Merkle root transcript,4.58e-7
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,1,commitment,Bolt,sparse syndrome U=HX,0.001978333
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,1,commitment,Bolt,parity RS encoding Y=RS(U),0.0020545
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,1,commitment,X,row Merkle tree or forest,0.006627292
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,1,commitment,X,Merkle root transcript,5e-7
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,1,commitment,Y,row Merkle tree or forest,0.001991167
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,1,commitment,Y,Merkle root transcript,1.25e-7
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,1,commitment,Bolt,sparse syndrome U=HX,0.001537792
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,1,commitment,Bolt,parity RS encoding Y=RS(U),0.00198075
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,1,commitment,X,row Merkle tree or forest,0.006577333
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,1,commitment,X,Merkle root transcript,3.33e-7
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,1,commitment,Y,row Merkle tree or forest,0.001982583
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,1,commitment,Y,Merkle root transcript,1.25e-7
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,1,commitment,Bolt,sparse syndrome U=HX,0.001763
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,1,commitment,Bolt,parity RS encoding Y=RS(U),0.00233925
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,1,commitment,X,row Merkle tree or forest,0.006986458
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,1,commitment,X,Merkle root transcript,8.3e-8
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,1,commitment,Y,row Merkle tree or forest,0.00185825
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,1,commitment,Y,Merkle root transcript,1.25e-7
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,1,opening,Bolt,partial evaluation g,0.003234792
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,1,opening,Bolt,column projections x=Xr and u=Ur,0.000957667
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,1,opening,common WHIR,WHIR configuration,5.291e-6
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,1,opening,x,common WHIR RS encode and oracle commitment,0.004334167
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,1,opening,u,common WHIR RS encode and oracle commitment,0.000718875
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,1,opening,Bolt,syndrome evaluation sigma,0.00022525
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,1,opening,Bolt,sample row queries,0.006234666
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,1,opening,X,copy and serialize queried row values,0.004263292
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,1,opening,X,collect and serialize row authentication paths,0.004374583
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,1,opening,Y,copy and serialize queried row values,0.000079792
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,1,opening,Y,collect and serialize row authentication paths,0.000258833
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,1,opening,Bolt,project queried rows and sample batching challenges,0.001009875
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,1,opening,Bolt,systematic query covector,0.000528542
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,1,opening,Bolt,parity query covector and transpose RS FFT,0.000994375
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,1,opening,Bolt,public H transpose covector,0.000899083
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,1,opening,Bolt,partial evaluation g,0.003529083
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,1,opening,Bolt,column projections x=Xr and u=Ur,0.0009625
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,1,opening,common WHIR,WHIR configuration,3.667e-6
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,1,opening,x,common WHIR RS encode and oracle commitment,0.004402166
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,1,opening,u,common WHIR RS encode and oracle commitment,0.00105925
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,1,opening,Bolt,syndrome evaluation sigma,0.000223292
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,1,opening,Bolt,sample row queries,0.006119167
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,1,opening,X,copy and serialize queried row values,0.004371
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,1,opening,X,collect and serialize row authentication paths,0.004190084
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,1,opening,Y,copy and serialize queried row values,0.000077834
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,1,opening,Y,collect and serialize row authentication paths,0.000211167
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,1,opening,Bolt,project queried rows and sample batching challenges,0.001065958
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,1,opening,Bolt,systematic query covector,0.000583666
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,1,opening,Bolt,parity query covector and transpose RS FFT,0.001033875
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,1,opening,Bolt,public H transpose covector,0.001096667
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,1,opening,Bolt,partial evaluation g,0.003301834
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,1,opening,Bolt,column projections x=Xr and u=Ur,0.001034541
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,1,opening,common WHIR,WHIR configuration,5.125e-6
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,1,opening,x,common WHIR RS encode and oracle commitment,0.004149209
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,1,opening,u,common WHIR RS encode and oracle commitment,0.000869
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,1,opening,Bolt,syndrome evaluation sigma,0.000216958
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,1,opening,Bolt,sample row queries,0.006168708
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,1,opening,X,copy and serialize queried row values,0.005444417
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,1,opening,X,collect and serialize row authentication paths,0.004045542
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,1,opening,Y,copy and serialize queried row values,0.000156125
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,1,opening,Y,collect and serialize row authentication paths,0.000176667
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,1,opening,Bolt,project queried rows and sample batching challenges,0.000978167
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,1,opening,Bolt,systematic query covector,0.000551083
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,1,opening,Bolt,parity query covector and transpose RS FFT,0.001020458
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,1,opening,Bolt,public H transpose covector,0.000961125
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,1,opening,Bolt,partial evaluation g,0.003648292
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,1,opening,Bolt,column projections x=Xr and u=Ur,0.00082125
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,1,opening,common WHIR,WHIR configuration,4.5e-6
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,1,opening,x,common WHIR RS encode and oracle commitment,0.004406625
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,1,opening,u,common WHIR RS encode and oracle commitment,0.000613583
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,1,opening,Bolt,syndrome evaluation sigma,0.000212583
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,1,opening,Bolt,sample row queries,0.00622
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,1,opening,X,copy and serialize queried row values,0.004526541
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,1,opening,X,collect and serialize row authentication paths,0.00445625
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,1,opening,Y,copy and serialize queried row values,0.000075917
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,1,opening,Y,collect and serialize row authentication paths,0.000185666
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,1,opening,Bolt,project queried rows and sample batching challenges,0.000993333
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,1,opening,Bolt,systematic query covector,0.000471792
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,1,opening,Bolt,parity query covector and transpose RS FFT,0.00101075
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,1,opening,Bolt,public H transpose covector,0.000859041
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,1,opening,source,authenticated WHIR alignment and constraint combination,0.005153916
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,1,opening,source,authenticated WHIR alignment and constraint combination,0.000337417
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,1,opening,source,authenticated WHIR alignment and constraint combination,0.004805375
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,1,opening,source,authenticated WHIR alignment and constraint combination,0.000333417
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,1,opening,source,authenticated WHIR alignment and constraint combination,0.005170875
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,1,opening,source,authenticated WHIR alignment and constraint combination,0.000367209
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,1,opening,source,authenticated WHIR alignment and constraint combination,0.005209834
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,1,opening,source,authenticated WHIR alignment and constraint combination,0.000457791
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,1,opening,batched WHIR,distinct-functional cross evaluations,0.009670375
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,1,opening,batched WHIR,shared recursive WHIR proof,0.005438833
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,1,commitment,other,unassigned phase work and timing overhead,7.546000000004105e-6
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,1,opening,other,unassigned phase work and timing overhead,0.005181834000000024
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,commitment,Bolt,sparse syndrome U=HX,0.001535917
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,commitment,Bolt,parity RS encoding Y=RS(U),0.002141166
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,commitment,X,row Merkle tree or forest,0.006391709
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,commitment,X,Canopy hash-to-field,3.33e-7
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,commitment,X,Canopy constant RS commitment,3.291e-6
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,commitment,Y,row Merkle tree or forest,0.00162725
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,commitment,Y,Canopy hash-to-field,0.000329125
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,commitment,Y,Canopy WHIR configuration,2.125e-6
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,commitment,Y,Canopy RS encode and WHIR oracle commitment,0.000902417
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,commitment,Bolt,sparse syndrome U=HX,0.001755334
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,commitment,Bolt,parity RS encoding Y=RS(U),0.001998917
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,commitment,X,row Merkle tree or forest,0.006568833
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,commitment,X,Canopy hash-to-field,3.34e-7
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,commitment,X,Canopy constant RS commitment,3.375e-6
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,commitment,Y,row Merkle tree or forest,0.001622291
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,commitment,Y,Canopy hash-to-field,0.000335416
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,commitment,Y,Canopy WHIR configuration,5.917e-6
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,commitment,Y,Canopy RS encode and WHIR oracle commitment,0.000858667
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,commitment,Bolt,sparse syndrome U=HX,0.001444542
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,commitment,Bolt,parity RS encoding Y=RS(U),0.001990209
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,commitment,X,row Merkle tree or forest,0.007046416
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,commitment,X,Canopy hash-to-field,2.09e-7
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,commitment,X,Canopy constant RS commitment,3.417e-6
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,commitment,Y,row Merkle tree or forest,0.001568917
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,commitment,Y,Canopy hash-to-field,0.000330125
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,commitment,Y,Canopy WHIR configuration,6.083e-6
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,commitment,Y,Canopy RS encode and WHIR oracle commitment,0.001430041
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,commitment,Bolt,sparse syndrome U=HX,0.001431
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,commitment,Bolt,parity RS encoding Y=RS(U),0.001915
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,commitment,X,row Merkle tree or forest,0.006667917
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,commitment,X,Canopy hash-to-field,3.33e-7
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,commitment,X,Canopy constant RS commitment,3.416e-6
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,commitment,Y,row Merkle tree or forest,0.001555292
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,commitment,Y,Canopy hash-to-field,0.000330584
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,commitment,Y,Canopy WHIR configuration,5.5e-6
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,commitment,Y,Canopy RS encode and WHIR oracle commitment,0.000852333
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,opening,Bolt,partial evaluation g,0.003435791
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,opening,Bolt,column projections x=Xr and u=Ur,0.000856667
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,opening,common WHIR,WHIR configuration,5.375e-6
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,opening,x,common WHIR RS encode and oracle commitment,0.004680833
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,opening,u,common WHIR RS encode and oracle commitment,0.0007
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,opening,Bolt,syndrome evaluation sigma,0.000209
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,opening,Bolt,sample row queries,0.006346083
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,opening,X,copy and serialize queried row values,0.004275583
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,opening,X,collect and serialize row authentication paths,0.004206458
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,opening,Y,copy and serialize queried row values,0.000079666
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,opening,Y,collect and serialize row authentication paths,0.000092375
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,opening,Bolt,project queried rows and sample batching challenges,0.000981041
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,opening,Bolt,systematic query covector,0.000523875
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,opening,Bolt,parity query covector and transpose RS FFT,0.001026709
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,opening,Bolt,public H transpose covector,0.001001917
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,opening,X,Canopy ancestor claims,0.00002075
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,opening,X,Canopy constant opening,1.67e-7
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,opening,Y,Canopy ancestor claims,2.875e-6
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,opening,Y,Canopy SEP batching covector,8.625e-6
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,opening,Y,Canopy OOD evaluations,0.000033458
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,opening,Bolt,partial evaluation g,0.003609
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,opening,Bolt,column projections x=Xr and u=Ur,0.000946292
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,opening,common WHIR,WHIR configuration,5.709e-6
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,opening,x,common WHIR RS encode and oracle commitment,0.004840125
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,opening,u,common WHIR RS encode and oracle commitment,0.000763042
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,opening,Bolt,syndrome evaluation sigma,0.000213208
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,opening,Bolt,sample row queries,0.006215792
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,opening,X,copy and serialize queried row values,0.005205708
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,opening,X,collect and serialize row authentication paths,0.004149292
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,opening,Y,copy and serialize queried row values,0.000077
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,opening,Y,collect and serialize row authentication paths,0.000094125
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,opening,Bolt,project queried rows and sample batching challenges,0.00098125
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,opening,Bolt,systematic query covector,0.000529833
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,opening,Bolt,parity query covector and transpose RS FFT,0.001023666
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,opening,Bolt,public H transpose covector,0.00091
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,opening,X,Canopy ancestor claims,0.000020417
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,opening,X,Canopy constant opening,2.08e-7
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,opening,Y,Canopy ancestor claims,2.75e-6
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,opening,Y,Canopy SEP batching covector,8.208e-6
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,opening,Y,Canopy OOD evaluations,0.000033
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,opening,Bolt,partial evaluation g,0.003952791
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,opening,Bolt,column projections x=Xr and u=Ur,0.000848542
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,opening,common WHIR,WHIR configuration,6.459e-6
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,opening,x,common WHIR RS encode and oracle commitment,0.004652666
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,opening,u,common WHIR RS encode and oracle commitment,0.000944584
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,opening,Bolt,syndrome evaluation sigma,0.000205792
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,opening,Bolt,sample row queries,0.006076667
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,opening,X,copy and serialize queried row values,0.005526959
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,opening,X,collect and serialize row authentication paths,0.0040195
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,opening,Y,copy and serialize queried row values,0.000085833
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,opening,Y,collect and serialize row authentication paths,0.000107625
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,opening,Bolt,project queried rows and sample batching challenges,0.001051833
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,opening,Bolt,systematic query covector,0.000591291
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,opening,Bolt,parity query covector and transpose RS FFT,0.001018708
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,opening,Bolt,public H transpose covector,0.000854959
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,opening,X,Canopy ancestor claims,0.000020792
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,opening,X,Canopy constant opening,0.0
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,opening,Y,Canopy ancestor claims,2.291e-6
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,opening,Y,Canopy SEP batching covector,7.583e-6
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,opening,Y,Canopy OOD evaluations,0.0000335
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,opening,Bolt,partial evaluation g,0.003299709
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,opening,Bolt,column projections x=Xr and u=Ur,0.000975
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,opening,common WHIR,WHIR configuration,0.000013417
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,opening,x,common WHIR RS encode and oracle commitment,0.005180083
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,opening,u,common WHIR RS encode and oracle commitment,0.000772833
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,opening,Bolt,syndrome evaluation sigma,0.000207
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,opening,Bolt,sample row queries,0.006197125
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,opening,X,copy and serialize queried row values,0.004163292
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,opening,X,collect and serialize row authentication paths,0.004345792
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,opening,Y,copy and serialize queried row values,0.000074875
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,opening,Y,collect and serialize row authentication paths,0.0000915
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,opening,Bolt,project queried rows and sample batching challenges,0.000982667
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,opening,Bolt,systematic query covector,0.000517125
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,opening,Bolt,parity query covector and transpose RS FFT,0.001018958
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,opening,Bolt,public H transpose covector,0.000982792
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,opening,X,Canopy ancestor claims,0.000020917
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,opening,X,Canopy constant opening,2.08e-7
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,opening,Y,Canopy ancestor claims,2.917e-6
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,opening,Y,Canopy SEP batching covector,8.459e-6
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,opening,Y,Canopy OOD evaluations,0.000033291
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,opening,systematic tail,authenticated WHIR alignment and constraint combination,0.005442
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,opening,systematic tail,authenticated WHIR alignment and constraint combination,0.005710959
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,opening,systematic tail,authenticated WHIR alignment and constraint combination,0.005659167
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,opening,systematic tail,authenticated WHIR alignment and constraint combination,0.008386
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,opening,systematic tail,distinct-functional cross evaluations,0.0040105
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,opening,systematic tail,shared recursive WHIR proof,0.006046375
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,opening,parity tail,authenticated WHIR alignment and constraint combination,0.001999709
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,opening,parity tail,authenticated WHIR alignment and constraint combination,0.000068417
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,opening,parity tail,authenticated WHIR alignment and constraint combination,0.001807792
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,opening,parity tail,authenticated WHIR alignment and constraint combination,0.000064792
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,opening,parity tail,authenticated WHIR alignment and constraint combination,0.002143834
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,opening,parity tail,authenticated WHIR alignment and constraint combination,0.000071333
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,opening,parity tail,authenticated WHIR alignment and constraint combination,0.001815375
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,opening,parity tail,authenticated WHIR alignment and constraint combination,0.000067666
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,opening,parity tail,distinct-functional cross evaluations,0.002395083
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,opening,parity tail,shared recursive WHIR proof,0.002554083
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,commitment,other,unassigned phase work and timing overhead,0.000015957999999989536
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,1,opening,other,unassigned phase work and timing overhead,0.005687415000000029
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,commitment,Bolt,sparse syndrome U=HX,0.001430084
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,commitment,Bolt,parity RS encoding Y=RS(U),0.002044375
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,commitment,X,row Merkle tree or forest,0.006612667
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,commitment,X,Canopy hash-to-field,3.75e-7
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,commitment,X,Canopy constant RS commitment,3.417e-6
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,commitment,Y,row Merkle tree or forest,0.0015995
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,commitment,Y,Canopy hash-to-field,0.000331792
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,commitment,Y,Canopy WHIR configuration,2.666e-6
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,commitment,Y,Canopy RS encode and WHIR oracle commitment,0.000875291
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,commitment,Bolt,sparse syndrome U=HX,0.001666125
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,commitment,Bolt,parity RS encoding Y=RS(U),0.001900375
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,commitment,X,row Merkle tree or forest,0.006674666
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,commitment,X,Canopy hash-to-field,4.17e-7
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,commitment,X,Canopy constant RS commitment,3.25e-6
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,commitment,Y,row Merkle tree or forest,0.001618833
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,commitment,Y,Canopy hash-to-field,0.000335583
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,commitment,Y,Canopy WHIR configuration,3.416e-6
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,commitment,Y,Canopy RS encode and WHIR oracle commitment,0.000932125
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,commitment,Bolt,sparse syndrome U=HX,0.001443542
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,commitment,Bolt,parity RS encoding Y=RS(U),0.002071042
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,commitment,X,row Merkle tree or forest,0.006457041
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,commitment,X,Canopy hash-to-field,2.5e-7
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,commitment,X,Canopy constant RS commitment,3.208e-6
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,commitment,Y,row Merkle tree or forest,0.001783041
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,commitment,Y,Canopy hash-to-field,0.00033775
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,commitment,Y,Canopy WHIR configuration,2.084e-6
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,commitment,Y,Canopy RS encode and WHIR oracle commitment,0.001455459
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,commitment,Bolt,sparse syndrome U=HX,0.001616125
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,commitment,Bolt,parity RS encoding Y=RS(U),0.002012042
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,commitment,X,row Merkle tree or forest,0.006564125
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,commitment,X,Canopy hash-to-field,3.34e-7
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,commitment,X,Canopy constant RS commitment,3.084e-6
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,commitment,Y,row Merkle tree or forest,0.001565875
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,commitment,Y,Canopy hash-to-field,0.0003325
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,commitment,Y,Canopy WHIR configuration,1.791e-6
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,commitment,Y,Canopy RS encode and WHIR oracle commitment,0.001581709
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,opening,Bolt,partial evaluation g,0.003865375
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,opening,Bolt,column projections x=Xr and u=Ur,0.000858708
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,opening,common WHIR,WHIR configuration,5.792e-6
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,opening,x,common WHIR RS encode and oracle commitment,0.004872916
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,opening,u,common WHIR RS encode and oracle commitment,0.001304584
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,opening,Bolt,syndrome evaluation sigma,0.000212125
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,opening,Bolt,sample row queries,0.006156667
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,opening,X,copy and serialize queried row values,0.004383667
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,opening,X,collect and serialize row authentication paths,0.004235375
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,opening,Y,copy and serialize queried row values,0.0000795
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,opening,Y,collect and serialize row authentication paths,0.000096333
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,opening,Bolt,project queried rows and sample batching challenges,0.001078417
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,opening,Bolt,systematic query covector,0.000520584
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,opening,Bolt,parity query covector and transpose RS FFT,0.001030416
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,opening,Bolt,public H transpose covector,0.000885417
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,opening,X,Canopy ancestor claims,0.000020667
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,opening,X,Canopy constant opening,1.67e-7
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,opening,Y,Canopy ancestor claims,2.542e-6
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,opening,Y,Canopy SEP batching covector,8.459e-6
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,opening,Y,Canopy OOD evaluations,0.000034917
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,opening,Bolt,partial evaluation g,0.003291958
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,opening,Bolt,column projections x=Xr and u=Ur,0.001056083
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,opening,common WHIR,WHIR configuration,5.5e-6
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,opening,x,common WHIR RS encode and oracle commitment,0.005261291
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,opening,u,common WHIR RS encode and oracle commitment,0.000685
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,opening,Bolt,syndrome evaluation sigma,0.000215292
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,opening,Bolt,sample row queries,0.006200417
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,opening,X,copy and serialize queried row values,0.00531125
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,opening,X,collect and serialize row authentication paths,0.004145208
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,opening,Y,copy and serialize queried row values,0.00007675
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,opening,Y,collect and serialize row authentication paths,0.000096167
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,opening,Bolt,project queried rows and sample batching challenges,0.000957417
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,opening,Bolt,systematic query covector,0.000519208
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,opening,Bolt,parity query covector and transpose RS FFT,0.001047833
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,opening,Bolt,public H transpose covector,0.001144042
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,opening,X,Canopy ancestor claims,0.000020125
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,opening,X,Canopy constant opening,1.66e-7
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,opening,Y,Canopy ancestor claims,2.833e-6
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,opening,Y,Canopy SEP batching covector,7.875e-6
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,opening,Y,Canopy OOD evaluations,0.000033791
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,opening,Bolt,partial evaluation g,0.003272917
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,opening,Bolt,column projections x=Xr and u=Ur,0.000828791
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,opening,common WHIR,WHIR configuration,6.208e-6
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,opening,x,common WHIR RS encode and oracle commitment,0.005453708
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,opening,u,common WHIR RS encode and oracle commitment,0.000805458
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,opening,Bolt,syndrome evaluation sigma,0.000206958
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,opening,Bolt,sample row queries,0.006225292
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,opening,X,copy and serialize queried row values,0.005087792
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,opening,X,collect and serialize row authentication paths,0.004103291
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,opening,Y,copy and serialize queried row values,0.000077166
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,opening,Y,collect and serialize row authentication paths,0.000098666
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,opening,Bolt,project queried rows and sample batching challenges,0.00098675
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,opening,Bolt,systematic query covector,0.000529125
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,opening,Bolt,parity query covector and transpose RS FFT,0.001022916
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,opening,Bolt,public H transpose covector,0.000882958
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,opening,X,Canopy ancestor claims,0.000028625
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,opening,X,Canopy constant opening,8.3e-8
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,opening,Y,Canopy ancestor claims,2.375e-6
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,opening,Y,Canopy SEP batching covector,8e-6
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,opening,Y,Canopy OOD evaluations,0.000033041
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,opening,Bolt,partial evaluation g,0.003469667
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,opening,Bolt,column projections x=Xr and u=Ur,0.000821958
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,opening,common WHIR,WHIR configuration,5.625e-6
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,opening,x,common WHIR RS encode and oracle commitment,0.0051475
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,opening,u,common WHIR RS encode and oracle commitment,0.000918833
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,opening,Bolt,syndrome evaluation sigma,0.000218333
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,opening,Bolt,sample row queries,0.006093667
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,opening,X,copy and serialize queried row values,0.00424575
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,opening,X,collect and serialize row authentication paths,0.00395275
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,opening,Y,copy and serialize queried row values,0.000074958
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,opening,Y,collect and serialize row authentication paths,0.000102875
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,opening,Bolt,project queried rows and sample batching challenges,0.001008333
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,opening,Bolt,systematic query covector,0.000607333
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,opening,Bolt,parity query covector and transpose RS FFT,0.001034875
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,opening,Bolt,public H transpose covector,0.000918584
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,opening,X,Canopy ancestor claims,0.0000215
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,opening,X,Canopy constant opening,8.3e-8
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,opening,Y,Canopy ancestor claims,3.209e-6
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,opening,Y,Canopy SEP batching covector,9.667e-6
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,opening,Y,Canopy OOD evaluations,0.000033
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,opening,systematic tail,authenticated WHIR alignment and constraint combination,0.005657916
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,opening,systematic tail,authenticated WHIR alignment and constraint combination,0.005601875
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,opening,systematic tail,authenticated WHIR alignment and constraint combination,0.005640292
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,opening,systematic tail,authenticated WHIR alignment and constraint combination,0.006274334
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,opening,systematic tail,distinct-functional cross evaluations,0.00400375
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,opening,systematic tail,shared recursive WHIR proof,0.005281875
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,opening,parity tail,authenticated WHIR alignment and constraint combination,0.001743292
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,opening,parity tail,authenticated WHIR alignment and constraint combination,0.000068458
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,opening,parity tail,authenticated WHIR alignment and constraint combination,0.001870375
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,opening,parity tail,authenticated WHIR alignment and constraint combination,0.000066583
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,opening,parity tail,authenticated WHIR alignment and constraint combination,0.002070792
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,opening,parity tail,authenticated WHIR alignment and constraint combination,0.000076333
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,opening,parity tail,authenticated WHIR alignment and constraint combination,0.001768167
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,opening,parity tail,authenticated WHIR alignment and constraint combination,0.000215208
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,opening,parity tail,distinct-functional cross evaluations,0.002405541
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,opening,parity tail,shared recursive WHIR proof,0.002426291
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,commitment,other,unassigned phase work and timing overhead,0.000010166000000012831
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,2,opening,other,unassigned phase work and timing overhead,0.004625798000000042
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,2,commitment,Bolt,sparse syndrome U=HX,0.0014705
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,2,commitment,Bolt,parity RS encoding Y=RS(U),0.002659375
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,2,commitment,X,row Merkle tree or forest,0.006563667
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,2,commitment,X,Merkle root transcript,1.66e-7
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,2,commitment,Y,row Merkle tree or forest,0.002220375
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,2,commitment,Y,Merkle root transcript,6.66e-7
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,2,commitment,Bolt,sparse syndrome U=HX,0.001909666
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,2,commitment,Bolt,parity RS encoding Y=RS(U),0.00196125
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,2,commitment,X,row Merkle tree or forest,0.006662917
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,2,commitment,X,Merkle root transcript,3.33e-7
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,2,commitment,Y,row Merkle tree or forest,0.001865542
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,2,commitment,Y,Merkle root transcript,1.25e-7
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,2,commitment,Bolt,sparse syndrome U=HX,0.001479417
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,2,commitment,Bolt,parity RS encoding Y=RS(U),0.002317291
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,2,commitment,X,row Merkle tree or forest,0.00644975
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,2,commitment,X,Merkle root transcript,5e-7
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,2,commitment,Y,row Merkle tree or forest,0.002184167
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,2,commitment,Y,Merkle root transcript,8.3e-8
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,2,commitment,Bolt,sparse syndrome U=HX,0.001456667
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,2,commitment,Bolt,parity RS encoding Y=RS(U),0.002218834
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,2,commitment,X,row Merkle tree or forest,0.0068445
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,2,commitment,X,Merkle root transcript,2.08e-7
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,2,commitment,Y,row Merkle tree or forest,0.002112084
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,2,commitment,Y,Merkle root transcript,8.4e-8
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,2,opening,Bolt,partial evaluation g,0.003329208
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,2,opening,Bolt,column projections x=Xr and u=Ur,0.001063667
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,2,opening,common WHIR,WHIR configuration,5.25e-6
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,2,opening,x,common WHIR RS encode and oracle commitment,0.004276417
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,2,opening,u,common WHIR RS encode and oracle commitment,0.000717791
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,2,opening,Bolt,syndrome evaluation sigma,0.000209292
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,2,opening,Bolt,sample row queries,0.006228333
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,2,opening,X,copy and serialize queried row values,0.004206125
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,2,opening,X,collect and serialize row authentication paths,0.004128375
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,2,opening,Y,copy and serialize queried row values,0.000081458
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,2,opening,Y,collect and serialize row authentication paths,0.000411709
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,2,opening,Bolt,project queried rows and sample batching challenges,0.0009775
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,2,opening,Bolt,systematic query covector,0.000545625
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,2,opening,Bolt,parity query covector and transpose RS FFT,0.001015292
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,2,opening,Bolt,public H transpose covector,0.000947209
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,2,opening,Bolt,partial evaluation g,0.003691833
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,2,opening,Bolt,column projections x=Xr and u=Ur,0.000840167
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,2,opening,common WHIR,WHIR configuration,4.25e-6
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,2,opening,x,common WHIR RS encode and oracle commitment,0.004414334
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,2,opening,u,common WHIR RS encode and oracle commitment,0.0007395
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,2,opening,Bolt,syndrome evaluation sigma,0.000212458
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,2,opening,Bolt,sample row queries,0.006151708
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,2,opening,X,copy and serialize queried row values,0.004580167
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,2,opening,X,collect and serialize row authentication paths,0.004396334
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,2,opening,Y,copy and serialize queried row values,0.000078791
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,2,opening,Y,collect and serialize row authentication paths,0.000169792
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,2,opening,Bolt,project queried rows and sample batching challenges,0.000983917
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,2,opening,Bolt,systematic query covector,0.000533125
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,2,opening,Bolt,parity query covector and transpose RS FFT,0.001014709
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,2,opening,Bolt,public H transpose covector,0.000860416
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,2,opening,Bolt,partial evaluation g,0.003386167
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,2,opening,Bolt,column projections x=Xr and u=Ur,0.000963333
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,2,opening,common WHIR,WHIR configuration,4.917e-6
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,2,opening,x,common WHIR RS encode and oracle commitment,0.004193583
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,2,opening,u,common WHIR RS encode and oracle commitment,0.000687292
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,2,opening,Bolt,syndrome evaluation sigma,0.000222542
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,2,opening,Bolt,sample row queries,0.00627825
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,2,opening,X,copy and serialize queried row values,0.005328583
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,2,opening,X,collect and serialize row authentication paths,0.004034916
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,2,opening,Y,copy and serialize queried row values,0.00007525
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,2,opening,Y,collect and serialize row authentication paths,0.000182667
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,2,opening,Bolt,project queried rows and sample batching challenges,0.000985708
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,2,opening,Bolt,systematic query covector,0.000548375
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,2,opening,Bolt,parity query covector and transpose RS FFT,0.00127725
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,2,opening,Bolt,public H transpose covector,0.000859875
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,2,opening,Bolt,partial evaluation g,0.003257125
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,2,opening,Bolt,column projections x=Xr and u=Ur,0.000810666
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,2,opening,common WHIR,WHIR configuration,4.25e-6
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,2,opening,x,common WHIR RS encode and oracle commitment,0.0045655
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,2,opening,u,common WHIR RS encode and oracle commitment,0.000733125
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,2,opening,Bolt,syndrome evaluation sigma,0.000212958
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,2,opening,Bolt,sample row queries,0.006242458
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,2,opening,X,copy and serialize queried row values,0.004058167
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,2,opening,X,collect and serialize row authentication paths,0.004084041
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,2,opening,Y,copy and serialize queried row values,0.000106708
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,2,opening,Y,collect and serialize row authentication paths,0.000191833
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,2,opening,Bolt,project queried rows and sample batching challenges,0.0009585
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,2,opening,Bolt,systematic query covector,0.000514292
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,2,opening,Bolt,parity query covector and transpose RS FFT,0.000986583
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,2,opening,Bolt,public H transpose covector,0.000907458
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,2,opening,source,authenticated WHIR alignment and constraint combination,0.005205667
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,2,opening,source,authenticated WHIR alignment and constraint combination,0.000352125
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,2,opening,source,authenticated WHIR alignment and constraint combination,0.004885583
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,2,opening,source,authenticated WHIR alignment and constraint combination,0.000372625
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,2,opening,source,authenticated WHIR alignment and constraint combination,0.005136333
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,2,opening,source,authenticated WHIR alignment and constraint combination,0.000370584
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,2,opening,source,authenticated WHIR alignment and constraint combination,0.005486833
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,2,opening,source,authenticated WHIR alignment and constraint combination,0.000389541
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,2,opening,batched WHIR,distinct-functional cross evaluations,0.0096035
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,2,opening,batched WHIR,shared recursive WHIR proof,0.005524834
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,2,commitment,other,unassigned phase work and timing overhead,5.916000000001642e-6
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,2,opening,other,unassigned phase work and timing overhead,0.005089125999999999
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,3,commitment,Bolt,sparse syndrome U=HX,0.001406625
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,3,commitment,Bolt,parity RS encoding Y=RS(U),0.001941334
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,3,commitment,X,row Merkle tree or forest,0.006870958
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,3,commitment,X,Merkle root transcript,2.5e-7
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,3,commitment,Y,row Merkle tree or forest,0.001952917
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,3,commitment,Y,Merkle root transcript,2.91e-7
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,3,commitment,Bolt,sparse syndrome U=HX,0.001720792
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,3,commitment,Bolt,parity RS encoding Y=RS(U),0.002050334
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,3,commitment,X,row Merkle tree or forest,0.006642459
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,3,commitment,X,Merkle root transcript,2.09e-7
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,3,commitment,Y,row Merkle tree or forest,0.001948125
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,3,commitment,Y,Merkle root transcript,1.25e-7
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,3,commitment,Bolt,sparse syndrome U=HX,0.001428291
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,3,commitment,Bolt,parity RS encoding Y=RS(U),0.002177917
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,3,commitment,X,row Merkle tree or forest,0.006767208
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,3,commitment,X,Merkle root transcript,3.75e-7
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,3,commitment,Y,row Merkle tree or forest,0.001908458
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,3,commitment,Y,Merkle root transcript,8.3e-8
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,3,commitment,Bolt,sparse syndrome U=HX,0.001743417
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,3,commitment,Bolt,parity RS encoding Y=RS(U),0.002260541
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,3,commitment,X,row Merkle tree or forest,0.006624958
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,3,commitment,X,Merkle root transcript,4.2e-8
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,3,commitment,Y,row Merkle tree or forest,0.001954917
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,3,commitment,Y,Merkle root transcript,2.09e-7
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,3,opening,Bolt,partial evaluation g,0.003276583
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,3,opening,Bolt,column projections x=Xr and u=Ur,0.000962333
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,3,opening,common WHIR,WHIR configuration,5.166e-6
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,3,opening,x,common WHIR RS encode and oracle commitment,0.004387375
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,3,opening,u,common WHIR RS encode and oracle commitment,0.000674459
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,3,opening,Bolt,syndrome evaluation sigma,0.000213375
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,3,opening,Bolt,sample row queries,0.006377416
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,3,opening,X,copy and serialize queried row values,0.0042515
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,3,opening,X,collect and serialize row authentication paths,0.004634375
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,3,opening,Y,copy and serialize queried row values,0.000078208
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,3,opening,Y,collect and serialize row authentication paths,0.000166917
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,3,opening,Bolt,project queried rows and sample batching challenges,0.000956458
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,3,opening,Bolt,systematic query covector,0.000508041
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,3,opening,Bolt,parity query covector and transpose RS FFT,0.001030625
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,3,opening,Bolt,public H transpose covector,0.000898791
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,3,opening,Bolt,partial evaluation g,0.003886708
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,3,opening,Bolt,column projections x=Xr and u=Ur,0.000805375
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,3,opening,common WHIR,WHIR configuration,4.292e-6
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,3,opening,x,common WHIR RS encode and oracle commitment,0.004244625
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,3,opening,u,common WHIR RS encode and oracle commitment,0.001096375
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,3,opening,Bolt,syndrome evaluation sigma,0.000226834
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,3,opening,Bolt,sample row queries,0.0060995
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,3,opening,X,copy and serialize queried row values,0.005323959
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,3,opening,X,collect and serialize row authentication paths,0.004151209
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,3,opening,Y,copy and serialize queried row values,0.000095625
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,3,opening,Y,collect and serialize row authentication paths,0.000189125
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,3,opening,Bolt,project queried rows and sample batching challenges,0.001015291
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,3,opening,Bolt,systematic query covector,0.000501709
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,3,opening,Bolt,parity query covector and transpose RS FFT,0.001015041
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,3,opening,Bolt,public H transpose covector,0.000981333
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,3,opening,Bolt,partial evaluation g,0.003378209
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,3,opening,Bolt,column projections x=Xr and u=Ur,0.000907
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,3,opening,common WHIR,WHIR configuration,4.167e-6
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,3,opening,x,common WHIR RS encode and oracle commitment,0.004290875
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,3,opening,u,common WHIR RS encode and oracle commitment,0.000671125
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,3,opening,Bolt,syndrome evaluation sigma,0.000212708
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,3,opening,Bolt,sample row queries,0.00623125
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,3,opening,X,copy and serialize queried row values,0.005228208
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,3,opening,X,collect and serialize row authentication paths,0.003945125
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,3,opening,Y,copy and serialize queried row values,0.000074917
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,3,opening,Y,collect and serialize row authentication paths,0.000162625
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,3,opening,Bolt,project queried rows and sample batching challenges,0.00095925
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,3,opening,Bolt,systematic query covector,0.000508
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,3,opening,Bolt,parity query covector and transpose RS FFT,0.001026334
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,3,opening,Bolt,public H transpose covector,0.000999958
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,3,opening,Bolt,partial evaluation g,0.00357975
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,3,opening,Bolt,column projections x=Xr and u=Ur,0.000797375
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,3,opening,common WHIR,WHIR configuration,4.792e-6
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,3,opening,x,common WHIR RS encode and oracle commitment,0.0041485
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,3,opening,u,common WHIR RS encode and oracle commitment,0.000832166
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,3,opening,Bolt,syndrome evaluation sigma,0.000211583
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,3,opening,Bolt,sample row queries,0.006185667
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,3,opening,X,copy and serialize queried row values,0.004498958
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,3,opening,X,collect and serialize row authentication paths,0.004150792
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,3,opening,Y,copy and serialize queried row values,0.000078333
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,3,opening,Y,collect and serialize row authentication paths,0.000175167
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,3,opening,Bolt,project queried rows and sample batching challenges,0.00099125
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,3,opening,Bolt,systematic query covector,0.000529917
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,3,opening,Bolt,parity query covector and transpose RS FFT,0.001016125
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,3,opening,Bolt,public H transpose covector,0.0008585
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,3,opening,source,authenticated WHIR alignment and constraint combination,0.005386792
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,3,opening,source,authenticated WHIR alignment and constraint combination,0.000347416
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,3,opening,source,authenticated WHIR alignment and constraint combination,0.00493825
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,3,opening,source,authenticated WHIR alignment and constraint combination,0.000412125
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,3,opening,source,authenticated WHIR alignment and constraint combination,0.005404584
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,3,opening,source,authenticated WHIR alignment and constraint combination,0.000415041
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,3,opening,source,authenticated WHIR alignment and constraint combination,0.005965792
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,3,opening,source,authenticated WHIR alignment and constraint combination,0.000538375
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,3,opening,batched WHIR,distinct-functional cross evaluations,0.009662166
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,3,opening,batched WHIR,shared recursive WHIR proof,0.005353583
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,3,commitment,other,unassigned phase work and timing overhead,6.582000000011912e-6
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,3,opening,other,unassigned phase work and timing overhead,0.004956543999999979
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,commitment,Bolt,sparse syndrome U=HX,0.002071041
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,commitment,Bolt,parity RS encoding Y=RS(U),0.002488583
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,commitment,X,row Merkle tree or forest,0.006947541
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,commitment,X,Canopy hash-to-field,3.75e-7
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,commitment,X,Canopy constant RS commitment,3.458e-6
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,commitment,Y,row Merkle tree or forest,0.001854167
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,commitment,Y,Canopy hash-to-field,0.000341416
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,commitment,Y,Canopy WHIR configuration,2.834e-6
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,commitment,Y,Canopy RS encode and WHIR oracle commitment,0.001253333
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,commitment,Bolt,sparse syndrome U=HX,0.001441125
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,commitment,Bolt,parity RS encoding Y=RS(U),0.002182791
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,commitment,X,row Merkle tree or forest,0.006603875
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,commitment,X,Canopy hash-to-field,3.33e-7
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,commitment,X,Canopy constant RS commitment,3.375e-6
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,commitment,Y,row Merkle tree or forest,0.00174225
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,commitment,Y,Canopy hash-to-field,0.000342417
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,commitment,Y,Canopy WHIR configuration,3.417e-6
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,commitment,Y,Canopy RS encode and WHIR oracle commitment,0.000946916
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,commitment,Bolt,sparse syndrome U=HX,0.001526833
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,commitment,Bolt,parity RS encoding Y=RS(U),0.002071042
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,commitment,X,row Merkle tree or forest,0.006456084
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,commitment,X,Canopy hash-to-field,2.5e-7
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,commitment,X,Canopy constant RS commitment,3.25e-6
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,commitment,Y,row Merkle tree or forest,0.001496167
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,commitment,Y,Canopy hash-to-field,0.000333958
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,commitment,Y,Canopy WHIR configuration,1.792e-6
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,commitment,Y,Canopy RS encode and WHIR oracle commitment,0.001209542
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,commitment,Bolt,sparse syndrome U=HX,0.001761709
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,commitment,Bolt,parity RS encoding Y=RS(U),0.002139
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,commitment,X,row Merkle tree or forest,0.00663175
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,commitment,X,Canopy hash-to-field,2.08e-7
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,commitment,X,Canopy constant RS commitment,3.291e-6
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,commitment,Y,row Merkle tree or forest,0.00149425
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,commitment,Y,Canopy hash-to-field,0.000345416
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,commitment,Y,Canopy WHIR configuration,2.25e-6
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,commitment,Y,Canopy RS encode and WHIR oracle commitment,0.000840875
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,opening,Bolt,partial evaluation g,0.003268208
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,opening,Bolt,column projections x=Xr and u=Ur,0.001018125
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,opening,common WHIR,WHIR configuration,5.167e-6
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,opening,x,common WHIR RS encode and oracle commitment,0.005203916
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,opening,u,common WHIR RS encode and oracle commitment,0.000736542
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,opening,Bolt,syndrome evaluation sigma,0.000234083
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,opening,Bolt,sample row queries,0.006732291
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,opening,X,copy and serialize queried row values,0.004411625
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,opening,X,collect and serialize row authentication paths,0.004560542
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,opening,Y,copy and serialize queried row values,0.000077708
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,opening,Y,collect and serialize row authentication paths,0.000104
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,opening,Bolt,project queried rows and sample batching challenges,0.001025333
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,opening,Bolt,systematic query covector,0.000548916
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,opening,Bolt,parity query covector and transpose RS FFT,0.001077875
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,opening,Bolt,public H transpose covector,0.001073041
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,opening,X,Canopy ancestor claims,0.000033083
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,opening,X,Canopy constant opening,4.2e-8
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,opening,Y,Canopy ancestor claims,2.625e-6
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,opening,Y,Canopy SEP batching covector,0.000010458
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,opening,Y,Canopy OOD evaluations,0.000033209
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,opening,Bolt,partial evaluation g,0.003374458
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,opening,Bolt,column projections x=Xr and u=Ur,0.000872959
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,opening,common WHIR,WHIR configuration,5.041e-6
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,opening,x,common WHIR RS encode and oracle commitment,0.006663
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,opening,u,common WHIR RS encode and oracle commitment,0.0008895
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,opening,Bolt,syndrome evaluation sigma,0.000206333
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,opening,Bolt,sample row queries,0.006218833
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,opening,X,copy and serialize queried row values,0.005141458
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,opening,X,collect and serialize row authentication paths,0.004189791
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,opening,Y,copy and serialize queried row values,0.000076833
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,opening,Y,collect and serialize row authentication paths,0.000093583
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,opening,Bolt,project queried rows and sample batching challenges,0.000990833
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,opening,Bolt,systematic query covector,0.000546
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,opening,Bolt,parity query covector and transpose RS FFT,0.001017084
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,opening,Bolt,public H transpose covector,0.000886041
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,opening,X,Canopy ancestor claims,0.000020417
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,opening,X,Canopy constant opening,2.5e-7
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,opening,Y,Canopy ancestor claims,2.916e-6
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,opening,Y,Canopy SEP batching covector,7.875e-6
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,opening,Y,Canopy OOD evaluations,0.000032917
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,opening,Bolt,partial evaluation g,0.003345208
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,opening,Bolt,column projections x=Xr and u=Ur,0.000804333
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,opening,common WHIR,WHIR configuration,5.916e-6
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,opening,x,common WHIR RS encode and oracle commitment,0.005376834
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,opening,u,common WHIR RS encode and oracle commitment,0.000796583
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,opening,Bolt,syndrome evaluation sigma,0.000214167
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,opening,Bolt,sample row queries,0.006328458
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,opening,X,copy and serialize queried row values,0.005163042
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,opening,X,collect and serialize row authentication paths,0.004184583
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,opening,Y,copy and serialize queried row values,0.000075875
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,opening,Y,collect and serialize row authentication paths,0.000096916
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,opening,Bolt,project queried rows and sample batching challenges,0.000982875
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,opening,Bolt,systematic query covector,0.000527084
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,opening,Bolt,parity query covector and transpose RS FFT,0.001026792
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,opening,Bolt,public H transpose covector,0.000972084
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,opening,X,Canopy ancestor claims,0.00002025
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,opening,X,Canopy constant opening,4.1e-8
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,opening,Y,Canopy ancestor claims,2.208e-6
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,opening,Y,Canopy SEP batching covector,7.708e-6
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,opening,Y,Canopy OOD evaluations,0.000033375
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,opening,Bolt,partial evaluation g,0.0039135
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,opening,Bolt,column projections x=Xr and u=Ur,0.000980916
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,opening,common WHIR,WHIR configuration,6.958e-6
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,opening,x,common WHIR RS encode and oracle commitment,0.0057915
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,opening,u,common WHIR RS encode and oracle commitment,0.001030625
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,opening,Bolt,syndrome evaluation sigma,0.00023125
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,opening,Bolt,sample row queries,0.006310125
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,opening,X,copy and serialize queried row values,0.00441725
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,opening,X,collect and serialize row authentication paths,0.004131042
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,opening,Y,copy and serialize queried row values,0.000080959
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,opening,Y,collect and serialize row authentication paths,0.000102
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,opening,Bolt,project queried rows and sample batching challenges,0.001054584
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,opening,Bolt,systematic query covector,0.000611334
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,opening,Bolt,parity query covector and transpose RS FFT,0.001
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,opening,Bolt,public H transpose covector,0.001004667
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,opening,X,Canopy ancestor claims,0.000021042
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,opening,X,Canopy constant opening,3.584e-6
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,opening,Y,Canopy ancestor claims,3e-6
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,opening,Y,Canopy SEP batching covector,8.333e-6
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,opening,Y,Canopy OOD evaluations,0.000033333
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,opening,systematic tail,authenticated WHIR alignment and constraint combination,0.005490958
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,opening,systematic tail,authenticated WHIR alignment and constraint combination,0.005418667
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,opening,systematic tail,authenticated WHIR alignment and constraint combination,0.005631042
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,opening,systematic tail,authenticated WHIR alignment and constraint combination,0.005786583
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,opening,systematic tail,distinct-functional cross evaluations,0.004011625
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,opening,systematic tail,shared recursive WHIR proof,0.004962375
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,opening,parity tail,authenticated WHIR alignment and constraint combination,0.001762917
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,opening,parity tail,authenticated WHIR alignment and constraint combination,0.000205084
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,opening,parity tail,authenticated WHIR alignment and constraint combination,0.001837333
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,opening,parity tail,authenticated WHIR alignment and constraint combination,0.000071375
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,opening,parity tail,authenticated WHIR alignment and constraint combination,0.001962291
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,opening,parity tail,authenticated WHIR alignment and constraint combination,0.000072542
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,opening,parity tail,authenticated WHIR alignment and constraint combination,0.001795334
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,opening,parity tail,authenticated WHIR alignment and constraint combination,0.00007025
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,opening,parity tail,distinct-functional cross evaluations,0.002408125
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,opening,parity tail,shared recursive WHIR proof,0.002457042
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,commitment,other,unassigned phase work and timing overhead,6.835999999975362e-6
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,3,opening,other,unassigned phase work and timing overhead,0.005607044999999977
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,commitment,Bolt,sparse syndrome U=HX,0.001755792
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,commitment,Bolt,parity RS encoding Y=RS(U),0.002220834
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,commitment,X,row Merkle tree or forest,0.006555042
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,commitment,X,Canopy hash-to-field,4.58e-7
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,commitment,X,Canopy constant RS commitment,3.333e-6
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,commitment,Y,row Merkle tree or forest,0.003108583
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,commitment,Y,Canopy hash-to-field,0.000329375
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,commitment,Y,Canopy WHIR configuration,3.625e-6
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,commitment,Y,Canopy RS encode and WHIR oracle commitment,0.001720584
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,commitment,Bolt,sparse syndrome U=HX,0.001651125
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,commitment,Bolt,parity RS encoding Y=RS(U),0.002551583
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,commitment,X,row Merkle tree or forest,0.006586209
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,commitment,X,Canopy hash-to-field,4.17e-7
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,commitment,X,Canopy constant RS commitment,3.292e-6
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,commitment,Y,row Merkle tree or forest,0.001780042
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,commitment,Y,Canopy hash-to-field,0.000332875
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,commitment,Y,Canopy WHIR configuration,3.209e-6
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,commitment,Y,Canopy RS encode and WHIR oracle commitment,0.000890833
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,commitment,Bolt,sparse syndrome U=HX,0.001481667
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,commitment,Bolt,parity RS encoding Y=RS(U),0.001886667
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,commitment,X,row Merkle tree or forest,0.006718083
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,commitment,X,Canopy hash-to-field,3.33e-7
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,commitment,X,Canopy constant RS commitment,3.208e-6
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,commitment,Y,row Merkle tree or forest,0.001771208
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,commitment,Y,Canopy hash-to-field,0.000362291
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,commitment,Y,Canopy WHIR configuration,2.292e-6
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,commitment,Y,Canopy RS encode and WHIR oracle commitment,0.000939875
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,commitment,Bolt,sparse syndrome U=HX,0.002167083
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,commitment,Bolt,parity RS encoding Y=RS(U),0.001987833
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,commitment,X,row Merkle tree or forest,0.007975416
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,commitment,X,Canopy hash-to-field,4.17e-7
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,commitment,X,Canopy constant RS commitment,3.125e-6
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,commitment,Y,row Merkle tree or forest,0.001599459
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,commitment,Y,Canopy hash-to-field,0.000330709
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,commitment,Y,Canopy WHIR configuration,2.542e-6
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,commitment,Y,Canopy RS encode and WHIR oracle commitment,0.000937709
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,opening,Bolt,partial evaluation g,0.00390575
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,opening,Bolt,column projections x=Xr and u=Ur,0.000875584
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,opening,common WHIR,WHIR configuration,6.375e-6
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,opening,x,common WHIR RS encode and oracle commitment,0.004619166
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,opening,u,common WHIR RS encode and oracle commitment,0.001424458
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,opening,Bolt,syndrome evaluation sigma,0.000230417
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,opening,Bolt,sample row queries,0.006217375
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,opening,X,copy and serialize queried row values,0.004335083
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,opening,X,collect and serialize row authentication paths,0.004436625
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,opening,Y,copy and serialize queried row values,0.000075917
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,opening,Y,collect and serialize row authentication paths,0.00009425
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,opening,Bolt,project queried rows and sample batching challenges,0.000985167
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,opening,Bolt,systematic query covector,0.00071675
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,opening,Bolt,parity query covector and transpose RS FFT,0.00105675
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,opening,Bolt,public H transpose covector,0.000953208
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,opening,X,Canopy ancestor claims,0.000020708
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,opening,X,Canopy constant opening,1.67e-7
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,opening,Y,Canopy ancestor claims,3.083e-6
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,opening,Y,Canopy SEP batching covector,8.167e-6
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,opening,Y,Canopy OOD evaluations,0.000033208
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,opening,Bolt,partial evaluation g,0.003392958
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,opening,Bolt,column projections x=Xr and u=Ur,0.001008833
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,opening,common WHIR,WHIR configuration,6.125e-6
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,opening,x,common WHIR RS encode and oracle commitment,0.004960708
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,opening,u,common WHIR RS encode and oracle commitment,0.00072425
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,opening,Bolt,syndrome evaluation sigma,0.000213125
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,opening,Bolt,sample row queries,0.006378667
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,opening,X,copy and serialize queried row values,0.004182916
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,opening,X,collect and serialize row authentication paths,0.004078041
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,opening,Y,copy and serialize queried row values,0.000076334
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,opening,Y,collect and serialize row authentication paths,0.000094584
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,opening,Bolt,project queried rows and sample batching challenges,0.000957708
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,opening,Bolt,systematic query covector,0.000532
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,opening,Bolt,parity query covector and transpose RS FFT,0.00101925
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,opening,Bolt,public H transpose covector,0.000882917
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,opening,X,Canopy ancestor claims,0.000020458
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,opening,X,Canopy constant opening,2.5e-7
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,opening,Y,Canopy ancestor claims,2.917e-6
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,opening,Y,Canopy SEP batching covector,8.084e-6
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,opening,Y,Canopy OOD evaluations,0.000033292
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,opening,Bolt,partial evaluation g,0.003546667
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,opening,Bolt,column projections x=Xr and u=Ur,0.000812959
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,opening,common WHIR,WHIR configuration,5.834e-6
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,opening,x,common WHIR RS encode and oracle commitment,0.00489575
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,opening,u,common WHIR RS encode and oracle commitment,0.00087675
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,opening,Bolt,syndrome evaluation sigma,0.000207208
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,opening,Bolt,sample row queries,0.006266916
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,opening,X,copy and serialize queried row values,0.005310584
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,opening,X,collect and serialize row authentication paths,0.0040765
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,opening,Y,copy and serialize queried row values,0.000098209
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,opening,Y,collect and serialize row authentication paths,0.000149083
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,opening,Bolt,project queried rows and sample batching challenges,0.000984208
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,opening,Bolt,systematic query covector,0.000539292
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,opening,Bolt,parity query covector and transpose RS FFT,0.000996667
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,opening,Bolt,public H transpose covector,0.000997083
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,opening,X,Canopy ancestor claims,0.000019916
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,opening,X,Canopy constant opening,0.0
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,opening,Y,Canopy ancestor claims,2.084e-6
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,opening,Y,Canopy SEP batching covector,7.667e-6
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,opening,Y,Canopy OOD evaluations,0.000033542
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,opening,Bolt,partial evaluation g,0.003702375
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,opening,Bolt,column projections x=Xr and u=Ur,0.000819125
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,opening,common WHIR,WHIR configuration,6.958e-6
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,opening,x,common WHIR RS encode and oracle commitment,0.004883292
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,opening,u,common WHIR RS encode and oracle commitment,0.00072775
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,opening,Bolt,syndrome evaluation sigma,0.00022925
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,opening,Bolt,sample row queries,0.006173208
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,opening,X,copy and serialize queried row values,0.004294584
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,opening,X,collect and serialize row authentication paths,0.003910084
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,opening,Y,copy and serialize queried row values,0.0000755
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,opening,Y,collect and serialize row authentication paths,0.000091792
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,opening,Bolt,project queried rows and sample batching challenges,0.000995542
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,opening,Bolt,systematic query covector,0.000513166
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,opening,Bolt,parity query covector and transpose RS FFT,0.00103775
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,opening,Bolt,public H transpose covector,0.001089083
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,opening,X,Canopy ancestor claims,0.000033417
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,opening,X,Canopy constant opening,3.75e-6
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,opening,Y,Canopy ancestor claims,3.542e-6
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,opening,Y,Canopy SEP batching covector,8.959e-6
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,opening,Y,Canopy OOD evaluations,0.000033166
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,opening,systematic tail,authenticated WHIR alignment and constraint combination,0.005563584
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,opening,systematic tail,authenticated WHIR alignment and constraint combination,0.005684416
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,opening,systematic tail,authenticated WHIR alignment and constraint combination,0.00640675
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,opening,systematic tail,authenticated WHIR alignment and constraint combination,0.006204625
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,opening,systematic tail,distinct-functional cross evaluations,0.004050584
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,opening,systematic tail,shared recursive WHIR proof,0.005324083
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,opening,parity tail,authenticated WHIR alignment and constraint combination,0.001931625
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,opening,parity tail,authenticated WHIR alignment and constraint combination,0.000175792
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,opening,parity tail,authenticated WHIR alignment and constraint combination,0.002287208
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,opening,parity tail,authenticated WHIR alignment and constraint combination,0.000069
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,opening,parity tail,authenticated WHIR alignment and constraint combination,0.002199167
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,opening,parity tail,authenticated WHIR alignment and constraint combination,0.000076709
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,opening,parity tail,authenticated WHIR alignment and constraint combination,0.001940584
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,opening,parity tail,authenticated WHIR alignment and constraint combination,0.000076791
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,opening,parity tail,distinct-functional cross evaluations,0.00240775
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,opening,parity tail,shared recursive WHIR proof,0.002685333
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,commitment,other,unassigned phase work and timing overhead,0.000010122000000001297
+4,equal_half,18,4,bolt_canopy_split,16,3,4778121654452702769,8,4,opening,other,unassigned phase work and timing overhead,0.0061839950000000254
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,4,commitment,Bolt,sparse syndrome U=HX,0.001387542
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,4,commitment,Bolt,parity RS encoding Y=RS(U),0.002557334
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,4,commitment,X,row Merkle tree or forest,0.006498375
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,4,commitment,X,Merkle root transcript,2.09e-7
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,4,commitment,Y,row Merkle tree or forest,0.002058125
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,4,commitment,Y,Merkle root transcript,3.33e-7
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,4,commitment,Bolt,sparse syndrome U=HX,0.001571375
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,4,commitment,Bolt,parity RS encoding Y=RS(U),0.0022235
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,4,commitment,X,row Merkle tree or forest,0.006685375
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,4,commitment,X,Merkle root transcript,3.75e-7
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,4,commitment,Y,row Merkle tree or forest,0.00213275
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,4,commitment,Y,Merkle root transcript,1.25e-7
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,4,commitment,Bolt,sparse syndrome U=HX,0.001557209
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,4,commitment,Bolt,parity RS encoding Y=RS(U),0.002357125
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,4,commitment,X,row Merkle tree or forest,0.0068285
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,4,commitment,X,Merkle root transcript,6.67e-7
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,4,commitment,Y,row Merkle tree or forest,0.00193175
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,4,commitment,Y,Merkle root transcript,2.92e-7
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,4,commitment,Bolt,sparse syndrome U=HX,0.001438417
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,4,commitment,Bolt,parity RS encoding Y=RS(U),0.001937209
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,4,commitment,X,row Merkle tree or forest,0.006787792
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,4,commitment,X,Merkle root transcript,8.3e-8
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,4,commitment,Y,row Merkle tree or forest,0.001953375
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,4,commitment,Y,Merkle root transcript,1.25e-7
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,4,opening,Bolt,partial evaluation g,0.00381325
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,4,opening,Bolt,column projections x=Xr and u=Ur,0.000901583
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,4,opening,common WHIR,WHIR configuration,4.958e-6
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,4,opening,x,common WHIR RS encode and oracle commitment,0.00430975
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,4,opening,u,common WHIR RS encode and oracle commitment,0.0008435
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,4,opening,Bolt,syndrome evaluation sigma,0.000224083
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,4,opening,Bolt,sample row queries,0.006193542
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,4,opening,X,copy and serialize queried row values,0.00454125
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,4,opening,X,collect and serialize row authentication paths,0.004162459
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,4,opening,Y,copy and serialize queried row values,0.000078625
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,4,opening,Y,collect and serialize row authentication paths,0.000167709
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,4,opening,Bolt,project queried rows and sample batching challenges,0.000957042
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,4,opening,Bolt,systematic query covector,0.000570625
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,4,opening,Bolt,parity query covector and transpose RS FFT,0.001059625
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,4,opening,Bolt,public H transpose covector,0.001271292
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,4,opening,Bolt,partial evaluation g,0.00337725
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,4,opening,Bolt,column projections x=Xr and u=Ur,0.000852584
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,4,opening,common WHIR,WHIR configuration,4.791e-6
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,4,opening,x,common WHIR RS encode and oracle commitment,0.004607209
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,4,opening,u,common WHIR RS encode and oracle commitment,0.000975916
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,4,opening,Bolt,syndrome evaluation sigma,0.000210625
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,4,opening,Bolt,sample row queries,0.006243583
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,4,opening,X,copy and serialize queried row values,0.005287417
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,4,opening,X,collect and serialize row authentication paths,0.004344375
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,4,opening,Y,copy and serialize queried row values,0.000079667
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,4,opening,Y,collect and serialize row authentication paths,0.000170041
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,4,opening,Bolt,project queried rows and sample batching challenges,0.000977208
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,4,opening,Bolt,systematic query covector,0.000547708
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,4,opening,Bolt,parity query covector and transpose RS FFT,0.000999
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,4,opening,Bolt,public H transpose covector,0.000889
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,4,opening,Bolt,partial evaluation g,0.004120333
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,4,opening,Bolt,column projections x=Xr and u=Ur,0.000821542
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,4,opening,common WHIR,WHIR configuration,4.833e-6
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,4,opening,x,common WHIR RS encode and oracle commitment,0.004613959
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,4,opening,u,common WHIR RS encode and oracle commitment,0.000902042
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,4,opening,Bolt,syndrome evaluation sigma,0.000210042
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,4,opening,Bolt,sample row queries,0.006122625
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,4,opening,X,copy and serialize queried row values,0.005367459
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,4,opening,X,collect and serialize row authentication paths,0.004365833
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,4,opening,Y,copy and serialize queried row values,0.000075167
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,4,opening,Y,collect and serialize row authentication paths,0.000179083
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,4,opening,Bolt,project queried rows and sample batching challenges,0.000959
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,4,opening,Bolt,systematic query covector,0.000547625
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,4,opening,Bolt,parity query covector and transpose RS FFT,0.001020333
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,4,opening,Bolt,public H transpose covector,0.000884083
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,4,opening,Bolt,partial evaluation g,0.00379075
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,4,opening,Bolt,column projections x=Xr and u=Ur,0.000825792
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,4,opening,common WHIR,WHIR configuration,6.25e-6
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,4,opening,x,common WHIR RS encode and oracle commitment,0.00423725
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,4,opening,u,common WHIR RS encode and oracle commitment,0.000713167
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,4,opening,Bolt,syndrome evaluation sigma,0.000211166
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,4,opening,Bolt,sample row queries,0.006399459
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,4,opening,X,copy and serialize queried row values,0.004158417
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,4,opening,X,collect and serialize row authentication paths,0.004002291
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,4,opening,Y,copy and serialize queried row values,0.000075458
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,4,opening,Y,collect and serialize row authentication paths,0.000367291
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,4,opening,Bolt,project queried rows and sample batching challenges,0.00095875
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,4,opening,Bolt,systematic query covector,0.000532833
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,4,opening,Bolt,parity query covector and transpose RS FFT,0.001157209
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,4,opening,Bolt,public H transpose covector,0.001100875
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,4,opening,source,authenticated WHIR alignment and constraint combination,0.004983375
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,4,opening,source,authenticated WHIR alignment and constraint combination,0.000396542
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,4,opening,source,authenticated WHIR alignment and constraint combination,0.005657875
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,4,opening,source,authenticated WHIR alignment and constraint combination,0.000352291
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,4,opening,source,authenticated WHIR alignment and constraint combination,0.005554375
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,4,opening,source,authenticated WHIR alignment and constraint combination,0.000422917
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,4,opening,source,authenticated WHIR alignment and constraint combination,0.00483025
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,4,opening,source,authenticated WHIR alignment and constraint combination,0.000350917
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,4,opening,batched WHIR,distinct-functional cross evaluations,0.009981042
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,4,opening,batched WHIR,shared recursive WHIR proof,0.005755375
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,4,commitment,other,unassigned phase work and timing overhead,6.288000000000127e-6
+4,equal_blocks,18,4,bolt_merkle_shared,,,4778121654452702769,8,4,opening,other,unassigned phase work and timing overhead,0.004965540000000018

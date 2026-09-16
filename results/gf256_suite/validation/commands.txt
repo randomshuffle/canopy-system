@@ -1,0 +1,8 @@
+RAYON_NUM_THREADS=8 cargo test --offline --all-targets
+RAYON_NUM_THREADS=8 cargo test --release --offline --lib bolt_experiment::batching::tests
+cargo check --offline --manifest-path experiments/binary-whir/Cargo.toml
+RAYON_NUM_THREADS=8 cargo test --offline --lib benchmark
+cargo check --offline --all-features
+RAYON_NUM_THREADS=8 cargo test --offline --lib bolt_experiment::batching::tests
+python3 scripts/summarize_gf256_suite.py
+git diff --check

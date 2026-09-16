@@ -6,9 +6,7 @@
 //! four-variable folds, BLAKE3, and zero proof of work) and exposes stable
 //! timing/accounting data. Capacity mode is conjectural.
 
-use std::{
-    time::{Duration, Instant},
-};
+use std::time::{Duration, Instant};
 
 use anyhow::{ensure, Result};
 use rayon::prelude::*;
@@ -31,6 +29,8 @@ use whir_ref::{
 };
 
 use crate::{whir::WhirDecodingRegime, Fr, FIELD_BITS, HASH_BYTES};
+
+type BenchmarkTranscript = spongefish::instantiations::XOF<blake3::Hasher>;
 
 pub const SECURITY_BITS: usize = 128;
 pub const FOLDING_LOG: usize = 4;
@@ -167,7 +167,7 @@ pub fn commit_matrix_with_whir(
     let domain = DomainSeparator::protocol(&config)
         .session(&"canopy-system/whir-matrix-commitment/v1")
         .instance(&Empty);
-    let mut prover_state = ProverState::new_std(&domain);
+    let mut prover_state = ProverState::new(&domain, BenchmarkTranscript::default());
     let start = Instant::now();
     let witness = config.commit(&mut prover_state, &encoded.matrix);
     let elapsed = start.elapsed();
@@ -221,6 +221,22 @@ pub(crate) fn config(
     decoding_regime: WhirDecodingRegime,
     folding_log: usize,
 ) -> Result<Config<Identity<Fr>>> {
+    config_with_security(
+        message_length,
+        log_inverse_rate,
+        decoding_regime,
+        folding_log,
+        SECURITY_BITS,
+    )
+}
+
+fn config_with_security(
+    message_length: usize,
+    log_inverse_rate: usize,
+    decoding_regime: WhirDecodingRegime,
+    folding_log: usize,
+    security_bits: usize,
+) -> Result<Config<Identity<Fr>>> {
     register_field_ntt();
     ensure!(
         message_length.is_power_of_two(),
@@ -236,7 +252,7 @@ pub(crate) fn config(
         starting_log_inv_rate: log_inverse_rate,
         initial_folding_factor: folding_log,
         folding_factor: folding_log,
-        security_level: SECURITY_BITS,
+        security_level: security_bits,
         pow_bits: POW_BITS,
         // Each call to `commit` below binds one vector. Multiple independently
         // committed vectors are batched by `prove`, which is experiment 3's
@@ -250,7 +266,7 @@ pub(crate) fn config(
         "the selected WHIR parameters require proof of work"
     );
     ensure!(
-        config.security_level(1, 1) >= SECURITY_BITS as f64,
+        config.security_level(1, 1) >= security_bits as f64,
         "WHIR configuration supplies only {:.2} bits",
         config.security_level(1, 1)
     );
@@ -310,21 +326,58 @@ pub fn execute_with_regime_and_folding(
     decoding_regime: WhirDecodingRegime,
     folding_log: usize,
 ) -> Result<ExecutableWhirRun> {
-    execute_inner(vectors, log_inverse_rate, decoding_regime, folding_log, false)
+    execute_inner(
+        vectors,
+        log_inverse_rate,
+        decoding_regime,
+        folding_log,
+        false,
+        SECURITY_BITS,
+    )
 }
 
 /// Same prover with full-width deterministic evaluation points for comparing fields.
 pub fn execute_benchmark_with_regime_and_folding(
-    vectors: &[Vec<Fr>], log_inverse_rate: usize,
-    decoding_regime: WhirDecodingRegime, folding_log: usize,
+    vectors: &[Vec<Fr>],
+    log_inverse_rate: usize,
+    decoding_regime: WhirDecodingRegime,
+    folding_log: usize,
 ) -> Result<ExecutableWhirRun> {
-    execute_inner(vectors, log_inverse_rate, decoding_regime, folding_log, true)
+    execute_inner(
+        vectors,
+        log_inverse_rate,
+        decoding_regime,
+        folding_log,
+        true,
+        SECURITY_BITS,
+    )
+}
+
+/// Full-width benchmark with an explicit local security budget for composition.
+pub fn execute_benchmark_with_security(
+    vectors: &[Vec<Fr>],
+    log_inverse_rate: usize,
+    decoding_regime: WhirDecodingRegime,
+    folding_log: usize,
+    security_bits: usize,
+) -> Result<ExecutableWhirRun> {
+    execute_inner(
+        vectors,
+        log_inverse_rate,
+        decoding_regime,
+        folding_log,
+        true,
+        security_bits,
+    )
 }
 
 fn execute_inner(
-    vectors: &[Vec<Fr>], log_inverse_rate: usize,
-    decoding_regime: WhirDecodingRegime, folding_log: usize,
+    vectors: &[Vec<Fr>],
+    log_inverse_rate: usize,
+    decoding_regime: WhirDecodingRegime,
+    folding_log: usize,
     full_width_point: bool,
+    security_bits: usize,
 ) -> Result<ExecutableWhirRun> {
     ensure!(!vectors.is_empty(), "at least one WHIR vector is required");
     let message_length = vectors[0].len();
@@ -337,17 +390,27 @@ fn execute_inner(
         "paper WHIR execution requires the 256-bit field"
     );
 
-    let config = config(
-        message_length,
-        log_inverse_rate,
-        decoding_regime,
-        folding_log,
-    )?;
+    let config = if security_bits == SECURITY_BITS {
+        config(
+            message_length,
+            log_inverse_rate,
+            decoding_regime,
+            folding_log,
+        )?
+    } else {
+        config_with_security(
+            message_length,
+            log_inverse_rate,
+            decoding_regime,
+            folding_log,
+            security_bits,
+        )?
+    };
     let geometry = oracle_geometry(&config);
     let domain = DomainSeparator::protocol(&config)
         .session(&"canopy-system/paper-experiments/v1")
         .instance(&Empty);
-    let mut prover_state = ProverState::new_std(&domain);
+    let mut prover_state = ProverState::new(&domain, BenchmarkTranscript::default());
     let buffers: Vec<_> = vectors
         .iter()
         .map(|vector| Buffer::from(vector.as_slice()))
@@ -389,9 +452,13 @@ fn execute_inner(
     // opening-proof timer rather than treating it as untimed setup.
     let claim_evaluation_start = Instant::now();
     let num_variables = message_length.ilog2() as usize;
-    let point = if full_width_point {
-        (0..num_variables).map(|i| crate::benchmark_field_element(0x43414e4f5059, 99, i as u64)).collect()
-    } else { vec![Fr::from(7u64); num_variables] };
+    let point = if full_width_point || <Fr as ark_ff::Field>::characteristic() == [2] {
+        (0..num_variables)
+            .map(|i| crate::benchmark_field_element(0x43414e4f5059, 99, i as u64))
+            .collect()
+    } else {
+        vec![Fr::from(7u64); num_variables]
+    };
     let evaluation_form = MultilinearExtension::new(point.clone());
     let evaluations: Vec<_> = vectors
         .par_iter()
@@ -417,7 +484,7 @@ fn execute_inner(
     let proof_bytes = proof.narg_string.len() + proof.hints.len();
 
     let verify_start = Instant::now();
-    let mut verifier_state = VerifierState::new_std(&domain, &proof);
+    let mut verifier_state = VerifierState::new(&domain, &proof, BenchmarkTranscript::default());
     let commitments: Vec<_> = (0..vectors.len())
         .map(|_| config.receive_commitment(&mut verifier_state))
         .collect::<std::result::Result<_, _>>()
@@ -450,6 +517,24 @@ fn execute_inner(
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn composed_budget_executes_and_verifies_with_more_queries() {
+        let vectors: Vec<_> = (0..2)
+            .map(|j| {
+                (0..256)
+                    .map(|i| crate::benchmark_field_element(123, j, i))
+                    .collect()
+            })
+            .collect();
+        let run = execute_benchmark_with_security(&vectors, 1, WhirDecodingRegime::Johnson, 3, 136)
+            .unwrap();
+        let old = config(256, 1, WhirDecodingRegime::Johnson, 3).unwrap();
+        assert!(
+            run.oracle_geometry[0].requested_queries > old.initial_committer.in_domain_samples()
+        );
+        assert!(run.proof_bytes > 0);
+    }
 
     #[test]
     fn reference_whir_round_trip_without_pow() {
@@ -514,7 +599,7 @@ mod tests {
             let domain = DomainSeparator::protocol(&config)
                 .session(&"canopy-system/shared-code-test/v1")
                 .instance(&Empty);
-            let mut prover_state = ProverState::new_std(&domain);
+            let mut prover_state = ProverState::new(&domain, BenchmarkTranscript::default());
             let buffer = Buffer::from(vector.as_slice());
             let witness = config
                 .initial_committer

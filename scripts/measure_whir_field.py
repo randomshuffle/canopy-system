@@ -19,6 +19,8 @@ p.add_argument('--repetitions',type=int,default=5)
 p.add_argument('--threads',type=int,default=8)
 p.add_argument('--output-dir',type=Path,required=True)
 a=p.parse_args()
+if a.field == 'prime':
+    p.error('The main executable now uses GF(2^256). Prime timings require the archived pre-migration revision; this command will not mislabel a binary-field run.')
 root=Path(__file__).resolve().parents[1]
 binary=root/('target/release/canopy-system' if a.field=='prime' else 'experiments/binary-whir/target/release/canopy-binary-whir')
 command=[str(binary)]

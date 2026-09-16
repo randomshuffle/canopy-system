@@ -1,626 +1,208 @@
 # canopy-system
 
-Rust/arkworks implementation and concrete proof-size/prover-time comparison for
-Merkle, Canopy, and executable WHIR commitments.
+Rust implementation and experiments comparing Merkle and Canopy commitments
+inside batched WHIR and Bolt-max proximity arguments. The current paper suite
+contains **five configurations**, all using **GF(2^256)**, 32-byte field elements,
+**BLAKE3-256**, and a **128-bit soundness target**. Reed–Solomon encoding uses
+additive FFTs on Cantor-subspace domains, including conversion from monomial
+coefficients to the FFT basis. Fiat–Shamir uses a BLAKE3 XOF; there is no proof of work.
 
-## WHIR/Canopy field comparison
+## The five configurations
 
-The 192-bit field-switch experiment is retired from the active suite. Its
-[archived notes](docs/archive/experiment4_field_switch.md) and historical
-results are retained for provenance.
+| Configuration | Commitments and batching | CSV scheme |
+|---|---|---|
+| WHIR, rate 1/2 | Merkle commitments; run each input's first transition separately, then batch the resulting claims into one recursive WHIR proof. | `merkle_whir_batched_after_second` |
+| WHIR, rate 1/4 | The same batched Merkle baseline with starting RS rate 1/4. | `merkle_whir_batched_rate_quarter_after_second` |
+| Canopy + WHIR (Experiment 3) | Starting rate 1/2; batch Canopy SEP claims with the claims from the first WHIR transition, giving `2 eta` source claims in one recursive proof. | `canopy_schwartz_zippel` |
+| Bolt + Merkle | Bolt-max with `w=4`; select the smaller proof from shared and separate systematic/parity WHIR tails. The shared tail wins throughout the grid. | `bolt_merkle_shared` |
+| Bolt + Canopy + WHIR | Bolt-max with `w=4`; both Canopy RS blocks have length `k/2`, where `k=N/4`. Systematic and parity claims use independently optimized Canopy heights and separate recursive WHIR batches. | `bolt_canopy_split` |
 
-The [isolated GF(2^256) backend](experiments/binary-whir/README.md) runs the
-shared WHIR/Canopy prover timing harness with additive RS codes and packed
-32-byte field elements. The matched comparison uses `2^22` elements per
-polynomial, `t in {1,2,4,8}`, BLAKE3, and fresh 256-bit-prime timings. Bolt
-continues to use its existing prime-field backend. Results and stage breakdowns
-are in the [field comparison](results/whir_field_comparison_n22/comparison.md).
+Here `N` is the number of field elements **per input polynomial**, and
+`eta` is the number of inputs. Each nonconstant Bolt Canopy layer batches its
+`eta` SEP claims with that side's `eta` code-switching claims. Full-height
+constant layers are opened directly. Matching is required only within each
+side; the two sides need not have equal message lengths.
 
-## Bolt-max experiment
+For WHIR, proof sizes optimize folding schedules with three or four variables
+per fold and a terminal message of at most `2^10` coefficients. Executable
+WHIR timings use three-variable folds. Experiment 3's selected initial fold
+is three variables and its aligned Canopy height is four. For Bolt at
+`N >= 2^20`, the selected Canopy heights are `(h_X,h_Y)=(2,3)`, with message
+lengths `(k/4,k/32)`. The [Bolt protocol notes](docs/experiment_bolt_max.md)
+record the small-input exceptions, alignment, and batching details.
 
-The [Bolt-max/Canopy experiment](docs/experiment_bolt_max.md) uses the
-existing 256-bit prime field, BLAKE3, and the degree-8 Bolt-max encoder adapted
-to prime-field additions. The latest sweep gives both systematic/parity
-Canopy RS layers length `k/4`, `k/2`, or `k`, with independently optimized heights; the
-original `k/4, k/16` variant is also available. The initial interleaving grid
-searches widths 4, 8, and 16; subsequent
-WHIR folds remain factor 8. The prime-field LDPC distance `0.013` is an explicit
-assumption.
+## Workloads and measurement conventions
 
-New Bolt grids start at `2^22`; historical `2^18` results are retained.
-The [memory and larger-input report](results/bolt_max_canopy_memory/summary.md)
-measures peak RAM and extends executable comparisons to `2^24` at width 4.
+| Quantity | Input sizes `N` | Input counts `eta` |
+|---|---|---|
+| Proof sizes and verifier hashes | `2^18, 2^20, 2^22, 2^24, 2^26, 2^28, 2^30` | `1, 2, 4, 8` |
+| Measured prover times | `2^18, 2^20, 2^22` | `1, 2, 4, 8` |
+| Estimated prover times | `2^24, 2^26, 2^28, 2^30` | `1, 2, 4, 8` |
 
-```sh
-cargo run --release -- bolt-grid --interleavings 4,8,16 --samples 100
-cargo run --release -- bolt-grid --canopy-layout equal-blocks \
-  --warmups 2 --repetitions 10 --output-dir results/bolt_max_canopy_equal_blocks
-```
+- **Proof size:** mean over 100 deterministic query samples with merged
+  authentication paths. Includes roots, authentication digests, queried field
+  values, and non-oracle messages. Serializer framing is excluded from the
+  size model; Bolt timing records also retain actual serialized proof bytes.
+- **Verifier hashes:** authentication + hash-to-field + Fiat–Shamir hash/XOF
+  finalizations. These are complete invocations, not BLAKE3 compression calls
+  or a verifier-time estimate. FS adds zero proof bytes. Transcript byte counts
+  remain in the CSV data; they are omitted from the paper tables.
+- **Prover time:** commitment plus opening, excluding input generation,
+  public setup, and verification. Commitment covers initial encoding and
+  commitment construction; opening includes evaluations, batching, recursive
+  commitments, and query openings. Measured components include their FS work.
+- **Timing procedure:** MacBook Air M2, 16 GiB RAM, eight Rayon threads,
+  Rust 1.92.0 release builds, one warmup, and five measured repetitions.
+  Totals are medians; commitment/opening breakdowns are means and need not
+  sum to the median total.
 
-The [block-length comparison](results/bolt_max_canopy_block_lengths/comparison.md)
-compares `k/4`, `k/2`, and `k` for both parts, including commitment and opening
-timings. Reproduction commands are in the experiment notes.
-The [equal-block report](results/bolt_max_canopy_equal_blocks/comparison.md) uses
-`k/4` for both Canopy blocks and includes fresh timings at `2^18` and `2^22`.
-Its [detailed prover profile](results/bolt_max_canopy_equal_blocks/prover_profile.md)
-breaks down commitment and opening costs. The [earlier width-grid report](results/bolt_max_canopy_quarter_width_grid/summary.md)
-compares proof sizes at all four input lengths and timings at `2^18`.
-The [additional `2^22` timings](results/bolt_max_canopy_quarter_width_grid/timing_n22/summary.md)
-measure the first grid point where Canopy reduces proof size.
-The [detailed prover profiles](results/bolt_max_canopy_prover_profile/summary.md)
-separate encoding, row hashing, Canopy H2F/RS commitments, common WHIR proofs,
-row openings, and Canopy WHIR SEP proofs, using ten measured repetitions.
-The [original width-128 results](results/bolt_max_canopy_quarter/) are preserved.
-Timings execute and verify the public-H protocol using constrained WHIR proofs;
-they exclude Spark/Mulperm preprocessing. See the experiment notes for protocol,
-soundness, and byte-accounting details.
+WHIR/Canopy timings compose separately measured, verifier-checked native WHIR
+components; they do not execute one serialized end-to-end Canopy argument.
+Bolt timings generate and verify complete serialized arguments for the
+public-`H` adapter, excluding Spark/Mulperm preprocessing and proofs.
 
-## Final paper experiments
+The soundness target is conditional on the stated protocol assumptions.
+WHIR uses Johnson parameters and a 136-bit local budget to allow composition
+at 128 bits. Bolt assumes ensemble distance `gamma=0.013`; its systematic
+proximity radius uses the better of `gamma/3` and Khatam's one-and-a-half
+Johnson bound with slack. The parity radius remains `1/4`. See the
+[Bolt soundness notes](docs/experiment_bolt_max.md#arithmetic-and-soundness)
+and [Fiat–Shamir accounting](results/gf256_batched_suite/fiat_shamir/README.md).
 
-The current suite contains Experiments 2 and 3 for `t in {1,2,4,8}` input
-oracles; Experiments 1 and 4 are no longer run. Proof sizes are reported for
-input lengths `2^18`, `2^22`, `2^26`, and `2^30`. Every row targets 128-bit round-by-round
-soundness, uses no proof of work, starts the main RS codes at rate 1/2, searches
-ordered folding schedules over `{3,4}`, and terminates with at most `2^10`
-coefficients. The source field is the FFT-friendly 256-bit prime
-`2^256 - 43 * 2^32 + 1`.
+## Comparison at N = 2^30, eta = 1
 
-Each regime includes three Merkle-WHIR baselines: `t` complete independent
-rate-1/2 WHIR proofs; a rate-1/2 batched baseline with independent first
-transitions followed by one generalized Schwartz--Zippel batch of the `t`
-second-oracle claims; and the same batched construction at initial rate 1/4.
-Experiment 2 leaves all `2t` Canopy/outer aligned claims independent.
-Experiment 3 batches all `2t` aligned claims into one recursive WHIR tail.
+**All times below are estimates in minutes**, extrapolated from the measured
+`N=2^22` stages. Commitment/opening are projected means; totals are projected
+medians. Proof sizes and hash counts use each configuration's optimized parameters.
 
-The proved Johnson run retains `eta=sqrt(rho)/20` and uses the exact
-list-correlated-agreement exceptional-set expression from
-[Theorem 4.6](https://eccc.weizmann.ac.il/report/2025/169/download). The
-capacity run retains `eta=rho/20` and is conjectural. Generated reports are in:
-
-- [`results/paper_multi_1248_johnson_terminal_le10_fold34/`](results/paper_multi_1248_johnson_terminal_le10_fold34/)
-- [`results/paper_multi_1248_capacity_terminal_le10_fold34/`](results/paper_multi_1248_capacity_terminal_le10_fold34/)
-
-Each directory contains selected proof sizes, the complete folding grid,
-per-oracle query counts, per-event RBR bounds, separate Experiment 2 and 3
-comparisons against both baselines, and executable `2^18` prover timings.
-Regenerate them with:
-
-```sh
-cargo run --release -- paper-terminal10-hybrid-estimate --samples 100 --output-dir results/paper_multi_1248_johnson_terminal_le10_fold34
-cargo run --release -- paper-capacity-terminal10-hybrid-estimate --samples 100 --output-dir results/paper_multi_1248_capacity_terminal_le10_fold34
-cargo run --release -- paper-time --log-length 18 --warmups 1 --repetitions 5 --output-dir results/paper_multi_1248_johnson_terminal_le10_fold34
-cargo run --release -- paper-capacity-time --log-length 18 --warmups 1 --repetitions 5 --output-dir results/paper_multi_1248_capacity_terminal_le10_fold34
-```
-
-The proof-size search allows per-round folds in `{3,4}`. At `2^18`, the selected
-initial fold is three, so the executable timing rows use `f=3`, aligned
-Experiment-3 height `h=4`, and the independently optimized Experiment-2 height
-`h=18`; batched rows explicitly measure the generalized Schwartz--Zippel
-cross-evaluation work. The reference implementation's native sub-`2^3`
-recursive suffix is separately measured and subtracted so these component
-timings use the paper's at-most-`2^10` stopping condition.
-
-The timing path uses one common base-code implementation for every scheme:
-WHIR's own interleaved NTT produces the rate-1/2 (or rate-1/4 baseline) matrix and WHIR's matrix
-commitment hashes its folding-column rows. Merkle-WHIR commits the full matrix;
-Canopy starts its bottom forest from those identical row hashes, then uses the
-same WHIR interleaved NTT and matrix/Merkle commitment for the Canopy-layer
-codeword. Initial OOD evaluations are classified as opening work, not as part
-of either scheme's commitment time.
-
-The candidate large-field microbenchmark uses the same WHIR encoder and exact
-Canopy H2F workload:
-
-```sh
-cargo run --release -- field-bench --log-length 18 --folding-log 3 --canopy-height 4 --warmups 6 --repetitions 24 --output-dir results/field_benchmarks_n18_f3_h4
-```
-
-## Legacy exploratory results (superseded)
-
-The material below records earlier parameter searches and is retained for
-reproducibility. Its 128-bit fields, 100-bit target, and capacity-bound model
-are not the final paper configuration above.
-
-The original implementation compared:
-
-- a BLAKE3-256 Merkle vector commitment with minimal batch multiproofs; and
-- the Canopy vector commitment from the attached draft, using Reed-Solomon
-  encoding and a concrete estimate for the WHIR argument that solves Canopy's
-  output-committed SEP relation.
-
-The current 128-bit-field benchmark outputs are checked into
-[`results/`](results/). The full grid is in
-[`results/summary.md`](results/summary.md), the original/half/quarter comparison
-is in
-[`results/codeword_length_n30_b128_f128/`](results/codeword_length_n30_b128_f128/),
-and the matching `2^22` commitment profile is in
-[`results/codeword_commitment_timings_f128.md`](results/codeword_commitment_timings_f128.md).
-Earlier small-field experiments remain in their named subdirectories for
-historical comparison; they do not use the current default soundness model.
-The separate-commitment batching grid for `t=8,16,32` and its fixed timing
-profile are in
-[`results/separate_commitments/`](results/separate_commitments/). The matching
-Canopy-quarter grid and profile are in
-[`results/separate_commitments_quarter/`](results/separate_commitments_quarter/).
-The `N=2^28`, 24-bit, factor-16 virtual-initial-oracle variant is in
-[`results/separate_commitments_quarter_rs16_virtual_f24_n28/`](results/separate_commitments_quarter_rs16_virtual_f24_n28/).
-
-## Main result
-
-The input-vector and Canopy/WHIR fields are fixed at 128 bits. For `N=2^30`,
-batch 128, searching all `h=1,...,15` selects `h=9`. Its mean proof is
-70.34 KiB, versus 90.50 KiB for Merkle (0.777x): 58.23 KiB of hashes and
-12.11 KiB of field elements. No proof of work or repeated sumcheck transcript
-is used.
-
-The configured WHIR target is 100 bits, matching the high-level
-100-bit/roughly-128-bit-field choice in the WHIR reference implementation.
-This is not a proved 100-bit no-PoW result under the capacity model: for the
-`N=2^30`, batch-128 optimum, the smallest current RBR/list-adjusted
-single-challenge estimate is 77.42 bits. The scalar terminal sumcheck itself
-has 126.58 bits. See `whir_parameters.csv` for every component.
-
-The best `h` values are:
-
-| log2(vector length) | batch 64 | batch 128 | batch 256 | batch 512 | batch 1024 |
-|---:|---:|---:|---:|---:|---:|
-| 22 | 11 | 7 | 4 | 3 | 2 |
-| 24 | 13 | 9 | 5 | 3 | 2 |
-| 26 | 15 | 7 | 5 | 3 | 2 |
-| 28 | 15 | 9 | 5 | 3 | 2 |
-| 30 | 15 | 9 | 6 | 3 | 2 |
-
-See the generated summary for KiB values and the hash/field split.
-
-## Shortened-codeword experiment
-
-With the input and Canopy-layer fields both fixed at 128 bits, shortening the
-Canopy RS codeword changes its log length from `n` to `n-1` or `n-2`. The
-message dimension remains `2^(n-h)`, so the inverse-rate exponent supplied to
-WHIR changes from `h` to `h-1` or `h-2`.
-
-For `N=2^30`, batch 128, and 100 random samples:
-
-| codeword length | best h | proof KiB | hashes KiB | fields KiB | vs Merkle |
+| Configuration | Proof (KiB) | Verifier hashes (10³) | Commit (min) | Open (min) | Total (min) |
 |---|---:|---:|---:|---:|---:|
-| `N` | 9 | 70.34 | 58.23 | 12.11 | 0.777x |
-| `N/2` | 10 | 71.70 | 57.67 | 14.03 | 0.792x |
-| `N/4` | 11 | 72.75 | 60.76 | 11.98 | 0.804x |
-| Merkle | - | 90.50 | 88.50 | 2.00 | 1.000x |
+| WHIR, rate 1/2 | 503.68 | 11.02 | 2.69 | 3.19 | 5.62 |
+| WHIR, rate 1/4 | 338.30 | 7.31 | 3.73 | 4.43 | 7.97 |
+| Canopy + WHIR (Exp. 3) | 360.32 | 6.78 | 3.75 | 3.47 | 7.38 |
+| Bolt + Merkle | 12074.96 | 357.54 | 0.99 | 1.82 | 2.77 |
+| Bolt + Canopy + WHIR | 5315.15 | 118.67 | 1.48 | 2.40 | 3.79 |
 
-Shortening is still worse for opening size. The smaller oracle saves one or two
-levels per Merkle path, but reducing the inverse-rate exponent increases the
-number of WHIR queries and shifts the optimal height upward.
+The timing model scales linear passes with `N`, FFT stages with `N log2(M)`
+for per-column coefficient count `M`, and recursive WHIR work across the
+additional rounds. It assumes comparable eight-thread throughput with enough
+resident RAM and no paging. A single `N=2^30` input occupies **32 GiB** before
+codewords, trees, and temporary buffers, so these are not measurements on the
+16 GiB benchmark machine. The [estimation report](results/n30_prover_time_estimates/README.md)
+contains the stage model, a smaller-size backtest, and scaling sensitivity.
 
-For `N=2^22`, commitment time uses the batch-128 proof-size-optimal heights
-`h=7,7,8` for the three variants. Medians of 20 repetitions are:
+## Results and paper artifacts
 
-| scheme | codeword | h | median commitment s | relative to Merkle |
-|---|---|---:|---:|---:|
-| Merkle | - | - | 0.2113 | 1.000x |
-| Canopy original | `N` | 7 | 0.3838 | 1.816x |
-| Canopy half | `N/2` | 7 | 0.2914 | 1.379x |
-| Canopy quarter | `N/4` | 8 | 0.2491 | 1.179x |
+| Artifact | Contents |
+|---|---|
+| [WHIR results](results/gf256_batched_suite/whir/) | Three configurations: [84 proof/hash rows](results/gf256_batched_suite/whir/proof_sizes/hybrid_proof_sizes.csv), [36 measured timing rows](results/gf256_batched_suite/whir/timing_summary.csv), stage breakdowns, and raw repetitions. |
+| [Bolt results](results/gf256_split_half_suite/README.md) | Two configurations: [56 proof/hash rows](results/gf256_split_half_suite/paper_proof_sizes.csv), [24 measured timing rows](results/gf256_split_half_suite/paper_timing_summary.csv), independent height searches, verified proofs, and process memory records. |
+| [Timing estimates](results/n30_prover_time_estimates/prover_time_estimates.csv) | 80 estimated timing points covering the four larger sizes, all input counts, and all five configurations. |
+| [WHIR report](results/gf256_batched_suite/comparison.md) | Human-readable WHIR comparisons. Its Bolt section describes the earlier shared-Canopy experiment; use the split-half Bolt results above for the current paper. |
 
-Input-vector generation and deallocation are excluded from these timings.
-The instrumented mean stage breakdown is:
+The sibling [Canopy manuscript](../canopy/sections/impl.tex) consumes copies
+of these data through its [figure/table generator](../canopy/figures/experiments/render.py).
+Table 1 uses measured `N=2^22` times in seconds; Table 2 uses estimated `N=2^30`
+times in minutes. Both fix `eta=1` and report proof size, verifier hashes,
+and commitment/opening/total time.
 
-| variant | bottom forest | hash-to-field | RS encoding | top tree |
-|---|---:|---:|---:|---:|
-| Original | 0.2080 s (53.9%) | 0.0049 s (1.3%) | 0.1267 s (32.8%) | 0.0465 s (12.0%) |
-| Half | 0.2073 s (69.8%) | 0.0048 s (1.6%) | 0.0608 s (20.5%) | 0.0239 s (8.1%) |
-| Quarter | 0.2078 s (82.4%) | 0.0025 s (1.0%) | 0.0297 s (11.8%) | 0.0123 s (4.9%) |
+Timing figures use a **linear relative-time scale**, dividing by rate-1/2
+Merkle WHIR or Bolt + Merkle at the same `(N,eta)`. Thus `1.4x` means 40%
+slower. Measured segments are solid through `2^22`; estimates beyond it are
+dashed. Proof-size and hash curves are solid, and no plots use shading.
+The manuscript's `sources.json` records source checksums; its `plotted-results.csv`
+retains absolute times and the plotted ratios. The manuscript is a separate
+checkout and is not required to run this repository's experiments.
 
-At `h=8`, quarter Canopy spends most remaining time on the bottom forest.
-That forest performs 8,372,224 hashes, compared with 8,388,607 hashes for the
-complete Merkle tree. Consequently, further shortening the RS codeword cannot
-produce much commitment-time improvement without also changing the bottom
-commitment construction or the selected `h`.
+## Reproduce the current suite
 
-## Historical small-field experiments
+Run from the repository root with Rust/Cargo and Python 3. The commands below
+use the retained shared-Bolt baseline estimates and reference results under
+`results/`; the split-half summarizer also reads the earlier full-block suite
+for its auxiliary comparison. Run timings sequentially without other heavy
+jobs. Omit `--offline` on the first build if dependencies are not cached.
 
-The separate-commitment and 24/32/48/64-bit experiments below are retained as
-historical outputs. They use the previous 128-bit target and small-field
-repetition model, so their sizes and timing choices are not directly
-comparable to the current 128-bit-field/100-bit-target default above.
-
-### Separate-commitment batching experiment
-
-This experiment initializes `t` vectors of length `N` and commits to every
-vector separately. A batch opens the same `B` logical indices in all trees and
-uses the same SEP-reduction challenge, so the resulting functionals align, but
-every commitment sends its own Merkle authentication path. The Merkle baseline
-is therefore exactly `t` independent batch proofs.
-
-Canopy also sends `t` separate bottom paths. After the verifier's challenge,
-the prover constructs several independently randomized linear combinations of
-the `t` committed RS codewords and interleaves them in one new Merkle
-commitment. The verifier opens the same consistency leaves in all old trees
-and the new tree. New-oracle values are derived from the old openings rather
-than serialized. The combined tree's authentication frontier is merged with
-its first WHIR opening.
-
-The number of independent combinations is
-`ceil(128 / log2(|F|))`. The 32-bit layer field therefore uses five, providing
-157.92 bits against cancellation; four would provide only 126.34 bits. Each
-combination gets a parallel WHIR/SEP instance, while their interleaved oracle
-roots and Merkle paths are shared. WHIR retains the capacity-bound estimator.
-For the full-length codeword, the consistency check uses the RS minimum
-distance `1-2^-h`, so it makes `ceil(128/h)` shared width-16 leaf queries.
-
-The full default `N`, `B`, and `h` grid was run with 100 samples for each of
-`t=8,16,32`. For `N=2^30` and `B=128` per commitment:
-
-| t | total opened | best h | consistency q | Merkle KiB | Canopy KiB | Canopy/Merkle |
-|---:|---:|---:|---:|---:|---:|---:|
-| 8 | 1024 | 6 | 22 | 711.53 | 405.14 | 0.569x |
-| 16 | 2048 | 5 | 26 | 1423.06 | 717.53 | 0.504x |
-| 32 | 4096 | 5 | 26 | 2846.12 | 1336.89 | 0.470x |
-
-The relative Canopy advantage improves with `t`: Merkle and Canopy's separate
-paths scale with `t`, while the five parallel WHIR instances and their shared
-paths do not. The complete result and per-height breakdown are in
-[`results/separate_commitments/summary.md`](results/separate_commitments/summary.md)
-and
-[`results/separate_commitments/proof_sizes.csv`](results/separate_commitments/proof_sizes.csv).
-
-For `N=2^18`, `t=16`, and `B=128` per commitment, the structural search
-selects `h=3` and 43 consistency queries. The mean proof is 466.44 KiB for
-Canopy versus 654.94 KiB for Merkle (0.712x). Means of 20 release-mode timing
-repetitions are:
-
-| scheme | h | combinations | mean s | median s | relative to Merkle mean |
-|---|---:|---:|---:|---:|---:|
-| Merkle separate | - | 0 | 0.2333 | 0.2234 | 1.000x |
-| Canopy batched WHIR | 3 | 5 | 0.3415 | 0.3376 | 1.464x |
-
-The Canopy time includes all 16 initial commitments, construction of five
-linear combinations, and the new combined-oracle Merkle commitment, but not
-WHIR execution. Its largest mean stages are the bottom forests at 0.2005 s
-(58.7%) and hash-to-field at 0.0327 s (9.6%). See the
-[`timing report`](results/separate_commitments/commitment_timings_n18_t16_b128.md)
-and
-[`stage profile`](results/separate_commitments/commitment_timings_n18_t16_b128_profile.csv).
-
-### Canopy-quarter variant
-
-The same experiment was also run with each Canopy RS codeword shortened to
-`N/4`. The message dimension is unchanged, so the inverse-rate exponent is
-`h-2`, the minimum relative distance is `1-2^{-(h-2)}`, and the consistency
-check uses `ceil(128/(h-2))` shared leaf queries.
-
-For `N=2^30` and `B=128` per commitment:
-
-| t | total opened | best h | consistency q | Merkle KiB | Canopy-quarter KiB | Canopy-quarter/Merkle |
-|---:|---:|---:|---:|---:|---:|---:|
-| 8 | 1024 | 7 | 26 | 711.53 | 446.70 | 0.628x |
-| 16 | 2048 | 7 | 26 | 1423.06 | 807.68 | 0.568x |
-| 32 | 4096 | 7 | 26 | 2846.12 | 1529.64 | 0.537x |
-
-At the fixed timing point `N=2^18`, `t=16`, and `B=128`, quarter Canopy
-selects `h=5` and 43 consistency queries. Its mean proof is 539.94 KiB versus
-654.94 KiB for Merkle (0.824x). Over 20 release-mode repetitions, its mean
-commitment pipeline is 0.2635 s versus 0.2308 s for Merkle (1.141x); the median
-times are 0.2610 s and 0.2246 s. Relative to the full-length Canopy profile,
-quartering reduces mean prover commitment time by about 23%, but increases the
-mean proof by about 16%.
-
-The complete quarter result and per-height breakdown are in the generated
-[`summary`](results/separate_commitments_quarter/summary.md) and
-[`proof-size CSV`](results/separate_commitments_quarter/proof_sizes.csv). The
-fixed-point measurements are in the
-[`timing report`](results/separate_commitments_quarter/commitment_timings_n18_t16_b128.md)
-and
-[`stage profile`](results/separate_commitments_quarter/commitment_timings_n18_t16_b128_profile.csv).
-
-### 24-bit, factor-16 virtual initial oracle
-
-For `N=2^28`, quarter Canopy has a total RS codeword length of `2^26`. This
-experiment models the Canopy/WHIR layer as `GF(2^24)` with a foldable additive
-domain, and splits that codeword into 16 interleaved RS blocks of length
-`2^22`. Each old commitment puts the 16 stripe values at one RS coordinate
-in a Merkle leaf. Six independent challenges provide 144 bits against random-linear-
-combination cancellation and batch all `16t` stripe claims into six parallel
-WHIR instances with shared paths.
-
-The old roots jointly bind WHIR's initial oracle. At an initial WHIR query the
-prover opens one width-16 interleaving column in every old commitment, and the
-verifier derives all six random linear combinations locally. The experiment
-therefore has no separate combined-oracle root and no standalone consistency
-test. Interleaving supplies the effective first width-16 fold, the additional
-initial WHIR folding factor is one, and recursive WHIR folds use width 16. The
-first old-oracle openings use WHIR's capacity-bound query count rather than an
-exact-codeword minimum-distance assumption.
-
-The proof-size optima over `h=3,...,15`, using 100 deterministic samples, are:
-
-| B each | best h (`t=8/16/32`) | t=8 KiB (vs Merkle) | t=16 KiB (vs Merkle) | t=32 KiB (vs Merkle) |
-|---:|---:|---:|---:|---:|
-| 64 | 9 / 9 / 9 | 255.30 (0.751x) | 493.20 (0.725x) | 968.99 (0.713x) |
-| 128 | 7 / 7 / 7 | 384.59 (0.594x) | 741.42 (0.572x) | 1455.08 (0.561x) |
-| 256 | 6 / 6 / 5 | 587.55 (0.477x) | 1144.56 (0.465x) | 2257.92 (0.458x) |
-| 512 | 5 / 5 / 5 | 919.24 (0.394x) | 1802.77 (0.386x) | 3569.83 (0.382x) |
-| 1024 | 4 / 4 / 4 | 1465.27 (0.332x) | 2887.93 (0.327x) | 5733.26 (0.325x) |
-
-Relative to the explicit combined-oracle protocol, virtual access is smaller
-through most of the `t=8` grid and improves `t=16, B=128` from 747.82 KiB to
-741.42 KiB. It becomes larger at high `t` and `B`, because every initial
-capacity-bound WHIR query now authenticates all old trees rather than one
-combined tree; this cost scales with `t`.
-
-The three `h` entries are ordered by `t=8,16,32`. The complete per-height
-accounting separates bottom authentication, virtual-initial authentication,
-recursive WHIR hashes, virtual-initial stripe values, and WHIR field messages:
-[`summary`](results/separate_commitments_quarter_rs16_virtual_f24_n28/summary.md),
-[`proof-size CSV`](results/separate_commitments_quarter_rs16_virtual_f24_n28/proof_sizes.csv),
-and
-[`protocol parameters`](results/separate_commitments_quarter_rs16_virtual_f24_n28/protocol_parameters.csv).
-The previous explicit combined-oracle/consistency result remains available for
-[`comparison`](results/separate_commitments_quarter_rs16_f24_n28/summary.md),
-and the apples-to-apples 32-bit virtual-initial grid is in
-[`results/separate_commitments_quarter_rs16_virtual_f32_n28/`](results/separate_commitments_quarter_rs16_virtual_f32_n28/).
-
-## Protocol choices
-
-### Merkle
-
-- BLAKE3 with 256-bit digests.
-- The fixed 128-bit arkworks input field
-  `p = 255211775190703847597530972673164705793`, with 16-byte elements and
-  two-adicity 30.
-- Domain separation between leaf and internal-node hashes.
-- A true minimal frontier multiproof. If both children are opened, neither is
-  sent as an authentication hash; all shared nodes, including the top layers,
-  occur at most once.
-- Opened values are included in the headline proof size. Verifier-generated
-  indices are not serialized.
-
-For a batch of `B` values and a multiproof frontier containing `A` hashes, the
-reported size is `16 * B + 32 * A` bytes.
-
-### Canopy
-
-For a vector of length `2^n` and canopy depth `h`:
-
-1. Construct only the bottom `h` Merkle layers.
-2. Apply a 512-bit BLAKE3 XOF hash-to-field map to the `2^(n-h)` subtree roots.
-3. Treat those field elements as polynomial coefficients and evaluate the
-   resulting Reed-Solomon codeword on a radix-2 domain of size `2^(n-s)`, where
-   `s=0` normally and `s=1,2` in the shortened-codeword experiments. The
-   24-bit experiment instead distributes the coefficients across 16
-   interleaved additive-domain RS blocks.
-4. Commit to that codeword with a WHIR-compatible Merkle tree whose leaf holds
-   16 field elements.
-5. For an opening, authenticate the requested values only through the bottom
-   `h` layers. The verifier deduplicates ancestor claims, samples `gamma`, and
-   reduces them to one output-committed SEP instance.
-6. Estimate the WHIR prover messages needed to establish that SEP instance.
-
-The Rust implementation exposes the interaction as `open_bottom`,
-`verify_bottom_and_reduce`, and `estimate_whir`. WHIR itself is intentionally
-not implemented. The executable commitment/timing path and the default
-structural estimator both use the fixed 128-bit field.
-
-### WHIR
-
-The estimator follows the capacity-bound (`ConjectureList`) parameter logic in
-the November 2024 WHIR paper and its authors' arkworks reference code:
-
-- nominal security target: 100 bits;
-- input-vector and default Canopy/WHIR layer field: the fixed 128-bit prime
-  `p = 255211775190703847597530972673164705793`, 16 bytes, two-adicity 30;
-- legacy 24/32/48/64-bit layer profiles remain available for diagnostic
-  comparisons, but the old repetition workaround is no longer applied;
-- starting rate: `rho = 2^{-(h-r)}` for codeword log reduction `r`;
-- capacity radius: `delta = 1 - rho - eta`, with `eta = rho/2`;
-- mutual correlated agreement at capacity is assumed, with conjecture
-  constants `c1 = c2 = c3 = 1`;
-- folding log: 4 variables per round, so the folding factor is `2^4 = 16`;
-- recursive WHIR terminates as soon as the message length is at most `2^8`;
-- every recursive fold uses exactly four variables, so the actual terminal
-  message has between `2^3` and `2^8` coefficients for these configurations;
-- BLAKE3-256 Merkle commitments;
-- every query opens one 16-field-element Merkle column;
-- random WHIR queries are deduplicated and their Merkle paths use the same
-  minimal frontier encoding as the baseline;
-- no proof of work is used.
-
-The 256-bit hash caps collision security at 128 bits, so it does not reduce the
-100-bit nominal target. At inverse-rate exponent `r`, the capacity
-assumption uses `rho = 2^-r`, `eta = rho/2`, and
-`delta = 1 - rho - eta`. The number of queries is therefore
-`ceil(100 / -log2(1-delta))`.
-
-Soundness calculations use each field's actual cardinality `b = log2(|F|)`,
-not its rounded storage width. For `s` OOD samples, current message-variable count
-`m`, inverse-rate exponent `r`, and `L = m + 2*r + 1`, the estimator chooses the
-smallest unrestricted `s` such that
-`s*b + 1 - (2*L + m*s) >= 100`.
-
-Every fold and the terminal check use one sumcheck transcript over the 128-bit
-field. This removes the invalid small-field shortcut of repeating only scalar
-sumcheck messages while reusing a recursive oracle that would actually depend
-on a different folding challenge. Challenges are verifier randomness and are
-not serialized.
-
-For the specialized `N=2^30`, batch-128 optimum `h=9`, the OOD counts are
-`2;2;2;2`, the per-oracle query counts are `12;9;7;6`, and there are four
-four-variable folds plus a five-variable terminal sumcheck, for 21 verifier
-challenges total.
-
-This does not establish 100-bit end-to-end soundness without PoW. The
-per-challenge folding estimates are `86.58;84.58;82.58;80.58` bits and the
-recursive constraint-combination estimates are `80.78;79.13;77.42` bits. The
-minimum is 77.42 bits. A field of roughly 151 bits would be needed to lift this
-particular conservative analytic minimum to 100 bits while keeping one
-challenge and no PoW; a 160-bit field is the natural byte-aligned choice.
-
-The estimate counts OOD answers, each degree-2 sumcheck polynomial,
-intermediate Merkle roots, queried oracle values, authentication hashes, and
-final coefficients. The existing Canopy commitment root is not counted again.
-Verifier randomness and verifier-generated query indices are not counted.
-
-The capacity-bound mutual-correlated-agreement hypothesis is an explicit
-benchmarking assumption requested for this comparison. These numbers must not
-be interpreted as an unconditional security claim or a production-ready
-parameter recommendation. In particular, `security_bits=100` in the CSV is a
-parameter target, while `minimum_single_challenge_security_bits` records the
-smaller RBR/list-adjusted analytic value.
-
-## Running the benchmark
-
-Build and test:
+Build ordinary timing binaries without diagnostic hash instrumentation:
 
 ```sh
-cargo test --all-targets
+cargo build --offline --release --bin canopy-system --example gf256_bolt_split
 ```
 
-Regenerate the requested matrix:
+Regenerate the three WHIR configurations and record their timing processes:
 
 ```sh
-cargo run --release -- estimate \
-  --log-lengths 22,24,26,28,30 \
-  --batch-sizes 64,128,256,512,1024 \
-  --layer-field-bits 128 \
-  --samples 100 \
-  --output-dir results
+python3 scripts/measure_gf256_run.py \
+  --record-dir results/gf256_batched_suite/whir/proof_sizes --threads 8 -- \
+  target/release/canopy-system paper-estimate --samples 100 \
+  --output-dir results/gf256_batched_suite/whir/proof_sizes
+
+for n in 18 20 22; do
+  python3 scripts/measure_gf256_run.py \
+    --record-dir "results/gf256_batched_suite/whir/timing_n${n}" --threads 8 -- \
+    target/release/canopy-system paper-time --log-length "$n" \
+    --warmups 1 --repetitions 5 --seed 73947765755993 \
+    --output-dir "results/gf256_batched_suite/whir/timing_n${n}"
+done
 ```
 
-Regenerate the shortened-codeword proof comparison:
+Regenerate and time the two selected Bolt configurations with `w=4`, `k/2` blocks:
 
 ```sh
-cargo run --release -- estimate \
-  --log-lengths 30 \
-  --batch-sizes 128 \
-  --layer-field-bits 128 \
-  --codeword-log-reductions 0,1,2 \
-  --samples 100 \
-  --output-dir results/codeword_length_n30_b128_f128
+python3 scripts/measure_gf256_run.py \
+  --record-dir results/gf256_split_half_suite/proof_sizes --threads 8 -- \
+  target/release/examples/gf256_bolt_split estimate \
+  --width 4 --block-divisor 2 --samples 100 \
+  --output results/gf256_split_half_suite/proof_sizes
+python3 scripts/run_gf256_split_half_timings.py
 ```
 
-Regenerate its commitment timing comparison:
+The Bolt runner resumes completed cases. For fresh measurements, move its completed
+`results/gf256_split_half_suite/timing_n*_eta*` directories to an archive before
+rerunning. Each case uses the smaller-proof Merkle architecture and the split
+Canopy configuration.
+
+After timing, regenerate and validate transcript accounting, then rebuild reports:
 
 ```sh
-cargo run --release -- commit-time \
-  --log-length 22 \
-  --codeword-log-reductions 0,1,2 \
-  --heights 7,7,8 \
-  --repetitions 20 \
-  --output results/codeword_commitment_timings_f128.csv
+cargo build --offline --release --features fs-accounting \
+  --example fiat_shamir_accounting --example gf256_bolt_split
+RAYON_NUM_THREADS=8 target/release/examples/fiat_shamir_accounting --validate
+python3 scripts/summarize_gf256_suite.py
+RAYON_NUM_THREADS=8 target/release/examples/gf256_bolt_split validate \
+  --input results/gf256_split_half_suite/proof_sizes/proof_sizes.csv \
+  --output results/gf256_split_half_suite/fiat_shamir_validation.csv
+python3 scripts/summarize_gf256_split_half_suite.py
+python3 scripts/estimate_n30_prover_times.py
 ```
 
-Regenerate the separate-commitment batching grid:
-
-```sh
-cargo run --release -- estimate-separate \
-  --commitment-counts 8,16,32 \
-  --samples 100 \
-  --output-dir results/separate_commitments
-```
-
-Regenerate the fixed height search and commitment profile:
-
-```sh
-cargo run --release -- estimate-separate \
-  --log-lengths 18 \
-  --batch-sizes 128 \
-  --commitment-counts 16 \
-  --output-dir results/separate_commitments/timing_height_search_n18_t16_b128
-
-cargo run --release -- separate-commit-time \
-  --log-length 18 \
-  --commitment-count 16 \
-  --batch-size 128 \
-  --repetitions 20 \
-  --output results/separate_commitments/commitment_timings_n18_t16_b128.csv
-```
-
-Regenerate the matching Canopy-quarter grid and fixed profile:
-
-```sh
-cargo run --release -- estimate-separate \
-  --commitment-counts 8,16,32 \
-  --codeword-log-reductions 2 \
-  --samples 100 \
-  --output-dir results/separate_commitments_quarter
-
-cargo run --release -- estimate-separate \
-  --log-lengths 18 \
-  --batch-sizes 128 \
-  --commitment-counts 16 \
-  --codeword-log-reductions 2 \
-  --output-dir results/separate_commitments_quarter/timing_height_search_n18_t16_b128
-
-cargo run --release -- separate-commit-time \
-  --log-length 18 \
-  --commitment-count 16 \
-  --batch-size 128 \
-  --codeword-log-reduction 2 \
-  --repetitions 20 \
-  --output results/separate_commitments_quarter/commitment_timings_n18_t16_b128.csv
-```
-
-Regenerate the `N=2^28`, 24-bit, factor-16 interleaved-RS grid:
-
-```sh
-cargo run --release -- estimate-separate \
-  --log-lengths 28 \
-  --batch-sizes 64,128,256,512,1024 \
-  --commitment-counts 8,16,32 \
-  --layer-field-bits 24 \
-  --codeword-log-reductions 2 \
-  --rs-interleaving-factors 16 \
-  --virtual-initial-oracle \
-  --samples 100 \
-  --output-dir results/separate_commitments_quarter_rs16_virtual_f24_n28
-```
-
-`separate-commit-time` automatically searches the default height grid
-unless `--height` is supplied. It writes both the headline timing CSV and a
-`*_profile.csv` stage breakdown.
-
-The defaults are:
-
-- vector lengths: `2^22, 2^24, 2^26, 2^28, 2^30`;
-- batch sizes: `64, 128, 256, 512, 1024`;
-- Canopy heights: every `h` from 1 through 15;
-- Canopy-layer field width: 128 bits (override with `--layer-field-bits`);
-- codeword log reduction: 0 (override with `--codeword-log-reductions`);
-- 100 random samples from seed `0x43414e4f5059`.
-
-Large-vector proof sizes are computed structurally in `O(B log N)` space and
-do not allocate the vector or Merkle tree.
-
-Run the real `2^22` commitments and front-end openings:
-
-```sh
-cargo run --release -- time \
-  --log-length 22 \
-  --batch-sizes 64,128,256,512,1024 \
-  --repetitions 30 \
-  --output results/timings.csv
-```
-
-The Merkle timing is end-to-end. Canopy commitment timing is also complete and
-includes the bottom forest, RS encoding, and codeword Merkle commitment.
-Canopy prover/verifier timing covers only the bottom opening and SEP reduction;
-it excludes WHIR execution because WHIR is modeled only for proof size.
+The accounting checks execute additional proofs but do not replace saved timing
+samples. Rebuild without `fs-accounting` before taking more timings. The final
+estimation script only reads saved measurements and writes extrapolations;
+it does not run large-input proofs. To refresh summaries from the existing
+checked-in data, only the three Python summarization/estimation commands above
+are needed.
 
 ## Code map
 
-- [`src/merkle.rs`](src/merkle.rs): commit/open/verify and minimal multiproofs.
-- [`src/reed_solomon.rs`](src/reed_solomon.rs): arkworks radix-2 RS encoder.
-- [`src/canopy.rs`](src/canopy.rs): Canopy commit and interactive SEP reduction.
-- [`src/whir.rs`](src/whir.rs): capacity-bound WHIR parameters and size model.
-- [`src/benchmark.rs`](src/benchmark.rs): random-sample matrix and real timings.
-- [`src/separate_benchmark.rs`](src/separate_benchmark.rs): separate-commitment
-  batching grid, virtual-initial and legacy consistency models, and commitment
-  profile.
-- [`src/main.rs`](src/main.rs): command-line interface.
+- [Field](src/binary_field.rs) and [additive RS](src/additive_rs.rs): GF(2^256),
+  ARM PMULL/portable arithmetic, additive FFTs, and transposed encoding.
+- [Merkle](src/merkle.rs) and [Canopy](src/canopy.rs): commitments,
+  authentication paths, and the Canopy SEP reduction.
+- [WHIR experiments](src/paper_experiments.rs), [executable bridge](src/executable_whir.rs),
+  and [vendored WHIR](vendor/whir/): proof models and component timing.
+- [Bolt encoder](src/bolt.rs), [split experiment](src/bolt_split.rs), and
+  [batching](src/bolt_batching.rs): the current public-`H` adapter.
+- [WHIR transcript model](src/paper_fiat_shamir.rs) and
+  [Bolt transcript model](src/bolt_fiat_shamir.rs): verifier hash accounting.
+- [CLI](src/main.rs) and [Bolt suite CLI](examples/gf256_bolt_split.rs):
+  executable entry points. Library checks run with `cargo test --offline --lib`.
 
-## References
+## Historical experiments
 
-- Canopy draft supplied with this task, Section 3.
-- [WHIR: Reed-Solomon Proximity Testing with Super-Fast Verification](https://eprint.iacr.org/2024/1586).
-- [WHIR authors' arkworks implementation](https://github.com/worldfnd/whir),
-  cross-checked against commit `0c0808d` from November 2024.
+The [archived README](docs/archive/readme_legacy_experiments.md) preserves the
+old standalone-commitment experiments, 128-bit-field/capacity-model results,
+and their commands. The [192-bit field-switch experiment](docs/archive/experiment4_field_switch.md)
+is retired. [Width-16 Bolt](results/gf256_split_w16_suite/README.md),
+[full-block split Bolt](results/gf256_split_suite/README.md), and
+[earlier unbatched comparisons](results/gf256_suite/comparison.md) remain as
+historical results; they are not additional configurations in the paper suite.

@@ -1,0 +1,34 @@
+{
+  "target_log_input": 30,
+  "plot_target_log_inputs": [
+    24,
+    26,
+    28,
+    30
+  ],
+  "anchor_log_input": 22,
+  "field": "GF(2^256)",
+  "hash": "BLAKE3",
+  "rayon_threads": 8,
+  "bolt_width": 4,
+  "bolt_canopy_blocks": "k/2 for both",
+  "measured_at_n30": false,
+  "headline_statistic": "median of phase-scaled saved repetitions",
+  "median_local_backtest_error_percent": 5.956961829423946,
+  "max_local_backtest_error_percent": 16.936529024782644,
+  "source_sha256": {
+    "results/gf256_batched_suite/whir/timing_summary.csv": "5260209335ff744da3ed4bfbf6828c4fb39e15fafec6193975358c0bbda16642",
+    "results/gf256_batched_suite/whir/timing_stages.csv": "15ac7f90b18db005fa8c5a5beee8009290dbde02edd9fa121acbe741f982a027",
+    "results/gf256_split_half_suite/timing_summary.csv": "7be61d648047f215fb6cddf7d8433dfdc0405839c8f81910f827c93a3e01649a",
+    "results/gf256_split_half_suite/timing_stage_summary.csv": "e24a90fbd1c654be914a328e0232d37502d4eee9be589c24aeb41220d90ee268",
+    "results/gf256_split_half_suite/paper_proof_sizes.csv": "c3010b9f84f69f56b18702349dc2fff20caf33bb87a9ca29a80be7d2d05fa42b",
+    "scripts/estimate_n30_prover_times.py": "7af96544d42663b9fad2b666fa1bcf35ed6fc4f04ff3f4e06e3d37d1002d9b43",
+    "src/additive_rs.rs": "d3aaaeb40e8528a5f21840230bc86bbd568c380941c78558ab7088d7146c30dc",
+    "src/bolt_batching.rs": "e9e3b19d076c369a7150f8d1ca1f5f16879a6085afb1da1628cb01dec58e8009",
+    "src/paper_experiments.rs": "69baa9687939f1ac9bc752ae1764cae03ff49c1a628bc7f01f5bd67dc0171301",
+    "results/gf256_batched_suite/whir/timing_n18/prover_timing_samples.csv": "632e8063bf0e13b8511c80d072ab4972665294379cded867a2ef66d831ed73fc",
+    "results/gf256_batched_suite/whir/timing_n20/prover_timing_samples.csv": "a1657a665cbe9ed1f5fe533d06d2180924a210168507f8c4b3c638da21f32f67",
+    "results/gf256_batched_suite/whir/timing_n22/prover_timing_samples.csv": "80015ef30ca807986c9b5fc829bc4de003f8c0104b7dd781ba087e324fb37db3",
+    "results/gf256_split_half_suite/timing_samples.csv": "642dd46b6c50a8ff8478ba3434f396a2de1ad74d6c3ee2c583d14196e991d84c"
+  }
+}

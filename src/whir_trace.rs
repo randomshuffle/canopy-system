@@ -268,16 +268,16 @@ fn write_constraint_microprofile(
         let out_of_domain_claims = round.out_domain_samples;
         let leaf_width = config.initial_committer.interleaving_depth();
         let out_points = (0..out_of_domain_claims)
-            .map(|index| Fr::from((index + 2) as u64))
+            .map(|index| crate::benchmark_field_element(0x43414e4f5059, 2, index as u64))
             .collect::<Vec<_>>();
         let in_points = (0..in_domain_claims)
-            .map(|index| Fr::from((index + 101) as u64))
+            .map(|index| crate::benchmark_field_element(0x43414e4f5059, 101, index as u64))
             .collect::<Vec<_>>();
         let out_of_domain = Evaluations {
             points: out_points.clone(),
             matrix: Buffer::from(
                 (0..out_of_domain_claims)
-                    .map(|index| Fr::from((index + 211) as u64))
+                    .map(|index| crate::benchmark_field_element(0x43414e4f5059, 211, index as u64))
                     .collect::<Vec<_>>(),
             ),
             domain: None,
@@ -286,13 +286,13 @@ fn write_constraint_microprofile(
             points: in_points.clone(),
             matrix: Buffer::from(
                 (0..in_domain_claims * leaf_width)
-                    .map(|index| Fr::from((index + 307) as u64))
+                    .map(|index| crate::benchmark_field_element(0x43414e4f5059, 307, index as u64))
                     .collect::<Vec<_>>(),
             ),
             domain: None,
         };
         let folding_randomness = (0..folding_log)
-            .map(|index| Fr::from((index + 401) as u64))
+            .map(|index| crate::benchmark_field_element(0x43414e4f5059, 401, index as u64))
             .collect::<Vec<_>>();
         let vector_rlc_coeffs = Buffer::<Fr>::ones(1);
         let eq_weights = Buffer::<Fr>::eq_weights(&folding_randomness);
@@ -306,8 +306,11 @@ fn write_constraint_microprofile(
         let stir_evaluations = out_of_domain
             .values_buffer(&Identity::new(), &out_weights)
             .concat(&in_domain.values_buffer(&Identity::new(), &stir_weights));
-        let stir_rlc_coeffs =
-            Buffer::<Fr>::geometric_challenge(Fr::from(1u64), Fr::from(503u64), stir_points.len());
+        let stir_rlc_coeffs = Buffer::<Fr>::geometric_challenge(
+            Fr::from(1u64),
+            crate::benchmark_field_element(0x43414e4f5059, 503, 0),
+            stir_points.len(),
+        );
         let starting_rate = format!("1/{}", 1usize << log_inverse_rate);
 
         for iteration in 0..warmups + repetitions {
@@ -338,7 +341,7 @@ fn write_constraint_microprofile(
             let start = Instant::now();
             let challenges = Buffer::<Fr>::geometric_challenge(
                 Fr::from(1u64),
-                Fr::from(503u64),
+                crate::benchmark_field_element(0x43414e4f5059, 503, 0),
                 stir_points.len(),
             );
             std::hint::black_box(&challenges);
@@ -394,7 +397,9 @@ pub fn run_whir_trace_profile(
     tracing::subscriber::set_global_default(subscriber.clone())
         .map_err(|error| anyhow::anyhow!("installing WHIR timing subscriber: {error}"))?;
 
-    let values = (0..1u64 << log_length).map(Fr::from).collect::<Vec<_>>();
+    let values = (0..1u64 << log_length)
+        .map(|i| crate::benchmark_field_element(0x43414e4f5059, 0, i))
+        .collect::<Vec<_>>();
     let mut trace_writer = csv::Writer::from_path(output_dir.join("whir_trace_spans.csv"))?;
     let mut run_writer = csv::Writer::from_path(output_dir.join("whir_trace_runs.csv"))?;
     let mut geometry_writer = csv::Writer::from_path(output_dir.join("whir_trace_geometry.csv"))?;

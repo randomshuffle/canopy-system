@@ -1,4 +1,4 @@
-//! Executable Bolt-max/Canopy composition over the paper prime field.
+//! Executable Bolt-max/Canopy composition over GF(2^256).
 //!
 //! This is an H-oracle-aided experiment: H is public, and its final evaluation
 //! is checked directly. It does not implement Spark or Mulperm preprocessing.
@@ -8,8 +8,7 @@
 use std::{collections::BTreeMap, path::Path, time::Instant};
 
 use anyhow::{ensure, Context, Result};
-use ark_ff::{AdditiveGroup, Field, UniformRand};
-use ark_poly::{EvaluationDomain, Radix2EvaluationDomain};
+use ark_ff::UniformRand;
 use rand::{Rng, SeedableRng};
 use rand_chacha::ChaCha20Rng;
 use serde::{Deserialize, Serialize};
@@ -43,6 +42,16 @@ use crate::{
 };
 
 pub const SECURITY: usize = 128;
+// Reserve error budget for both external tests and all recursive components.
+const QUERY_SECURITY: usize = 132;
+const WHIR_SECURITY: usize = 136;
+#[path = "bolt_batching.rs"]
+pub mod batching;
+#[path = "bolt_multi.rs"]
+pub mod multi;
+#[path = "bolt_split.rs"]
+pub mod split;
+
 pub const DEFAULT_SEED: u64 = 0x424f_4c54_4341_4e31;
 /// Canopy RS lengths relative to the systematic row count k=N/width.
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Deserialize, Serialize, clap::ValueEnum)]
@@ -103,17 +112,31 @@ fn canopy_rate_log(rows: usize, rs_length: usize, height: usize) -> usize {
 const FOLD: usize = 3;
 type WhirConfig = Config<Identity<Fr>>;
 type WhirWitness = Witness<Fr, Identity<Fr>>;
+#[cfg(not(feature = "fs-accounting"))]
 type Blake3Transcript = spongefish::instantiations::XOF<blake3::Hasher>;
+#[cfg(feature = "fs-accounting")]
+type Blake3Transcript = crate::fiat_shamir::RecordingBlake3;
 type ProverState = whir_ref::transcript::ProverState<Blake3Transcript>;
 type VerifierState<'a> = whir_ref::transcript::VerifierState<'a, Blake3Transcript>;
 
+#[path = "bolt_fiat_shamir.rs"]
+pub mod fiat_shamir;
+
 fn whir_config(log_message: usize, rate_log: usize, canopy: bool) -> Result<WhirConfig> {
+    whir_config_fold(log_message, rate_log, canopy, FOLD.min(log_message))
+}
+
+fn whir_config_fold(
+    log_message: usize,
+    rate_log: usize,
+    canopy: bool,
+    f: usize,
+) -> Result<WhirConfig> {
     ensure!(
-        log_message > 0 && rate_log > 0,
+        log_message > 0 && rate_log > 0 && f > 0 && f <= log_message,
         "nonconstant WHIR message and rate required"
     );
     register_field_ntt();
-    let f = FOLD.min(log_message);
     let config = WhirConfig::new(
         1 << log_message,
         &ProtocolParameters {
@@ -125,7 +148,7 @@ fn whir_config(log_message: usize, rate_log: usize, canopy: bool) -> Result<Whir
             starting_log_inv_rate: rate_log,
             initial_folding_factor: f,
             folding_factor: f,
-            security_level: SECURITY,
+            security_level: WHIR_SECURITY,
             pow_bits: 0,
             batch_size: 1,
             hash_id: hash::BLAKE3,
@@ -136,16 +159,31 @@ fn whir_config(log_message: usize, rate_log: usize, canopy: bool) -> Result<Whir
         "WHIR parameters require PoW"
     );
     ensure!(
-        config.security_level(1, 3) >= SECURITY as f64,
+        config.security_level(1, 3) + 1e-9 >= WHIR_SECURITY as f64,
         "insufficient WHIR RBR security"
     );
     Ok(config)
 }
 
 pub fn query_counts() -> (usize, usize) {
+    let (systematic, parity) = proximity_radii();
     (
-        (SECURITY as f64 / -(1.0 - bolt::ASSUMED_DISTANCE / 3.0).log2()).ceil() as usize,
-        (SECURITY as f64 / -0.75_f64.log2()).ceil() as usize,
+        (QUERY_SECURITY as f64 / -(1.0 - systematic).log2()).ceil() as usize,
+        (QUERY_SECURITY as f64 / -(1.0 - parity).log2()).ceil() as usize,
+    )
+}
+
+/// Khatam Theorem 1 (ePrint 2024/1843): the "1.5 Johnson" radius is
+/// 1-cbrt(1-distance), NOT 1.5 times the ordinary Johnson radius.
+/// epsilon=eta=2^-32 and three eta of slack keep us strictly inside it.
+/// The exceptional-challenge probability per use is at most 2^-192.
+/// Its use for this Bolt adapter is an explicit proximity assumption.
+pub fn proximity_radii() -> (f64, f64) {
+    let slack = 2f64.powi(-32);
+    let khatam = |distance: f64| 1.0 - (1.0 - distance + slack).cbrt() - 3.0 * slack;
+    (
+        (bolt::ASSUMED_DISTANCE / 3.0).max(khatam(bolt::ASSUMED_DISTANCE)),
+        0.25f64.max(khatam(0.5)),
     )
 }
 
@@ -187,15 +225,26 @@ fn sparse_claim(size: usize, indices: &[usize], values: &[Fr], gamma: Fr) -> (Co
     (Covector::new(weights), value)
 }
 
-/// The transpose RS map: sum_j gamma^j * omega^(index_j * i).
-/// A single FFT avoids one dense power vector per queried parity row.
+/// Transposed additive RS: sum_j gamma^j * point(index_j)^i.
 fn parity_claim(rows: usize, indices: &[usize], values: &[Fr], gamma: Fr) -> (Covector<Fr>, Fr) {
-    let (mut covector, value) = sparse_claim(rows, indices, values, gamma);
-    Radix2EvaluationDomain::<Fr>::new(rows)
-        .unwrap()
-        .fft_in_place(&mut covector.vector);
-    covector.vector.truncate(rows / 2);
-    (covector, value)
+    let mut power = Fr::ONE;
+    let weights = indices
+        .iter()
+        .map(|_| {
+            let w = power;
+            power *= gamma;
+            w
+        })
+        .collect::<Vec<_>>();
+    let value = dot(&weights, values);
+    let covector = crate::additive_rs::power_sums(indices, &weights, rows, rows / 2);
+    (Covector::new(covector.to_slice().to_vec()), value)
+}
+
+fn public_point(log: usize) -> Vec<Fr> {
+    // A full-width fixed coordinate keeps the two partial MLE evaluations
+    // consistent with the public full-vector point; integer 7 is 1 in char 2.
+    vec![crate::benchmark_field_element(DEFAULT_SEED, 0x424f4c54, 0); log]
 }
 
 fn opening_claims(
@@ -363,14 +412,36 @@ impl Layer {
     }
 
     fn prove_canopy(
-        mut self,
+        self,
         state: &mut ProverState,
         indices: &[usize],
         profile: &mut Vec<StageTiming>,
         part: &'static str,
     ) -> Result<()> {
+        if let Some(claim) = self.batch_claim(state, indices, profile, part)? {
+            measure(profile, "opening", part, "Canopy WHIR SEP proof", || {
+                prove_whir(
+                    &claim.config,
+                    state,
+                    &claim.message,
+                    &claim.witness,
+                    claim.forms,
+                    &claim.values,
+                )
+            });
+        }
+        Ok(())
+    }
+
+    fn batch_claim(
+        mut self,
+        state: &mut ProverState,
+        indices: &[usize],
+        profile: &mut Vec<StageTiming>,
+        part: &'static str,
+    ) -> Result<Option<batching::ProverClaim>> {
         let Some(message) = self.message.take() else {
-            return Ok(());
+            return Ok(None);
         };
         // The prover already holds these H2F roots from commitment construction.
         // Only the verifier must reconstruct them by hashing the opened rows.
@@ -400,22 +471,19 @@ impl Layer {
             let witness = measure(profile, "opening", part, "Canopy OOD evaluations", || {
                 finish_ood(&cfg, state, &message, self.irs.take().unwrap())
             });
-            measure(profile, "opening", part, "Canopy WHIR SEP proof", || {
-                prove_whir(
-                    &cfg,
-                    state,
-                    &message,
-                    &witness,
-                    vec![Box::new(form)],
-                    &[value],
-                )
-            });
+            return Ok(Some(batching::ProverClaim {
+                config: cfg,
+                message,
+                witness,
+                forms: vec![Box::new(form)],
+                values: vec![value],
+            }));
         } else {
             measure(profile, "opening", part, "Canopy constant opening", || {
                 state.prover_message(&message.to_slice()[0]);
             });
         }
-        Ok(())
+        Ok(None)
     }
 }
 
@@ -584,8 +652,27 @@ impl ReceivedLayer {
         opened: &[Vec<Fr>],
         hashes: &[[u8; 32]],
     ) -> Result<()> {
+        if let Some(claim) = self.batch_claim(state, indices, opened, hashes)? {
+            verify_whir(
+                &claim.config,
+                state,
+                &claim.commitment,
+                &claim.forms,
+                &claim.values,
+            )?;
+        }
+        Ok(())
+    }
+
+    fn batch_claim(
+        self,
+        state: &mut VerifierState,
+        indices: &[usize],
+        opened: &[Vec<Fr>],
+        hashes: &[[u8; 32]],
+    ) -> Result<Option<batching::VerifierClaim>> {
         let Some(h) = self.height else {
-            return Ok(());
+            return Ok(None);
         };
         let (ancestors, values) =
             opening_claims(self.rows, self.width, h, indices, opened, hashes)?;
@@ -599,7 +686,12 @@ impl ReceivedLayer {
             let gamma = state.verifier_message();
             let (form, value) = sparse_claim(size, &ancestors, &values, gamma);
             let commitment = receive_ood(&cfg, state, irs)?;
-            verify_whir(&cfg, state, &commitment, &[Box::new(form)], &[value])?;
+            return Ok(Some(batching::VerifierClaim {
+                config: cfg,
+                commitment,
+                forms: vec![Box::new(form)],
+                values: vec![value],
+            }));
         } else {
             let value: Fr = state
                 .prover_message()
@@ -613,12 +705,13 @@ impl ReceivedLayer {
                 "constant RS root mismatch"
             );
         }
-        Ok(())
+        Ok(None)
     }
 }
 
 #[derive(Clone, Debug, Serialize)]
 pub struct TimingRow {
+    pub input_oracles: usize,
     pub canopy_layout: CanopyLayout,
     pub interleaving: usize,
     pub log_input: usize,
@@ -674,6 +767,7 @@ fn measure<T>(
 
 #[derive(Clone, Debug, Serialize)]
 struct StageRow {
+    input_oracles: usize,
     canopy_layout: CanopyLayout,
     log_input: usize,
     interleaving: usize,
@@ -689,14 +783,14 @@ struct StageRow {
     seconds: f64,
 }
 
-fn protocol_domain(
+fn protocol_domain_mode(
     log_input: usize,
     width: usize,
     heights: Option<(usize, usize)>,
     setup_seed: u64,
     layout: CanopyLayout,
+    batch_target: Option<usize>,
 ) -> DomainSeparator<'static, ()> {
-    // Preserve existing transcripts; bind each new Canopy geometry separately.
     let version = match (heights.is_some(), layout) {
         (true, CanopyLayout::EqualBlocks) => "canopy-system/bolt-max/v3/equal-blocks",
         (true, CanopyLayout::EqualHalf) => "canopy-system/bolt-max/v4/equal-half",
@@ -704,7 +798,14 @@ fn protocol_domain(
         _ => "canopy-system/bolt-max/v2",
     };
     DomainSeparator::protocol(&(
-        version, log_input, width, heights, setup_seed, SECURITY, FOLD,
+        version,
+        crate::FIELD_MODULUS_LABEL,
+        log_input,
+        width,
+        heights,
+        setup_seed,
+        (SECURITY, QUERY_SECURITY, WHIR_SECURITY, FOLD),
+        batch_target,
     ))
 }
 
@@ -715,10 +816,24 @@ fn prove_with_layout(
     setup_seed: u64,
     layout: CanopyLayout,
 ) -> Result<ProtocolRun> {
+    prove_mode(encoder, input, heights, setup_seed, layout, None)
+}
+
+fn prove_mode(
+    encoder: &BoltMaxEncoder,
+    input: &[Fr],
+    heights: Option<(usize, usize)>,
+    setup_seed: u64,
+    layout: CanopyLayout,
+    batch_target: Option<usize>,
+) -> Result<ProtocolRun> {
     let n = input.len().ilog2() as usize;
     let k = encoder.message_rows;
     let width = encoder.interleaving;
     ensure!(input.len() == k * width, "wrong input shape");
+    let common = batch_target
+        .map(|target| batching::common_config(k, heights, layout, target))
+        .transpose()?;
     let mut profile = Vec::with_capacity(48);
     let start = Instant::now();
     let syndrome = measure(
@@ -737,7 +852,8 @@ fn prove_with_layout(
     )?;
     let encoded = bolt::EncodedBolt { syndrome, parity };
     let encoding = start.elapsed();
-    let domain = protocol_domain(n, width, heights, setup_seed, layout).instance(&Empty);
+    let domain =
+        protocol_domain_mode(n, width, heights, setup_seed, layout, batch_target).instance(&Empty);
     let mut state = ProverState::new(&domain, Blake3Transcript::default());
     let start = Instant::now();
     let x_layer = Layer::commit(
@@ -770,7 +886,7 @@ fn prove_with_layout(
         "Bolt",
         "partial evaluation g",
         || {
-            let z = vec![Fr::from(7u64); k.ilog2() as usize];
+            let z = public_point(k.ilog2() as usize);
             let z_weights = eq_weights(&z);
             let g = (0..width)
                 .map(|col| {
@@ -781,10 +897,7 @@ fn prove_with_layout(
                         .sum::<Fr>()
                 })
                 .collect::<Vec<_>>();
-            let evaluation = dot(
-                &g,
-                &eq_weights(&vec![Fr::from(7u64); width.ilog2() as usize]),
-            );
+            let evaluation = dot(&g, &eq_weights(&public_point(width.ilog2() as usize)));
             state.prover_messages(&g);
             (z, z_weights, g, evaluation)
         },
@@ -807,10 +920,17 @@ fn prove_with_layout(
         "common WHIR",
         "WHIR configuration",
         || -> Result<_> {
-            Ok((
-                whir_config(k.ilog2() as usize, 1, false)?,
-                whir_config(k.ilog2() as usize - 3, 1, false)?,
-            ))
+            if let Some(common) = &common {
+                Ok((
+                    batching::initial_config(k.ilog2() as usize, common)?,
+                    batching::initial_config(k.ilog2() as usize - 3, common)?,
+                ))
+            } else {
+                Ok((
+                    whir_config(k.ilog2() as usize, 1, false)?,
+                    whir_config(k.ilog2() as usize - 3, 1, false)?,
+                ))
+            }
         },
     )?;
     let x_witness = measure(
@@ -888,44 +1008,74 @@ fn prove_with_layout(
         "public H transpose covector",
         || encoder.transpose(&s_weights).map(Covector::new),
     )?;
-    measure(
-        &mut profile,
-        "opening",
-        "x",
-        "common WHIR constrained proof",
-        || {
-            prove_whir(
-                &x_cfg,
-                &mut state,
-                &x,
-                &x_witness,
-                vec![
+    if let Some(common) = &common {
+        let mut claims = vec![
+            batching::ProverClaim {
+                config: x_cfg,
+                message: x,
+                witness: x_witness,
+                forms: vec![
                     Box::new(MultilinearExtension::new(z)),
                     Box::new(h_form),
                     Box::new(x_spots),
                 ],
-                &[dot(&g, &r), sigma, x_value],
-            )
-        },
-    );
-    measure(
-        &mut profile,
-        "opening",
-        "u",
-        "common WHIR constrained proof",
-        || {
-            prove_whir(
-                &u_cfg,
-                &mut state,
-                &u,
-                &u_witness,
-                vec![Box::new(MultilinearExtension::new(s)), Box::new(u_spots)],
-                &[sigma, u_value],
-            )
-        },
-    );
-    x_layer.prove_canopy(&mut state, &ix, &mut profile, "X")?;
-    y_layer.prove_canopy(&mut state, &iy, &mut profile, "Y")?;
+                values: vec![dot(&g, &r), sigma, x_value],
+            },
+            batching::ProverClaim {
+                config: u_cfg,
+                message: u,
+                witness: u_witness,
+                forms: vec![Box::new(MultilinearExtension::new(s)), Box::new(u_spots)],
+                values: vec![sigma, u_value],
+            },
+        ];
+        if let Some(claim) = x_layer.batch_claim(&mut state, &ix, &mut profile, "X")? {
+            claims.push(claim);
+        }
+        if let Some(claim) = y_layer.batch_claim(&mut state, &iy, &mut profile, "Y")? {
+            claims.push(claim);
+        }
+        batching::prove_batch(claims, common, &mut state, &mut profile)?;
+    } else {
+        measure(
+            &mut profile,
+            "opening",
+            "x",
+            "common WHIR constrained proof",
+            || {
+                prove_whir(
+                    &x_cfg,
+                    &mut state,
+                    &x,
+                    &x_witness,
+                    vec![
+                        Box::new(MultilinearExtension::new(z)),
+                        Box::new(h_form),
+                        Box::new(x_spots),
+                    ],
+                    &[dot(&g, &r), sigma, x_value],
+                )
+            },
+        );
+        measure(
+            &mut profile,
+            "opening",
+            "u",
+            "common WHIR constrained proof",
+            || {
+                prove_whir(
+                    &u_cfg,
+                    &mut state,
+                    &u,
+                    &u_witness,
+                    vec![Box::new(MultilinearExtension::new(s)), Box::new(u_spots)],
+                    &[sigma, u_value],
+                )
+            },
+        );
+        x_layer.prove_canopy(&mut state, &ix, &mut profile, "X")?;
+        y_layer.prove_canopy(&mut state, &iy, &mut profile, "Y")?;
+    }
     let opening = start.elapsed();
     // Retain the established phase boundaries. The residual accounts for
     // allocation/drop, timer bookkeeping, and other work between timed calls.
@@ -948,6 +1098,7 @@ fn prove_with_layout(
     }
     let proof = state.proof();
     let row = TimingRow {
+        input_oracles: 1,
         canopy_layout: layout,
         interleaving: width,
         log_input: n,
@@ -958,7 +1109,12 @@ fn prove_with_layout(
         } else {
             "bolt_max_merkle"
         }
-        .into(),
+        .to_owned()
+            + if batch_target.is_some() {
+                "_batched"
+            } else {
+                ""
+            },
         systematic_h: heights.map(|h| h.0),
         parity_h: heights.map(|h| h.1),
         iteration: 0,
@@ -987,13 +1143,29 @@ fn verify_with_layout(
     proof: &Proof,
     layout: CanopyLayout,
 ) -> Result<()> {
+    verify_mode(
+        encoder, log_input, heights, setup_seed, evaluation, proof, layout, None,
+    )
+}
+
+fn verify_mode(
+    encoder: &BoltMaxEncoder,
+    log_input: usize,
+    heights: Option<(usize, usize)>,
+    setup_seed: u64,
+    evaluation: Fr,
+    proof: &Proof,
+    layout: CanopyLayout,
+    batch_target: Option<usize>,
+) -> Result<()> {
     let k = encoder.message_rows;
     let width = encoder.interleaving;
     ensure!(
         log_input == k.ilog2() as usize + width.ilog2() as usize,
         "wrong public input shape"
     );
-    let domain = protocol_domain(log_input, width, heights, setup_seed, layout).instance(&Empty);
+    let domain = protocol_domain_mode(log_input, width, heights, setup_seed, layout, batch_target)
+        .instance(&Empty);
     let mut state = VerifierState::new(&domain, proof, Blake3Transcript::default());
     let x_layer = ReceivedLayer::receive(
         &mut state,
@@ -1013,15 +1185,24 @@ fn verify_with_layout(
         .prover_messages_vec(width)
         .map_err(|e| anyhow::anyhow!("g: {e:?}"))?;
     ensure!(
-        dot(
-            &g,
-            &eq_weights(&vec![Fr::from(7u64); width.ilog2() as usize])
-        ) == evaluation,
+        dot(&g, &eq_weights(&public_point(width.ilog2() as usize))) == evaluation,
         "evaluation claim mismatch"
     );
     let r: Vec<Fr> = state.verifier_message_vec(width);
-    let x_cfg = whir_config(k.ilog2() as usize, 1, false)?;
-    let u_cfg = whir_config(k.ilog2() as usize - 3, 1, false)?;
+    let common = batch_target
+        .map(|target| batching::common_config(k, heights, layout, target))
+        .transpose()?;
+    let (x_cfg, u_cfg) = if let Some(common) = &common {
+        (
+            batching::initial_config(k.ilog2() as usize, common)?,
+            batching::initial_config(k.ilog2() as usize - 3, common)?,
+        )
+    } else {
+        (
+            whir_config(k.ilog2() as usize, 1, false)?,
+            whir_config(k.ilog2() as usize - 3, 1, false)?,
+        )
+    };
     let xc = x_cfg
         .receive_commitment(&mut state)
         .map_err(|e| anyhow::anyhow!("x commitment: {e:?}"))?;
@@ -1045,29 +1226,54 @@ fn verify_with_layout(
     let (x_spots, x_value) = sparse_claim(k, &ix, &vx, gamma_x);
     let (u_spots, u_value) = parity_claim(k / 4, &iy, &vy, gamma_y);
     let h_form = Covector::new(encoder.transpose(&s_weights)?);
-    verify_whir(
-        &x_cfg,
-        &mut state,
-        &xc,
-        &[
-            Box::new(MultilinearExtension::new(vec![
-                Fr::from(7u64);
-                k.ilog2() as usize
-            ])),
-            Box::new(h_form),
-            Box::new(x_spots),
-        ],
-        &[dot(&g, &r), sigma, x_value],
-    )?;
-    verify_whir(
-        &u_cfg,
-        &mut state,
-        &uc,
-        &[Box::new(MultilinearExtension::new(s)), Box::new(u_spots)],
-        &[sigma, u_value],
-    )?;
-    x_layer.verify_canopy(&mut state, &ix, &ox, &hx)?;
-    y_layer.verify_canopy(&mut state, &iy, &oy, &hy)?;
+    if let Some(common) = &common {
+        let mut claims = vec![
+            batching::VerifierClaim {
+                config: x_cfg,
+                commitment: xc,
+                forms: vec![
+                    Box::new(MultilinearExtension::new(public_point(k.ilog2() as usize))),
+                    Box::new(h_form),
+                    Box::new(x_spots),
+                ],
+                values: vec![dot(&g, &r), sigma, x_value],
+            },
+            batching::VerifierClaim {
+                config: u_cfg,
+                commitment: uc,
+                forms: vec![Box::new(MultilinearExtension::new(s)), Box::new(u_spots)],
+                values: vec![sigma, u_value],
+            },
+        ];
+        if let Some(claim) = x_layer.batch_claim(&mut state, &ix, &ox, &hx)? {
+            claims.push(claim);
+        }
+        if let Some(claim) = y_layer.batch_claim(&mut state, &iy, &oy, &hy)? {
+            claims.push(claim);
+        }
+        batching::verify_batch(claims, common, &mut state)?;
+    } else {
+        verify_whir(
+            &x_cfg,
+            &mut state,
+            &xc,
+            &[
+                Box::new(MultilinearExtension::new(public_point(k.ilog2() as usize))),
+                Box::new(h_form),
+                Box::new(x_spots),
+            ],
+            &[dot(&g, &r), sigma, x_value],
+        )?;
+        verify_whir(
+            &u_cfg,
+            &mut state,
+            &uc,
+            &[Box::new(MultilinearExtension::new(s)), Box::new(u_spots)],
+            &[sigma, u_value],
+        )?;
+        x_layer.verify_canopy(&mut state, &ix, &ox, &hx)?;
+        y_layer.verify_canopy(&mut state, &iy, &oy, &hy)?;
+    }
     state
         .check_eof()
         .map_err(|e| anyhow::anyhow!("trailing proof data: {e:?}"))?;
@@ -1078,6 +1284,8 @@ fn verify_with_layout(
 struct Size {
     hashes: f64,
     fields: f64,
+    verifier_leaf_hashes: f64,
+    verifier_parent_hashes: f64,
 }
 impl Size {
     fn bytes(self) -> f64 {
@@ -1086,6 +1294,8 @@ impl Size {
     fn add(&mut self, other: Self) {
         self.hashes += other.hashes;
         self.fields += other.fields;
+        self.verifier_leaf_hashes += other.verifier_leaf_hashes;
+        self.verifier_parent_hashes += other.verifier_parent_hashes;
     }
 }
 
@@ -1098,6 +1308,7 @@ fn whir_size(config: &WhirConfig, rng: &mut ChaCha20Rng) -> Result<Size> {
         hashes: 1.0,
         fields: (2 * config.initial_sumcheck.num_rounds() + config.initial_out_domain_samples)
             as f64,
+        ..Default::default()
     };
     let mut previous = &config.initial_committer;
     for round in &config.round_configs {
@@ -1124,9 +1335,12 @@ fn oracle_size(config: &irs_commit::Config<Identity<Fr>>, rng: &mut ChaCha20Rng)
     } else {
         config.in_domain_samples()
     };
+    let work = crate::merkle::authentication_work_by_height(&queries, rows)?[rows.ilog2() as usize];
     Ok(Size {
-        hashes: frontier_hash_count(&queries, rows, rows.ilog2() as usize)? as f64,
+        hashes: work.auth as f64,
         fields: (transmitted * config.interleaving_depth()) as f64,
+        verifier_leaf_hashes: transmitted as f64,
+        verifier_parent_hashes: work.parents as f64,
     })
 }
 
@@ -1572,6 +1786,7 @@ fn search_part(
                 Size {
                     hashes: 1.0,
                     fields: 1.0,
+                    ..Default::default()
                 }
             });
         }
@@ -1692,7 +1907,7 @@ pub fn estimate_with_layout(
     write_csv(output.join("proof_sizes.csv"), &rows)?;
     write_csv(output.join("height_search.csv"), &grid)?;
     let geometry = layout.description();
-    let mut report = format!("# Bolt-max with Canopy\n\nPrime field: `{}`. BLAKE3-256 commitments, H2F, and Fiat-Shamir challenges; 128-bit per-event target, no PoW.\n\nDegree 8, compression 8, rate-1/2 syndrome RS, {width} field elements per row.\nThe LDPC distance 0.013 is an assumption for this prime-field port, not a proved consequence of the binary-field Bolt theorem.\n\nSystematic/parity parts have separate commitments in both schemes. {geometry} Heights count Merkle levels above whole rows.\n\nConstrained RS uses unique-decoding WHIR; Canopy uses Johnson WHIR. Three-variable folds (smaller for tiny messages), native terminal, independent proofs. Public H is evaluated directly; Spark/Mulperm is excluded. Full executable protocol and limits: [experiment notes](../../docs/experiment_bolt_max.md).\n\nQueries before full-read saturation: X={qx}, Y={qy}. External queries are sampled without replacement; when the budget exceeds the row count, read all rows. WHIR retains repeated row values from its native with-replacement queries; authentication paths are merged.\n\nSizes include both commitment roots, opened rows, g, sigma, both common WHIR proofs, and Canopy proofs. Estimates omit reference serialization framing; timings record actual serialized bytes. {samples} deterministic samples per height.\n\n| log2 input | h X / Y | Merkle MiB | Canopy MiB | ratio | Merkle auth KiB | Canopy auth KiB |\n|---:|:---:|---:|---:|---:|---:|---:|\n", crate::whir::FIELD_256.modulus);
+    let mut report = format!("# Bolt-max with Canopy\n\nField: `{}`. BLAKE3-256 commitments, H2F, and Fiat-Shamir challenges; 128-bit composed target (132-bit external tests; 136-bit WHIR), no PoW.\n\nDegree 8, compression 8, rate-1/2 syndrome RS, {width} field elements per row.\nThe LDPC ensemble distance gamma=0.013 remains an explicit assumption for these measurements.\n\nSystematic/parity parts have separate commitments in both schemes. {geometry} Heights count Merkle levels above whole rows.\n\nConstrained RS uses unique-decoding WHIR; Canopy uses Johnson WHIR. Three-variable folds (smaller for tiny messages), native terminal, independent proofs. Public H is evaluated directly; Spark/Mulperm is excluded. Full executable protocol and limits: [experiment notes](../../docs/experiment_bolt_max.md).\n\nQueries before full-read saturation: X={qx}, Y={qy}. External queries are sampled without replacement; when the budget exceeds the row count, read all rows. WHIR retains repeated row values from its native with-replacement queries; authentication paths are merged.\n\nSizes include both commitment roots, opened rows, g, sigma, both common WHIR proofs, and Canopy proofs. Estimates omit reference serialization framing; timings record actual serialized bytes. {samples} deterministic samples per height.\n\n| log2 input | h X / Y | Merkle MiB | Canopy MiB | ratio | Merkle auth KiB | Canopy auth KiB |\n|---:|:---:|---:|---:|---:|---:|---:|\n", crate::whir::FIELD_256.modulus);
     for row in &rows {
         report.push_str(&format!(
             "| {} | {} / {} | {:.3} | {:.3} | {:.5} | {:.2} | {:.2} |\n",
@@ -1767,6 +1982,7 @@ pub fn time_with_layout(
             if i >= warmups {
                 run.row.iteration = i - warmups;
                 stages.extend(run.profile.iter().map(|p| StageRow {
+                    input_oracles: 1,
                     canopy_layout: layout,
                     log_input,
                     interleaving: width,
@@ -1787,7 +2003,7 @@ pub fn time_with_layout(
     }
     write_csv(output.join("prover_timings.csv"), &rows)?;
     let geometry = layout.description();
-    let mut report = format!("# Bolt-max prover timings\n\nInput 2^{log_input}, width {width}, {}-bit field, BLAKE3-256 commitments. {warmups} warmups, {repetitions} measured repetitions, {} Rayon threads. Every proof verified.\n\n{geometry}\n\nCPU-only, same encoder/hash code in both schemes. Public H setup and random input generation excluded. Commitment includes encoding. Opening includes g, projection, constrained WHIR proofs, row openings, and Canopy SEP proofs. Verification evaluates public H directly; no sparse-PCS preprocessing claim is made. The 128-bit per-event target is conditional on prime-field LDPC distance 0.013.\n\n| scheme | h X / Y | commit median s | opening median s | total prover median s | verify median s | actual proof MiB |\n|---|:---:|---:|---:|---:|---:|---:|\n", crate::FIELD_BITS, rayon::current_num_threads());
+    let mut report = format!("# Bolt-max prover timings\n\nInput 2^{log_input}, width {width}, {}-bit field, BLAKE3-256 commitments. {warmups} warmups, {repetitions} measured repetitions, {} Rayon threads. Every proof verified.\n\n{geometry}\n\nCPU-only, same encoder/hash code in both schemes. Public H setup and random input generation excluded. Commitment includes encoding. Opening includes g, projection, constrained WHIR proofs, row openings, and Canopy SEP proofs. Verification evaluates public H directly; no sparse-PCS preprocessing claim is made. The 128-bit composed target (132-bit external tests; 136-bit WHIR) is conditional on binary-field LDPC distance 0.013.\n\n| scheme | h X / Y | commit median s | opening median s | total prover median s | verify median s | actual proof MiB |\n|---|:---:|---:|---:|---:|---:|---:|\n", crate::FIELD_BITS, rayon::current_num_threads());
     let mut groups = BTreeMap::<String, Vec<&TimingRow>>::new();
     for row in &rows {
         groups.entry(row.scheme.clone()).or_default().push(row);
@@ -1849,7 +2065,7 @@ fn write_stage_profile(
             );
         }
     }
-    let mut report = format!("# Bolt-max prover stage profile\n\nInput 2^{}, width {}, 256-bit field, BLAKE3, {} Rayon threads. {} warmups and {} measured repetitions per scheme; every proof verified. Heights are selected for proof size. This is the same public-H prime-field Bolt-max adaptation in both columns: native constrained WHIR proofs are common to both. Canopy adds RS commitments and WHIR SEP proofs. The 128-bit per-event target is conditional on LDPC distance 0.013.\n\nAll component times below are arithmetic means in milliseconds. They are disjoint wall-clock intervals and sum to the mean phase and total times. They are not sums of parallel-worker CPU time. Medians of separate stages generally do not add; median totals and their spread appear separately below.\n\nSetup, random input generation, verifier work, and proof-object extraction/final cleanup outside the established phase timers are excluded. The residual includes allocation/drop, timer bookkeeping, and untimed work inside each phase. RS encode plus WHIR oracle commitment is measured as one native library call, including encoding, matrix hashing, allocation, and transcript binding; it is not an isolated FFT measurement. Internal WHIR proof times include sumchecks, recursive commitments, query openings, and terminal messages.\n", runs[0].log_input, runs[0].interleaving, runs[0].rayon_threads, warmups, counts[0]);
+    let mut report = format!("# Bolt-max prover stage profile\n\nInput 2^{}, width {}, 256-bit field, BLAKE3, {} Rayon threads. {} warmups and {} measured repetitions per scheme; every proof verified. Heights are selected for proof size. This is the same public-H binary-field Bolt-max adaptation in both columns: native constrained WHIR proofs are common to both. Canopy adds RS commitments and WHIR SEP proofs. The 128-bit composed target (132-bit external tests; 136-bit WHIR) is conditional on LDPC distance 0.013.\n\nAll component times below are arithmetic means in milliseconds. They are disjoint wall-clock intervals and sum to the mean phase and total times. They are not sums of parallel-worker CPU time. Medians of separate stages generally do not add; median totals and their spread appear separately below.\n\nSetup, random input generation, verifier work, and proof-object extraction/final cleanup outside the established phase timers are excluded. The residual includes allocation/drop, timer bookkeeping, and untimed work inside each phase. RS encode plus WHIR oracle commitment is measured as one native library call, including encoding, matrix hashing, allocation, and transcript binding; it is not an isolated FFT measurement. Internal WHIR proof times include sumchecks, recursive commitments, query openings, and terminal messages.\n", runs[0].log_input, runs[0].interleaving, runs[0].rayon_threads, warmups, counts[0]);
     report.push_str(runs[0].canopy_layout.description());
     report.push_str("\n");
     for phase in ["commitment", "opening"] {
@@ -1971,7 +2187,7 @@ pub fn grid_with_layout(
     write_csv(output.join("proof_sizes.csv"), &sizes)?;
     let geometry = layout.description();
     let mut report = format!(
-        "# Bolt-max initial interleaving grid\n\nInitial widths: {widths:?}; input sizes are field-element counts. Subsequent WHIR folds remain factor 8 (three variables). Each width and input size gets an independent exhaustive Canopy height search for X and Y. Both schemes use the same width within each comparison.\n\n256-bit prime field, BLAKE3, Bolt-max degree 8 / compression 8, 128-bit per-event target conditional on prime-field LDPC distance 0.013. {geometry} Here k=N/width. Public-H constrained WHIR adaptation; Spark/Mulperm preprocessing excluded.\n\n{samples} deterministic size samples per height; sizes include commitment roots and omit serializer framing. Positive savings mean Canopy is smaller.\n\n| log2 input | width | h X / Y | Merkle MiB | Canopy MiB | saved MiB | saved % | auth saved % |\n|---:|---:|:---:|---:|---:|---:|---:|---:|\n"
+        "# Bolt-max initial interleaving grid\n\nInitial widths: {widths:?}; input sizes are field-element counts. Subsequent WHIR folds remain factor 8 (three variables). Each width and input size gets an independent exhaustive Canopy height search for X and Y. Both schemes use the same width within each comparison.\n\nGF(2^256), BLAKE3, Bolt-max degree 8 / compression 8, 128-bit composed target (132-bit external tests; 136-bit WHIR) conditional on binary-field LDPC distance 0.013. {geometry} Here k=N/width. Public-H constrained WHIR adaptation; Spark/Mulperm preprocessing excluded.\n\n{samples} deterministic size samples per height; sizes include commitment roots and omit serializer framing. Positive savings mean Canopy is smaller.\n\n| log2 input | width | h X / Y | Merkle MiB | Canopy MiB | saved MiB | saved % | auth saved % |\n|---:|---:|:---:|---:|---:|---:|---:|---:|\n"
     );
     for r in &sizes {
         report.push_str(&format!(
@@ -2168,6 +2384,18 @@ mod tests {
     use super::*;
 
     #[test]
+    fn khatam_radius_uses_cube_root_and_retains_stronger_parity_bound() {
+        let (x, y) = proximity_radii();
+        assert!(x > bolt::ASSUMED_DISTANCE / 3.0);
+        assert!(x < 1.0 - (1.0 - bolt::ASSUMED_DISTANCE).cbrt());
+        assert_eq!(y, 0.25);
+        let (qx, qy) = query_counts();
+        assert!((1.0 - x).powi(qx as i32) <= 2f64.powi(-(QUERY_SECURITY as i32)));
+        assert!((1.0 - x).powi(qx as i32 - 1) > 2f64.powi(-(QUERY_SECURITY as i32)));
+        assert_eq!(qy, 319);
+    }
+
+    #[test]
     fn equal_block_geometries_and_complete_height_ranges() {
         let dir = tempfile::tempdir().unwrap();
         for (layout, divisor, min_x, min_y) in [
@@ -2229,7 +2457,7 @@ mod tests {
         let width = 4;
         let encoder = BoltMaxEncoder::new(256, width, 42).unwrap();
         let input = (0..256 * width)
-            .map(|i| Fr::from((i * 9 + 7) as u64))
+            .map(|i| crate::benchmark_field_element(42, 7, i as u64))
             .collect::<Vec<_>>();
         let log_input = input.len().ilog2() as usize;
         for heights in [Some((3, 1)), Some((3, 2)), Some((3, 3)), Some((8, 6))] {
@@ -2279,7 +2507,7 @@ mod tests {
         let width = 4;
         let encoder = BoltMaxEncoder::new(256, width, 42).unwrap();
         let input = (0..256 * width)
-            .map(|i| Fr::from((i * 9 + 7) as u64))
+            .map(|i| crate::benchmark_field_element(42, 7, i as u64))
             .collect::<Vec<_>>();
         let log_input = input.len().ilog2() as usize;
         let baseline = prove(&encoder, &input, None, 42).unwrap();
@@ -2409,7 +2637,7 @@ mod tests {
         for width in [4, 8, 16, 128] {
             let encoder = BoltMaxEncoder::new(64, width, 42).unwrap();
             let input = (0..64 * width)
-                .map(|i| Fr::from((i * i + 9) as u64))
+                .map(|i| crate::benchmark_field_element(42, 7, i as u64))
                 .collect::<Vec<_>>();
             let log_input = input.len().ilog2() as usize;
             for heights in [None, Some((3, 3)), Some((6, 4))] {
@@ -2418,7 +2646,7 @@ mod tests {
                 // Check the public evaluation independently of the row decomposition.
                 assert_eq!(
                     run.evaluation,
-                    dot(&input, &eq_weights(&vec![Fr::from(7u64); log_input]))
+                    dot(&input, &eq_weights(&public_point(log_input)))
                 );
                 assert!(verify(
                     &encoder,
@@ -2453,7 +2681,7 @@ mod tests {
         let log_input = 15;
         let encoder = BoltMaxEncoder::new(2048, width, 44).unwrap();
         let input = (0..2048 * width)
-            .map(|i| Fr::from((i * 3 + 9) as u64))
+            .map(|i| crate::benchmark_field_element(42, 7, i as u64))
             .collect::<Vec<_>>();
         let heights = Some((3, 3));
         let run = prove(&encoder, &input, heights, 44).unwrap();
