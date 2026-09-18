@@ -1,7 +1,7 @@
 {
   "field": "GF(2^256)",
   "command": [
-    "/private/tmp/gf256_bolt_split-w16",
+    "tmp/gf256_bolt_split-w16",
     "time",
     "--width",
     "16",
@@ -15,13 +15,13 @@
     "5",
     "--paper-only",
     "--estimates",
-    "/Users/anubhavbaweja/Desktop/Research/research-git/canopy-system/results/gf256_split_w16_suite/half/proof_sizes",
+    "./results/gf256_split_w16_suite/half/proof_sizes",
     "--alternate-estimates",
-    "/Users/anubhavbaweja/Desktop/Research/research-git/canopy-system/results/gf256_split_w16_suite/full/proof_sizes",
+    "./results/gf256_split_w16_suite/full/proof_sizes",
     "--shared-estimates",
-    "/Users/anubhavbaweja/Desktop/Research/research-git/canopy-system/results/gf256_split_w16_suite/shared/proof_sizes",
+    "./results/gf256_split_w16_suite/shared/proof_sizes",
     "--output",
-    "/Users/anubhavbaweja/Desktop/Research/research-git/canopy-system/results/gf256_split_w16_suite/timing_n22_eta4"
+    "./results/gf256_split_w16_suite/timing_n22_eta4"
   ],
   "binary_sha256": "b51e825db60c1dc7318385e3d7daa2b0276c4b589fda08378593995adde4224b",
   "threads": 8,

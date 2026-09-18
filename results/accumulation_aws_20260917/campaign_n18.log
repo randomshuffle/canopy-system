@@ -1,0 +1,5 @@
+timing_n18: ['./measurements/bin/accumulation_one_fold', '--logs', '18', '--warmups', '1', '--repetitions', '3', '--seed', '91', '--vary-inputs', '--output', './measurements/timing_samples_n18.csv']
+timing_n18: completed in 0.71s
+trace_n18: ['./measurements/bin/accumulation_one_fold_fs', '--logs', '18', '--warmups', '0', '--repetitions', '3', '--seed', '92', '--vary-inputs', '--output', './measurements/hash_validation_n18.csv']
+trace_n18: completed in 0.54s
+All six N=2^18 measured runs verified; instrumentation matched.

@@ -362,7 +362,7 @@ pub fn run_field_benchmarks(
     writeln!(report, "# Large-field RS and H2F benchmark\n")?;
     writeln!(
         report,
-        "WHIR interleaved rate-1/2 RS encoding: `2^{log_length}` inputs to `2^{}` codeword elements, folding width `{interleaving_width}`. H2F uses the exact Canopy domain-separated BLAKE3 256-bit rejection-sampling method on `{h2f_roots}` roots (the Experiment-3 `h={canopy_height}` workload). Times are release-build wall times after `{warmups}` warmup(s), with `{repetitions}` measured repetitions; the harness rotates all six field orders. Output allocation is included; input generation and output deallocation are excluded.\n",
+        "WHIR interleaved rate-1/2 RS encoding: `2^{log_length}` inputs to `2^{}` codeword elements, folding width `{interleaving_width}`. This historical prime-field microbenchmark uses the former Canopy domain-separated BLAKE3 256-bit rejection-sampling method on `{h2f_roots}` roots (the Experiment-3 `h={canopy_height}` workload). Times are release-build wall times after `{warmups}` warmup(s), with `{repetitions}` measured repetitions; the harness rotates all six field orders. Output allocation is included; input generation and output deallocation are excluded.\n",
         log_length + LOG_INVERSE_RATE,
     )?;
     writeln!(

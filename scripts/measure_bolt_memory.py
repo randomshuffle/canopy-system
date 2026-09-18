@@ -9,6 +9,7 @@ import resource
 import subprocess
 import sys
 import time
+from public_metadata import public_metadata
 
 
 def main():
@@ -44,7 +45,7 @@ def main():
                   user_seconds=usage.ru_utime, system_seconds=usage.ru_stime,
                   major_faults=usage.ru_majflt, minor_faults=usage.ru_minflt,
                   boundary="Whole benchmark process: height search, public H setup, input generation, alternating Merkle/Canopy proving and verification; not prover-only or separate per-scheme peaks.")
-    (args.output_dir / "process_memory.json").write_text(json.dumps(report, indent=2) + "\n")
+    (args.output_dir / "process_memory.json").write_text(json.dumps(public_metadata(report), indent=2) + "\n")
     print(f"Peak RSS: {peak_bytes/2**30:.3f} GiB; wall time {elapsed:.2f}s; exit {result.returncode}", flush=True)
     raise SystemExit(result.returncode)
 

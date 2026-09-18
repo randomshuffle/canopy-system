@@ -1,7 +1,7 @@
 {
   "field": "GF(2^256)",
   "command": [
-    "/private/tmp/canopy-gf256-bolt-half-timing",
+    "tmp/canopy-gf256-bolt-half-timing",
     "time",
     "--log",
     "22",
@@ -12,10 +12,10 @@
     "--repetitions",
     "5",
     "--estimates",
-    "/Users/anubhavbaweja/Desktop/Research/research-git/canopy-system/results/gf256_split_half_suite/proof_sizes",
+    "./results/gf256_split_half_suite/proof_sizes",
     "--paper-only",
     "--output",
-    "/Users/anubhavbaweja/Desktop/Research/research-git/canopy-system/results/gf256_split_half_suite/timing_n22_eta8"
+    "./results/gf256_split_half_suite/timing_n22_eta8"
   ],
   "binary_sha256": "be3d9945e6f1cb366a658ea5163d8e9afef15b94ff062926d6dd0188e6e22a19",
   "threads": 8,

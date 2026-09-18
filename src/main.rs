@@ -7,8 +7,8 @@ use canopy_system::benchmark::{
 };
 use canopy_system::field_benchmark::run_field_benchmarks;
 use canopy_system::paper_experiments::{
-    run_proof_estimates, run_proof_estimates_with_regime,
-    run_proof_estimates_with_regime_and_terminal, run_prover_timings,
+    run_proof_estimates_grid, run_proof_estimates_with_regime,
+    run_proof_estimates_with_regime_and_terminal, run_prover_timings_configured,
     run_prover_timings_with_regime,
 };
 use canopy_system::separate_benchmark::{
@@ -120,8 +120,15 @@ enum Command {
     },
     /// Generate the two batched baselines and Canopy Exp3 with the proved Johnson bound.
     PaperEstimate {
+        #[arg(long, value_delimiter = ',', default_value = "18,20,22,24,26,28,30")]
+        logs: Vec<usize>,
         #[arg(long, default_value_t = 100)]
         samples: usize,
+        /// Canopy codeword log reduction relative to the rate-1/2 base oracle.
+        #[arg(long, default_value_t = 0)]
+        canopy_codeword_log_reduction: usize,
+        #[arg(long, value_delimiter = ',', default_value = "1,2,4,8")]
+        inputs: Vec<usize>,
         #[arg(long, default_value_t = 0x5041_5045_525f_5631)]
         seed: u64,
         #[arg(
@@ -185,6 +192,11 @@ enum Command {
         repetitions: usize,
         #[arg(long, default_value_t = 1)]
         height_search_samples: usize,
+        /// Canopy codeword log reduction relative to the rate-1/2 base oracle.
+        #[arg(long, default_value_t = 0)]
+        canopy_codeword_log_reduction: usize,
+        #[arg(long, value_delimiter = ',', default_value = "1,2,4,8")]
+        inputs: Vec<usize>,
         #[arg(long, default_value_t = 0x5041_5045_525f_5631)]
         seed: u64,
         #[arg(
@@ -436,12 +448,24 @@ fn main() -> Result<()> {
             println!("wrote detailed WHIR trace to {}", output_dir.display());
         }
         Command::PaperEstimate {
+            logs,
             samples,
             seed,
             output_dir,
+            canopy_codeword_log_reduction,
+            inputs,
         } => {
-            run_proof_estimates(&output_dir, samples, seed)
-                .with_context(|| format!("writing paper estimates to {}", output_dir.display()))?;
+            run_proof_estimates_grid(
+                &output_dir,
+                samples,
+                seed,
+                WhirDecodingRegime::Johnson,
+                canopy_system::paper_experiments::PAPER_TERMINAL_MESSAGE_VARIABLES,
+                canopy_codeword_log_reduction,
+                &inputs,
+                &logs,
+            )
+            .with_context(|| format!("writing paper estimates to {}", output_dir.display()))?;
             println!("wrote final paper estimates to {}", output_dir.display());
         }
         Command::PaperCapacityEstimate {
@@ -551,17 +575,21 @@ fn main() -> Result<()> {
             log_length,
             warmups,
             repetitions,
-            height_search_samples,
+            height_search_samples: _,
             seed,
             output_dir,
+            canopy_codeword_log_reduction,
+            inputs,
         } => {
-            run_prover_timings(
+            run_prover_timings_configured(
                 &output_dir,
                 log_length,
                 warmups,
                 repetitions,
-                height_search_samples,
                 seed,
+                WhirDecodingRegime::Johnson,
+                canopy_codeword_log_reduction,
+                &inputs,
             )
             .with_context(|| format!("writing paper timings to {}", output_dir.display()))?;
             println!("wrote final paper timings to {}", output_dir.display());

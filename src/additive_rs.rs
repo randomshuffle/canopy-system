@@ -99,6 +99,32 @@ pub fn point(index: usize) -> F {
         + t[3][(index >> 24) & 255]
 }
 
+// Recursive children already expose substantial parallelism. Only split large
+// within-node sweeps, so nested FFTs do not flood the pool with tiny jobs.
+const PARALLEL_SWEEP: usize = 1 << 16;
+
+#[inline(always)]
+fn butterflies<const TRANSPOSE: bool>(left: &mut [F], right: &mut [F], c: F) {
+    let butterfly = |(a, b): (&mut F, &mut F)| {
+        let old_b = *b;
+        if TRANSPOSE {
+            *a += old_b;
+            *b = c * *a + old_b;
+        } else {
+            *a += c * old_b;
+            *b = *a + old_b;
+        }
+    };
+    if left.len() >= PARALLEL_SWEEP {
+        left.par_iter_mut()
+            .zip(right.par_iter_mut())
+            .with_min_len(4096)
+            .for_each(butterfly);
+    } else {
+        left.iter_mut().zip(right.iter_mut()).for_each(butterfly);
+    }
+}
+
 /// Convert monomials into products of s_i(X), where s_0=X and
 /// s_{i+1}=s_i²+s_i. Each s_i has only binary coefficients.
 fn monomial_to_novel(a: &mut [F]) {
@@ -111,10 +137,30 @@ fn monomial_to_novel(a: &mut [F]) {
         .filter(|j| j & h == *j)
         .map(|j| 1usize << j)
         .collect();
-    for i in (half..a.len()).rev() {
-        let q = a[i];
-        for &term in &terms {
-            a[i - half + term] += q
+    if half >= PARALLEL_SWEEP {
+        // Long division has dependencies: i writes only at most i-gap. In a
+        // descending block of <= gap sources, every destination precedes the
+        // block. Terms remain ordered because their destination ranges overlap.
+        let gap = half - terms.last().copied().unwrap();
+        let mut end = a.len();
+        while end > half {
+            let start = half.max(end - gap);
+            let (dest, source) = a.split_at_mut(start);
+            for &term in &terms {
+                dest[start - half + term..end - half + term]
+                    .par_iter_mut()
+                    .zip(source[..end - start].par_iter())
+                    .with_min_len(4096)
+                    .for_each(|(dst, &src)| *dst += src);
+            }
+            end = start;
+        }
+    } else {
+        for i in (half..a.len()).rev() {
+            let q = a[i];
+            for &term in &terms {
+                a[i - half + term] += q
+            }
         }
     }
     let (left, right) = a.split_at_mut(half);
@@ -133,11 +179,7 @@ fn forward(a: &mut [F], offset: usize) {
     let h = half.ilog2();
     let twiddle = point(offset >> h);
     let (left, right) = a.split_at_mut(half);
-    for (a, b) in left.iter_mut().zip(right.iter_mut()) {
-        let old_b = *b;
-        *a += twiddle * old_b;
-        *b = *a + old_b;
-    }
+    butterflies::<false>(left, right, twiddle);
     if half >= 8192 {
         rayon::join(|| forward(left, offset), || forward(right, offset + half));
     } else {
@@ -180,11 +222,7 @@ fn forward_transpose(a: &mut [F], offset: usize) {
         forward_transpose(left, offset);
         forward_transpose(right, offset + half);
     }
-    for (a, b) in left.iter_mut().zip(right.iter_mut()) {
-        let r = *b;
-        *a += r;
-        *b = c * (*a) + r;
-    }
+    butterflies::<true>(left, right, c);
 }
 fn conversion_transpose(a: &mut [F]) {
     if a.len() <= 2 {
@@ -206,10 +244,29 @@ fn conversion_transpose(a: &mut [F]) {
         .filter(|j| j & h == *j)
         .map(|j| 1usize << j)
         .collect();
-    for i in half..a.len() {
-        for &term in &terms {
-            let delta = a[i - half + term];
-            a[i] += delta
+    if half >= PARALLEL_SWEEP {
+        // Transpose the same dependency blocks in the opposite order. Each
+        // output can gather all its terms independently from the earlier prefix.
+        let gap = half - terms.last().copied().unwrap();
+        for start in (half..a.len()).step_by(gap) {
+            let end = a.len().min(start + gap);
+            let (source, dest) = a.split_at_mut(start);
+            dest[..end - start]
+                .par_iter_mut()
+                .enumerate()
+                .with_min_len(4096)
+                .for_each(|(i, dst)| {
+                    for &term in &terms {
+                        *dst += source[start + i - half + term];
+                    }
+                });
+        }
+    } else {
+        for i in half..a.len() {
+            for &term in &terms {
+                let delta = a[i - half + term];
+                a[i] += delta
+            }
         }
     }
 }
@@ -223,9 +280,24 @@ pub fn power_sums(indices: &[usize], weights: &[F], length: usize, prefix: usize
         .enumerate()
         .for_each(|(coset, dst)| forward_transpose(dst, coset * size));
     let (first, rest) = a.split_at_mut(size);
-    for chunk in rest.chunks_exact(size) {
-        for (a, &b) in first.iter_mut().zip(chunk) {
-            *a += b
+    if size >= PARALLEL_SWEEP {
+        first
+            .par_chunks_mut(1024)
+            .enumerate()
+            .for_each(|(block, dst)| {
+                let start = block * 1024;
+                let end = start + dst.len();
+                for chunk in rest.chunks_exact(size) {
+                    for (a, &b) in dst.iter_mut().zip(&chunk[start..end]) {
+                        *a += b;
+                    }
+                }
+            });
+    } else {
+        for chunk in rest.chunks_exact(size) {
+            for (a, &b) in first.iter_mut().zip(chunk) {
+                *a += b
+            }
         }
     }
     conversion_transpose(first);
@@ -307,6 +379,112 @@ impl ReedSolomon<F> for AdditiveRs {
 mod tests {
     use super::*;
     use rand::{Rng, SeedableRng};
+
+    // Keep the original serial long-division maps as independent references:
+    // reordering these dependency sweeps incorrectly can still look linear.
+    fn serial_conversion(a: &mut [F], transpose: bool) {
+        if a.len() <= 2 {
+            return;
+        }
+        let half = a.len() / 2;
+        let h = half.ilog2();
+        let terms = (0..h)
+            .filter(|j| j & h == *j)
+            .map(|j| 1usize << j)
+            .collect::<Vec<_>>();
+        if transpose {
+            serial_conversion(&mut a[..half], true);
+            serial_conversion(&mut a[half..], true);
+            for i in half..a.len() {
+                for &term in &terms {
+                    let delta = a[i - half + term];
+                    a[i] += delta;
+                }
+            }
+        } else {
+            for i in (half..a.len()).rev() {
+                let q = a[i];
+                for &term in &terms {
+                    a[i - half + term] += q;
+                }
+            }
+            serial_conversion(&mut a[..half], false);
+            serial_conversion(&mut a[half..], false);
+        }
+    }
+
+    #[test]
+    fn parallel_dependency_sweeps_match_serial_conversion() {
+        let mut rng = rand_chacha::ChaCha20Rng::seed_from_u64(97);
+        let pool = rayon::ThreadPoolBuilder::new()
+            .num_threads(4)
+            .build()
+            .unwrap();
+        for log in [13, 14, 15, 16, 17, 18, 19] {
+            let a = (0..1usize << log)
+                .map(|_| rng.gen::<F>())
+                .collect::<Vec<_>>();
+            for transpose in [false, true] {
+                let mut expected = a.clone();
+                serial_conversion(&mut expected, transpose);
+                let mut actual = a.clone();
+                pool.install(|| {
+                    if transpose {
+                        conversion_transpose(&mut actual)
+                    } else {
+                        monomial_to_novel(&mut actual)
+                    }
+                });
+                assert_eq!(actual, expected, "log={log}, transpose={transpose}");
+            }
+        }
+    }
+
+    #[test]
+    fn parallel_fft_matches_horner_and_transpose_adjoint() {
+        let mut rng = rand_chacha::ChaCha20Rng::seed_from_u64(101);
+        let coefficients = (0..65539).map(|_| rng.gen::<F>()).collect::<Vec<_>>();
+        let pool = rayon::ThreadPoolBuilder::new()
+            .num_threads(4)
+            .build()
+            .unwrap();
+        pool.install(|| {
+            let length = 1 << 19;
+            let encoded = encode(&coefficients, length);
+            let indices = [
+                0,
+                1,
+                8191,
+                8192,
+                32767,
+                32768,
+                32768,
+                65535,
+                65536,
+                length - 1,
+            ];
+            let weights = indices.iter().map(|_| rng.gen::<F>()).collect::<Vec<_>>();
+            for &i in &indices {
+                let expected = coefficients
+                    .iter()
+                    .rev()
+                    .fold(F::ZERO, |a, &c| a * point(i) + c);
+                assert_eq!(encoded[i], expected, "index={i}");
+            }
+            let sums = power_sums(&indices, &weights, length, coefficients.len());
+            let lhs: F = indices
+                .iter()
+                .zip(&weights)
+                .map(|(&i, &w)| encoded[i] * w)
+                .sum();
+            let rhs: F = coefficients
+                .iter()
+                .zip(sums.to_slice())
+                .map(|(&a, &b)| a * b)
+                .sum();
+            assert_eq!(lhs, rhs);
+        });
+    }
     #[test]
     fn transposed_encoder_matches_direct_power_sums() {
         let indices = vec![0, 1, 2, 7, 13, 31, 31, 67, 99, 127];

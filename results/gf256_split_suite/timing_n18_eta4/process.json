@@ -1,7 +1,7 @@
 {
   "field": "GF(2^256)",
   "command": [
-    "/private/tmp/canopy-gf256-bolt-split-timing",
+    "tmp/canopy-gf256-bolt-split-timing",
     "time",
     "--log",
     "18",
@@ -12,7 +12,7 @@
     "--repetitions",
     "5",
     "--output",
-    "/Users/anubhavbaweja/Desktop/Research/research-git/canopy-system/results/gf256_split_suite/timing_n18_eta4"
+    "./results/gf256_split_suite/timing_n18_eta4"
   ],
   "binary_sha256": "755ea59d7728a80e9dd07d848e86513daaf531c8f8cdd474a3fdb751ff58b46f",
   "threads": 8,

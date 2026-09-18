@@ -1,0 +1,5 @@
+log_n,scheme,repetition,queries_0,queries_1,incoming_commit_seconds,initial_form_seconds,outer_ood_and_fold_seconds,folded_commit_seconds,bottom_open_seconds,reduction_forms_seconds,batch_sumcheck_seconds,combination_seconds,output_commit_seconds,source_open_and_output_claim_seconds,step_seconds,with_incoming_commit_seconds,actual_auth_hashes,fs_finalizations,proof_bytes,verified
+10,merkle_same_code_batch,0,317,96,0.000556416,0.000400959,0.0,0.0,0.0,0.0,0.000376708,0.000129083,0.000295917,0.000717417,0.001954042,0.002510458,1114,14,167632,true
+10,canopy_one_fold_three_claims,0,317,96,0.000583875,0.000095667,0.000086459,0.000097334,0.000123792,0.000174167,0.000073833,0.000077416,0.000142958,0.000270459,0.001161458,0.001745333,928,19,128088,true
+18,merkle_same_code_batch,0,317,96,0.02526875,0.008178458,0.0,0.0,0.0,0.0,0.01071275,0.000883541,0.005682958,0.000775833,0.026244083,0.051512833,5534,22,300496,true
+18,canopy_one_fold_three_claims,0,317,96,0.0232625,0.002501875,0.005544417,0.0066655,0.000221208,0.002859583,0.003166791,0.000260583,0.00317125,0.000143,0.024543583,0.047806083,3354,27,235896,true

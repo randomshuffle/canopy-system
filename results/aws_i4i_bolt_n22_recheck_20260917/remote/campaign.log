@@ -1,0 +1,15 @@
+tmp/canopy-aws-i4i-n30-native-20260917/release/examples/gf256_bolt_suite estimate --logs 22 --inputs 1,2,4,8 --samples 100 --width 4 --output ./results/estimates/n22/shared
+Completed in 14.5s; peak RSS 0.013 GiB
+tmp/canopy-aws-i4i-n30-native-20260917/release/examples/gf256_bolt_suite account --input ./results/estimates/n22/shared/proof_sizes.csv --output ./results/estimates/n22/shared/fiat_shamir.csv
+Completed in 0.5s; peak RSS 0.013 GiB
+tmp/canopy-aws-i4i-n30-native-20260917/release/examples/gf256_bolt_split estimate --logs 22 --inputs 1,2,4,8 --samples 100 --width 4 --block-divisor 4 --output ./results/estimates/n22/quarter
+Completed in 7.5s; peak RSS 0.013 GiB
+tmp/canopy-aws-i4i-n30-native-20260917/release/examples/gf256_bolt_split time --log 22 --inputs 1 --warmups 1 --repetitions 4 --estimates ./results/estimates/n22/quarter --shared-estimates ./results/estimates/n22/shared --paper-only --shared-merkle-baseline --width 4 --output ./results/timings/bolt_n22_eta1
+Completed in 7.5s; peak RSS 1.192 GiB
+tmp/canopy-aws-i4i-n30-native-20260917/release/examples/gf256_bolt_split time --log 22 --inputs 2 --warmups 1 --repetitions 4 --estimates ./results/estimates/n22/quarter --shared-estimates ./results/estimates/n22/shared --paper-only --shared-merkle-baseline --width 4 --output ./results/timings/bolt_n22_eta2
+Completed in 13.5s; peak RSS 1.582 GiB
+tmp/canopy-aws-i4i-n30-native-20260917/release/examples/gf256_bolt_split time --log 22 --inputs 4 --warmups 1 --repetitions 4 --estimates ./results/estimates/n22/quarter --shared-estimates ./results/estimates/n22/shared --paper-only --shared-merkle-baseline --width 4 --output ./results/timings/bolt_n22_eta4
+Completed in 26.5s; peak RSS 2.312 GiB
+tmp/canopy-aws-i4i-n30-native-20260917/release/examples/gf256_bolt_split time --log 22 --inputs 8 --warmups 1 --repetitions 4 --estimates ./results/estimates/n22/quarter --shared-estimates ./results/estimates/n22/shared --paper-only --shared-merkle-baseline --width 4 --output ./results/timings/bolt_n22_eta8
+Completed in 52.1s; peak RSS 3.726 GiB
+Validated 32 measured proofs across all eight configuration points.

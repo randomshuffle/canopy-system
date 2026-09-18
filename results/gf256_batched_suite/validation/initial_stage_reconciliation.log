@@ -28,7 +28,7 @@ paper timing iteration 6: t=1
 paper timing iteration 6: t=2
 paper timing iteration 6: t=4
 paper timing iteration 6: t=8
-wrote final paper timings to /Users/anubhavbaweja/Desktop/Research/research-git/canopy-system/results/gf256_batched_suite/whir/timing_n18
+wrote final paper timings to ./results/gf256_batched_suite/whir/timing_n18
 Completed: exit=0, wall=11.46s, peak=0.853 GiB
 paper timing iteration 1/6: common stages
 paper timing iteration 1: t=1
@@ -60,7 +60,7 @@ paper timing iteration 6: t=1
 paper timing iteration 6: t=2
 paper timing iteration 6: t=4
 paper timing iteration 6: t=8
-wrote final paper timings to /Users/anubhavbaweja/Desktop/Research/research-git/canopy-system/results/gf256_batched_suite/whir/timing_n20
+wrote final paper timings to ./results/gf256_batched_suite/whir/timing_n20
 Completed: exit=0, wall=52.94s, peak=2.767 GiB
 paper timing iteration 1/6: common stages
 paper timing iteration 1: t=1
@@ -92,7 +92,7 @@ paper timing iteration 6: t=1
 paper timing iteration 6: t=2
 paper timing iteration 6: t=4
 paper timing iteration 6: t=8
-wrote final paper timings to /Users/anubhavbaweja/Desktop/Research/research-git/canopy-system/results/gf256_batched_suite/whir/timing_n22
+wrote final paper timings to ./results/gf256_batched_suite/whir/timing_n22
 Completed: exit=0, wall=249.17s, peak=6.570 GiB
 Bolt timing n=18 w=4, iteration=0: bolt_merkle_batched EqualBlocks
 Bolt timing n=18 w=4, iteration=0: bolt_canopy_batched EqualHalf
@@ -320,15 +320,15 @@ Bolt timing n=22 w=16, iteration=5: bolt_canopy_batched EqualBlocks
 Bolt timing n=22 w=16, iteration=5: bolt_merkle_batched EqualBlocks
 Completed: exit=0, wall=14.10s, peak=0.474 GiB
 Traceback (most recent call last):
-  File "/Users/anubhavbaweja/Desktop/Research/research-git/canopy-system/scripts/summarize_gf256_suite.py", line 98, in <module>
+  File "./scripts/summarize_gf256_suite.py", line 98, in <module>
     for k,v in wg.items():assert abs(v-wti[k]['mean_total_seconds'])<1e-7,(k,v,wti[k])
                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 AssertionError: ((20, 1, 'merkle_whir_batched_rate_quarter_after_second'), 0.3652261512, {'log_input': 20, 'input_polynomials': 1, 'scheme': 'merkle_whir_batched_rate_quarter_after_second', 'mean_commitment_seconds': 0.15611920840000001, 'mean_opening_seconds': 0.1890477336, 'mean_total_seconds': 0.345166942, 'median_total_seconds': 0.337069918, 'min_total_seconds': 0.298703043, 'max_total_seconds': 0.399549251})
 Traceback (most recent call last):
-  File "/Users/anubhavbaweja/Desktop/Research/research-git/canopy-system/scripts/run_gf256_timings.py", line 21, in <module>
+  File "./scripts/run_gf256_timings.py", line 21, in <module>
     subprocess.run([sys.executable,str(ROOT/'scripts/summarize_gf256_suite.py')],cwd=ROOT,check=True)
     ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
   File "/opt/homebrew/Cellar/python@3.14/3.14.2/Frameworks/Python.framework/Versions/3.14/lib/python3.14/subprocess.py", line 577, in run
     raise CalledProcessError(retcode, process.args,
                              output=stdout, stderr=stderr)
-subprocess.CalledProcessError: Command '['/opt/homebrew/opt/python@3.14/bin/python3.14', '/Users/anubhavbaweja/Desktop/Research/research-git/canopy-system/scripts/summarize_gf256_suite.py']' returned non-zero exit status 1.
+subprocess.CalledProcessError: Command '['/opt/homebrew/opt/python@3.14/bin/python3.14', './scripts/summarize_gf256_suite.py']' returned non-zero exit status 1.

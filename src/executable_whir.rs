@@ -188,6 +188,22 @@ pub fn commit_matrix_with_whir(
     ))
 }
 
+/// Commit independent matrices concurrently, preserving input/root order.
+/// Report elapsed wall time for the batch, never the sum of overlapping tasks.
+/// Both Merkle-WHIR baselines and the Canopy layer use this scheduler.
+pub fn commit_many_matrices_with_whir(
+    encoded: &[WhirEncodedMatrix],
+    row_width: usize,
+) -> Result<(Vec<WhirMatrixCommitment>, Duration)> {
+    ensure!(!encoded.is_empty(), "at least one WHIR matrix is required");
+    let start = Instant::now();
+    let commitments = encoded
+        .par_iter()
+        .map(|matrix| commit_matrix_with_whir(matrix, row_width).map(|(commitment, _)| commitment))
+        .collect::<Result<Vec<_>>>()?;
+    Ok((commitments, start.elapsed()))
+}
+
 #[derive(Clone, Debug)]
 pub struct OracleGeometry {
     pub oracle: usize,
@@ -575,6 +591,40 @@ mod tests {
             encode_many_interleaved_with_whir(&[first.as_slice(), second.as_slice()], 1, 3)
                 .unwrap();
         assert_eq!(actual, expected);
+    }
+
+    #[test]
+    fn concurrent_commitments_preserve_roots_and_order() {
+        let vectors = (0..4)
+            .map(|j| {
+                (0..256)
+                    .map(|i| crate::benchmark_field_element(173, j, i))
+                    .collect::<Vec<_>>()
+            })
+            .collect::<Vec<_>>();
+        let refs = vectors.iter().map(Vec::as_slice).collect::<Vec<_>>();
+        for rate in [1, 2, 3] {
+            let expected = refs
+                .iter()
+                .map(|values| {
+                    let encoded = encode_interleaved_with_whir(values, rate, 3).unwrap();
+                    commit_matrix_with_whir(&encoded, 8).unwrap().0.root.0
+                })
+                .collect::<Vec<_>>();
+            for threads in [1, 4] {
+                rayon::ThreadPoolBuilder::new()
+                    .num_threads(threads)
+                    .build()
+                    .unwrap()
+                    .install(|| {
+                        let encoded = encode_many_interleaved_with_whir(&refs, rate, 3).unwrap();
+                        let (committed, _) = commit_many_matrices_with_whir(&encoded, 8).unwrap();
+                        let roots = committed.iter().map(|c| c.root.0).collect::<Vec<_>>();
+                        assert_eq!(roots, expected);
+                        assert!(roots.windows(2).all(|pair| pair[0] != pair[1]));
+                    });
+            }
+        }
     }
 
     #[test]

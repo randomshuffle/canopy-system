@@ -1,32 +1,66 @@
-//! Bolt with independent systematic/parity WHIR batches. Both Canopy RS
-//! block lengths are k or k/2; each side's message length/height is optimized.
+//! Bolt with independent systematic/parity WHIR batches. Canopy RS block lengths
+//! are k, k/2, or k/4, or the systematic layer starts at rate 1/2 and joins later.
 use super::*;
 
-#[derive(Clone, Copy, Debug, Serialize, Deserialize)]
+#[path = "bolt_delayed.rs"]
+pub mod delayed;
+
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct Parameters {
-    /// Both Canopy RS lengths are k >> canopy_log_divisor.
+    /// Canopy RS lengths are k >> canopy_log_divisor, except a delayed systematic layer.
     #[serde(default)]
     pub canopy_log_divisor: usize,
+    /// Half-rate systematic Canopy, folded independently before the join.
+    #[serde(default)]
+    pub delayed_systematic: bool,
     pub systematic_h: Option<usize>,
     pub parity_h: Option<usize>,
     pub systematic_target_log: usize,
     pub parity_target_log: usize,
 }
 impl Parameters {
+    fn systematic_rs_length(self, k: usize) -> usize {
+        if self.delayed_systematic {
+            2 * (k >> self.systematic_h.expect("delayed join requires Canopy"))
+        } else {
+            k >> self.canopy_log_divisor
+        }
+    }
     fn configs(self, k: usize, eta: usize) -> Result<[WhirConfig; 2]> {
         ensure!(
-            self.canopy_log_divisor <= 1,
-            "supported Canopy lengths are k and k/2"
+            self.canopy_log_divisor <= 2,
+            "supported parity Canopy lengths are k, k/2, and k/4"
         );
         let log_k = k.ilog2() as usize;
         let rs_log = log_k - self.canopy_log_divisor;
-        let config =
-            |rows_log: usize, source_log: usize, h: Option<usize>, target: usize| -> Result<_> {
-                // Each side joins after at least one authenticated WHIR transition.
-                ensure!(
-                    target > 0 && target < source_log,
-                    "invalid independent join length"
-                );
+        let config = |rows_log: usize,
+                      source_log: usize,
+                      h: Option<usize>,
+                      target: usize,
+                      delayed: bool|
+         -> Result<_> {
+            ensure!(
+                target > 0
+                    && target <= source_log
+                    && (delayed || h.is_none() || target < source_log),
+                "invalid independent join length"
+            );
+            let rate = if delayed {
+                let h = h.context("delayed systematic join requires a Canopy height")?;
+                ensure!(h <= rows_log, "height exceeds tree");
+                if h == rows_log {
+                    1 // Constant Canopy is opened directly; only the code-switch claim remains.
+                } else {
+                    let message_log = rows_log - h;
+                    ensure!(target <= message_log, "cannot unfold Canopy");
+                    let folded = message_log - target;
+                    ensure!(
+                        folded % FOLD == 0,
+                        "join must follow complete three-variable Canopy folds"
+                    );
+                    1 + folded - folded / FOLD
+                }
+            } else {
                 if let Some(h) = h {
                     ensure!(h <= rows_log, "height exceeds tree");
                     ensure!(
@@ -39,20 +73,61 @@ impl Parameters {
                     !nonconstant || target < rs_log,
                     "Canopy RS rate must be at most 1/2"
                 );
-                let cfg = whir_config(target, if nonconstant { rs_log - target } else { 1 }, true)?;
-                let count = eta * if nonconstant { 2 } else { 1 };
-                ensure!(
-                    cfg.security_level(count, count) + 1e-9 >= WHIR_SECURITY as f64,
-                    "insufficient independent tail security"
-                );
-                Ok(cfg)
+                if nonconstant {
+                    rs_log - target
+                } else {
+                    1
+                }
             };
+            let cfg = whir_config(target, rate, true)?;
+            let count = eta
+                * if h.is_some_and(|h| h < rows_log) {
+                    2
+                } else {
+                    1
+                };
+            ensure!(
+                cfg.security_level(count, count) + 1e-9 >= WHIR_SECURITY as f64,
+                "insufficient independent tail security"
+            );
+            Ok(cfg)
+        };
         Ok([
-            config(log_k, log_k, self.systematic_h, self.systematic_target_log)?,
-            config(log_k - 2, log_k - 3, self.parity_h, self.parity_target_log)?,
+            config(
+                log_k,
+                log_k,
+                self.systematic_h,
+                self.systematic_target_log,
+                self.delayed_systematic,
+            )?,
+            config(
+                log_k - 2,
+                log_k - 3,
+                self.parity_h,
+                self.parity_target_log,
+                false,
+            )?,
         ])
     }
+    fn canopy_config(self, k: usize, side: usize) -> Result<Option<WhirConfig>> {
+        let (rows, height, length) = if side == 0 {
+            (k, self.systematic_h, self.systematic_rs_length(k))
+        } else {
+            (k / 4, self.parity_h, k >> self.canopy_log_divisor)
+        };
+        height
+            .filter(|&h| h < rows.ilog2() as usize)
+            .map(|h| {
+                whir_config(
+                    rows.ilog2() as usize - h,
+                    canopy_rate_log(rows, length, h),
+                    true,
+                )
+            })
+            .transpose()
+    }
 }
+
 fn domain(
     n: usize,
     width: usize,
@@ -60,6 +135,27 @@ fn domain(
     seed: u64,
     eta: usize,
 ) -> DomainSeparator<'static, ()> {
+    if p.delayed_systematic {
+        return DomainSeparator::protocol(&(
+            "canopy-system/bolt-max/v8/delayed-systematic",
+            crate::FIELD_MODULUS_LABEL,
+            n,
+            width,
+            p.canopy_log_divisor,
+            p.systematic_h,
+            p.parity_h,
+            p.systematic_target_log,
+            p.parity_target_log,
+            seed,
+            eta,
+            (
+                SECURITY,
+                QUERY_SECURITY + eta.ilog2() as usize,
+                WHIR_SECURITY,
+                FOLD,
+            ),
+        ));
+    }
     DomainSeparator::protocol(&(
         "canopy-system/bolt-max/v7/independent-tails",
         crate::FIELD_MODULUS_LABEL,
@@ -137,7 +233,7 @@ pub(super) fn prove(
             input,
             width,
             parameters.systematic_h,
-            k >> parameters.canopy_log_divisor,
+            parameters.systematic_rs_length(k),
             &mut profile,
             "X",
         )?;
@@ -207,16 +303,19 @@ pub(super) fn prove(
     let proof = state.proof();
     let row = TimingRow {
         input_oracles: eta,
-        canopy_layout: if parameters.canopy_log_divisor == 1 {
-            CanopyLayout::EqualHalf
-        } else {
-            CanopyLayout::EqualFull
+        canopy_layout: match parameters.canopy_log_divisor {
+            0 => CanopyLayout::EqualFull,
+            1 => CanopyLayout::EqualHalf,
+            2 => CanopyLayout::EqualBlocks,
+            _ => unreachable!("validated Canopy block divisor"),
         },
         interleaving: width,
         log_input: n,
         setup_seed: seed,
         rayon_threads: rayon::current_num_threads(),
-        scheme: if parameters.systematic_h.is_some() {
+        scheme: if parameters.delayed_systematic {
+            "bolt_canopy_delayed_systematic"
+        } else if parameters.systematic_h.is_some() {
             "bolt_canopy_split"
         } else {
             "bolt_merkle_split"
@@ -266,7 +365,7 @@ pub(super) fn verify(
             k,
             width,
             parameters.systematic_h,
-            k >> parameters.canopy_log_divisor,
+            parameters.systematic_rs_length(k),
         )?;
         let y = ReceivedLayer::receive(
             &mut state,
@@ -332,6 +431,8 @@ pub struct Row {
     pub interleaving: usize,
     pub input_oracles: usize,
     pub scheme: String,
+    #[serde(default)]
+    pub delayed_systematic: bool,
     pub systematic_h: Option<usize>,
     pub parity_h: Option<usize>,
     pub systematic_target_log: usize,
@@ -358,16 +459,19 @@ pub struct Row {
 impl Row {
     fn parameters(&self) -> Parameters {
         let canopy_log_divisor = if self.systematic_h.is_some() {
-            assert_eq!(self.systematic_rs_length, self.parity_rs_length);
-            assert!(self.systematic_rs_length.is_power_of_two());
+            if !self.delayed_systematic {
+                assert_eq!(self.systematic_rs_length, self.parity_rs_length);
+            }
+            assert!(self.parity_rs_length.is_power_of_two());
             self.log_input
                 - self.interleaving.ilog2() as usize
-                - self.systematic_rs_length.ilog2() as usize
+                - self.parity_rs_length.ilog2() as usize
         } else {
             0
         };
         Parameters {
             canopy_log_divisor,
+            delayed_systematic: self.delayed_systematic,
             systematic_h: self.systematic_h,
             parity_h: self.parity_h,
             systematic_target_log: self.systematic_target_log,
@@ -382,14 +486,29 @@ fn side_size(
     eta: usize,
     rng: &mut ChaCha20Rng,
 ) -> Result<Size> {
-    let count = eta * if canopy { 2 } else { 1 };
+    side_size_with_canopy(source_log, common, canopy.then_some(common), eta, rng)
+}
+
+fn side_size_with_canopy(
+    source_log: usize,
+    common: &WhirConfig,
+    canopy: Option<&WhirConfig>,
+    eta: usize,
+    rng: &mut ChaCha20Rng,
+) -> Result<Size> {
+    let count = eta * if canopy.is_some() { 2 } else { 1 };
     let mut size = Size::default();
     for _ in 0..eta {
         size.add(batching::prefix_size(source_log, common, rng)?);
     }
-    if canopy {
-        size.hashes += eta as f64;
-        size.fields += (eta * common.initial_out_domain_samples) as f64;
+    if let Some(canopy) = canopy {
+        for _ in 0..eta {
+            size.add(batching::prefix_size_from_config(
+                canopy.clone(),
+                common,
+                rng,
+            )?);
+        }
     }
     let mut first_queries = rng.clone();
     let mut tail = whir_size(common, rng)?;
@@ -416,8 +535,8 @@ pub fn estimate_grid(
     output: &Path,
 ) -> Result<()> {
     ensure!(
-        [1, 2].contains(&block_divisor),
-        "supported block divisors are 1 and 2"
+        [1, 2, 4].contains(&block_divisor),
+        "supported block divisors are 1, 2, and 4"
     );
     ensure!([4, 16].contains(&width), "supported widths are 4 and 16");
     ensure!(samples > 0, "positive samples required");
@@ -529,7 +648,8 @@ pub fn estimate_grid(
                                 total_bytes: external_row_bytes + external_auth_bytes + bytes,
                                 verifier_leaf_hashes: leaf,
                                 verifier_parent_hashes: parent,
-                                verifier_hash_to_field: if canopy { b[3] } else { 0. },
+                                // Digest-to-field conversion is a bijection, not a hash.
+                                verifier_hash_to_field: 0.0,
                                 selected: false,
                             });
                         }
@@ -552,7 +672,9 @@ pub fn estimate_grid(
                     log_input: n,
                     interleaving: width,
                     input_oracles: eta,
-                    scheme: if canopy {
+                    scheme: if canopy && block_divisor == 4 {
+                        "bolt_canopy_split_quarter"
+                    } else if canopy {
                         "bolt_canopy_split"
                     } else {
                         "bolt_merkle_split"
@@ -580,6 +702,7 @@ pub fn estimate_grid(
                     fs_proof_bytes: 0,
                     verifier_hashes: 0.,
                     samples,
+                    delayed_systematic: false,
                 };
                 account(&mut row)?;
                 selected.push(row);
@@ -605,6 +728,7 @@ fn fs_model(
     let k = 1usize << log_k;
     let p = row.parameters();
     let commons = p.configs(k, eta)?;
+    let canopy_configs = [p.canopy_config(k, 0)?, p.canopy_config(k, 1)?];
     let source_logs = [log_k, log_k - 3];
     let initial = [
         batching::initial_config(source_logs[0], &commons[0])?,
@@ -630,8 +754,9 @@ fn fs_model(
         for side in 0..2 {
             if nonconstant[side] {
                 l.challenges(1);
-                l.challenges(commons[side].initial_out_domain_samples);
-                l.fields(commons[side].initial_out_domain_samples);
+                let canopy = canopy_configs[side].as_ref().unwrap();
+                l.challenges(canopy.initial_out_domain_samples);
+                l.fields(canopy.initial_out_domain_samples);
             } else if heights[side].is_some() {
                 l.fields(1);
             }
@@ -646,7 +771,12 @@ fn fs_model(
                 if side == 0 { 3 } else { 2 },
             )?;
             if nonconstant[side] {
-                fiat_shamir::reduce(&mut l, commons[side].clone(), &commons[side], 1)?;
+                fiat_shamir::reduce(
+                    &mut l,
+                    canopy_configs[side].clone().unwrap(),
+                    &commons[side],
+                    1,
+                )?;
             }
         }
         let count = eta * if nonconstant[side] { 2 } else { 1 };
@@ -702,8 +832,13 @@ pub fn time_selected(
     paper_only: bool,
     width: usize,
     alternate_estimates: Option<&Path>,
+    shared_merkle_baseline: bool,
 ) -> Result<()> {
     ensure!(repetitions > 0, "positive repetitions required");
+    ensure!(
+        !shared_merkle_baseline || paper_only,
+        "fixed shared Merkle baseline requires --paper-only"
+    );
     let mut split = csv::Reader::from_path(estimates.join("proof_sizes.csv"))?
         .deserialize::<Row>()
         .collect::<std::result::Result<Vec<_>, _>>()?
@@ -745,13 +880,13 @@ pub fn time_selected(
             "expected one alternate Canopy configuration"
         );
         ensure!(
-            alternate[0].systematic_rs_length
+            alternate[0].parameters()
                 != split
                     .iter()
                     .find(|r| r.systematic_h.is_some())
                     .unwrap()
-                    .systematic_rs_length,
-            "alternate must use a different RS block length"
+                    .parameters(),
+            "alternate must use a different Canopy geometry or join mode"
         );
         split.extend(alternate);
     }
@@ -766,7 +901,9 @@ pub fn time_selected(
             .unwrap();
         let split_merkle = split.iter().position(|r| r.systematic_h.is_none()).unwrap();
         let canopy = split.iter().position(|r| r.systematic_h.is_some()).unwrap() + 2;
-        let baseline = if shared[shared_merkle].total_bytes <= split[split_merkle].total_bytes {
+        let baseline = if shared_merkle_baseline
+            || shared[shared_merkle].total_bytes <= split[split_merkle].total_bytes
+        {
             shared_merkle
         } else {
             split_merkle + 2
@@ -822,6 +959,9 @@ pub fn time_selected(
                     &run.evaluations,
                     &run.proof,
                 )?;
+                // Preserve experiment labels when two configurations differ
+                // only in their join round, so their timings remain separate.
+                run.row.scheme = split[index - 2].scheme.clone();
             }
             run.row.verification_seconds = start.elapsed().as_secs_f64();
             run.row.proof_verified = true;
@@ -948,12 +1088,87 @@ pub fn validate(input: &Path, output: &Path) -> Result<()> {
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[test]
+    fn parallel_arithmetic_preserves_batched_proof_transcript() {
+        let n = 16;
+        let k = 1 << (n - 2);
+        let seed = 71;
+        let encoder = BoltMaxEncoder::new(k, 4, seed).unwrap();
+        let data = input_data(n, 2, seed);
+        let p = Parameters {
+            canopy_log_divisor: 2,
+            delayed_systematic: false,
+            systematic_h: Some(3),
+            parity_h: Some(3),
+            systematic_target_log: n - 5,
+            parity_target_log: n - 7,
+        };
+        let run = |threads| {
+            rayon::ThreadPoolBuilder::new()
+                .num_threads(threads)
+                .build()
+                .unwrap()
+                .install(|| {
+                    let result = prove(&encoder, &data, p, seed).unwrap();
+                    verify(&encoder, n, p, seed, &result.evaluations, &result.proof).unwrap();
+                    result
+                })
+        };
+        let serial = run(1);
+        let parallel = run(4);
+        assert_eq!(serial.evaluations, parallel.evaluations);
+        assert_eq!(serial.proof.narg_string, parallel.proof.narg_string);
+        assert_eq!(serial.proof.hints, parallel.proof.hints);
+    }
     fn rejected(f: impl FnOnce() -> Result<()>) -> bool {
         // Native debug transcript shape checks panic after a challenge-changing
         // corruption; release verification reports an ordinary error.
         match std::panic::catch_unwind(std::panic::AssertUnwindSafe(f)) {
             Err(_) => true,
             Ok(result) => result.is_err(),
+        }
+    }
+    #[test]
+    fn quarter_blocks_bind_geometry_and_claims() {
+        let k = 512;
+        let n = 11;
+        let seed = 37;
+        let encoder = BoltMaxEncoder::new(k, 4, seed).unwrap();
+        let data = input_data(n, 1, seed);
+        for (hx, hy) in [(3, 2), (9, 2), (3, 7), (9, 7)] {
+            let p = Parameters {
+                canopy_log_divisor: 2,
+                delayed_systematic: false,
+                systematic_h: Some(hx),
+                parity_h: Some(hy),
+                systematic_target_log: 6,
+                parity_target_log: 5,
+            };
+            let run = prove(&encoder, &data, p, seed).unwrap();
+            verify(&encoder, n, p, seed, &run.evaluations, &run.proof).unwrap();
+            assert_eq!(run.row.canopy_layout, CanopyLayout::EqualBlocks);
+            let wrong_length = Parameters {
+                canopy_log_divisor: 1,
+                ..p
+            };
+            assert!(rejected(|| verify(
+                &encoder,
+                n,
+                wrong_length,
+                seed,
+                &run.evaluations,
+                &run.proof
+            )));
+            let mut wrong_value = run.evaluations.clone();
+            wrong_value[0] += Fr::ONE;
+            assert!(rejected(|| verify(
+                &encoder,
+                n,
+                p,
+                seed,
+                &wrong_value,
+                &run.proof
+            )));
         }
     }
     #[test]
@@ -977,6 +1192,7 @@ mod tests {
                 ] {
                     let p = Parameters {
                         canopy_log_divisor,
+                        delayed_systematic: false,
                         systematic_h: hx,
                         parity_h: hy,
                         systematic_target_log: 6,
@@ -1030,6 +1246,7 @@ mod tests {
             }
             assert!(Parameters {
                 canopy_log_divisor: 1,
+                delayed_systematic: false,
                 systematic_h: Some(3),
                 parity_h: Some(4),
                 systematic_target_log: 6,
@@ -1039,6 +1256,7 @@ mod tests {
             .is_err());
             assert!(Parameters {
                 canopy_log_divisor: 1,
+                delayed_systematic: false,
                 systematic_h: Some(2),
                 parity_h: Some(1),
                 systematic_target_log: 6,

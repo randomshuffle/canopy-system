@@ -1,7 +1,7 @@
 {
   "field": "binary",
   "command": [
-    "/Users/anubhavbaweja/Desktop/Research/research-git/canopy-system/experiments/binary-whir/target/release/canopy-binary-whir",
+    "./experiments/binary-whir/target/release/canopy-binary-whir",
     "--log-length",
     "14",
     "--warmups",
@@ -11,7 +11,7 @@
     "--seed",
     "73947765755993",
     "--output-dir",
-    "/Users/anubhavbaweja/Desktop/Research/research-git/canopy-system/results/whir_field_comparison_n22/smoke_binary_n14",
+    "./results/whir_field_comparison_n22/smoke_binary_n14",
     "--threads",
     "8"
   ],

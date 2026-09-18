@@ -143,7 +143,7 @@
       "case": "WHIR n=18",
       "field": "GF(2^256)",
       "command": [
-        "/Users/anubhavbaweja/Desktop/Research/research-git/canopy-system/target/release/canopy-system",
+        "./target/release/canopy-system",
         "paper-time",
         "--log-length",
         "18",
@@ -154,7 +154,7 @@
         "--seed",
         "73947765755993",
         "--output-dir",
-        "/Users/anubhavbaweja/Desktop/Research/research-git/canopy-system/results/gf256_suite/whir/timing_n18"
+        "./results/gf256_suite/whir/timing_n18"
       ],
       "binary_sha256": "199731a686f8c2da2d5017cfab757679bbcdb0291385518307e440907110ea94",
       "threads": 8,
@@ -172,7 +172,7 @@
       "case": "Bolt n=18, w=4",
       "field": "GF(2^256)",
       "command": [
-        "/Users/anubhavbaweja/Desktop/Research/research-git/canopy-system/target/release/examples/gf256_bolt_suite",
+        "./target/release/examples/gf256_bolt_suite",
         "time",
         "--log",
         "18",
@@ -183,9 +183,9 @@
         "--repetitions",
         "5",
         "--estimates",
-        "/Users/anubhavbaweja/Desktop/Research/research-git/canopy-system/results/gf256_suite/bolt/proof_sizes",
+        "./results/gf256_suite/bolt/proof_sizes",
         "--output",
-        "/Users/anubhavbaweja/Desktop/Research/research-git/canopy-system/results/gf256_suite/bolt/timing_n18_w4"
+        "./results/gf256_suite/bolt/timing_n18_w4"
       ],
       "binary_sha256": "0e9fcd645fa336a350fc3837aa5878c91416befeb094ebbd2b76d60936b2da00",
       "threads": 8,
@@ -203,7 +203,7 @@
       "case": "Bolt n=18, w=8",
       "field": "GF(2^256)",
       "command": [
-        "/Users/anubhavbaweja/Desktop/Research/research-git/canopy-system/target/release/examples/gf256_bolt_suite",
+        "./target/release/examples/gf256_bolt_suite",
         "time",
         "--log",
         "18",
@@ -214,9 +214,9 @@
         "--repetitions",
         "5",
         "--estimates",
-        "/Users/anubhavbaweja/Desktop/Research/research-git/canopy-system/results/gf256_suite/bolt/proof_sizes",
+        "./results/gf256_suite/bolt/proof_sizes",
         "--output",
-        "/Users/anubhavbaweja/Desktop/Research/research-git/canopy-system/results/gf256_suite/bolt/timing_n18_w8"
+        "./results/gf256_suite/bolt/timing_n18_w8"
       ],
       "binary_sha256": "0e9fcd645fa336a350fc3837aa5878c91416befeb094ebbd2b76d60936b2da00",
       "threads": 8,
@@ -234,7 +234,7 @@
       "case": "Bolt n=18, w=16",
       "field": "GF(2^256)",
       "command": [
-        "/Users/anubhavbaweja/Desktop/Research/research-git/canopy-system/target/release/examples/gf256_bolt_suite",
+        "./target/release/examples/gf256_bolt_suite",
         "time",
         "--log",
         "18",
@@ -245,9 +245,9 @@
         "--repetitions",
         "5",
         "--estimates",
-        "/Users/anubhavbaweja/Desktop/Research/research-git/canopy-system/results/gf256_suite/bolt/proof_sizes",
+        "./results/gf256_suite/bolt/proof_sizes",
         "--output",
-        "/Users/anubhavbaweja/Desktop/Research/research-git/canopy-system/results/gf256_suite/bolt/timing_n18_w16"
+        "./results/gf256_suite/bolt/timing_n18_w16"
       ],
       "binary_sha256": "0e9fcd645fa336a350fc3837aa5878c91416befeb094ebbd2b76d60936b2da00",
       "threads": 8,
@@ -265,7 +265,7 @@
       "case": "WHIR n=20",
       "field": "GF(2^256)",
       "command": [
-        "/Users/anubhavbaweja/Desktop/Research/research-git/canopy-system/target/release/canopy-system",
+        "./target/release/canopy-system",
         "paper-time",
         "--log-length",
         "20",
@@ -276,7 +276,7 @@
         "--seed",
         "73947765755993",
         "--output-dir",
-        "/Users/anubhavbaweja/Desktop/Research/research-git/canopy-system/results/gf256_suite/whir/timing_n20"
+        "./results/gf256_suite/whir/timing_n20"
       ],
       "binary_sha256": "199731a686f8c2da2d5017cfab757679bbcdb0291385518307e440907110ea94",
       "threads": 8,
@@ -294,7 +294,7 @@
       "case": "Bolt n=20, w=4",
       "field": "GF(2^256)",
       "command": [
-        "/Users/anubhavbaweja/Desktop/Research/research-git/canopy-system/target/release/examples/gf256_bolt_suite",
+        "./target/release/examples/gf256_bolt_suite",
         "time",
         "--log",
         "20",
@@ -305,9 +305,9 @@
         "--repetitions",
         "5",
         "--estimates",
-        "/Users/anubhavbaweja/Desktop/Research/research-git/canopy-system/results/gf256_suite/bolt/proof_sizes",
+        "./results/gf256_suite/bolt/proof_sizes",
         "--output",
-        "/Users/anubhavbaweja/Desktop/Research/research-git/canopy-system/results/gf256_suite/bolt/timing_n20_w4"
+        "./results/gf256_suite/bolt/timing_n20_w4"
       ],
       "binary_sha256": "0e9fcd645fa336a350fc3837aa5878c91416befeb094ebbd2b76d60936b2da00",
       "threads": 8,
@@ -325,7 +325,7 @@
       "case": "Bolt n=20, w=8",
       "field": "GF(2^256)",
       "command": [
-        "/Users/anubhavbaweja/Desktop/Research/research-git/canopy-system/target/release/examples/gf256_bolt_suite",
+        "./target/release/examples/gf256_bolt_suite",
         "time",
         "--log",
         "20",
@@ -336,9 +336,9 @@
         "--repetitions",
         "5",
         "--estimates",
-        "/Users/anubhavbaweja/Desktop/Research/research-git/canopy-system/results/gf256_suite/bolt/proof_sizes",
+        "./results/gf256_suite/bolt/proof_sizes",
         "--output",
-        "/Users/anubhavbaweja/Desktop/Research/research-git/canopy-system/results/gf256_suite/bolt/timing_n20_w8"
+        "./results/gf256_suite/bolt/timing_n20_w8"
       ],
       "binary_sha256": "0e9fcd645fa336a350fc3837aa5878c91416befeb094ebbd2b76d60936b2da00",
       "threads": 8,
@@ -356,7 +356,7 @@
       "case": "Bolt n=20, w=16",
       "field": "GF(2^256)",
       "command": [
-        "/Users/anubhavbaweja/Desktop/Research/research-git/canopy-system/target/release/examples/gf256_bolt_suite",
+        "./target/release/examples/gf256_bolt_suite",
         "time",
         "--log",
         "20",
@@ -367,9 +367,9 @@
         "--repetitions",
         "5",
         "--estimates",
-        "/Users/anubhavbaweja/Desktop/Research/research-git/canopy-system/results/gf256_suite/bolt/proof_sizes",
+        "./results/gf256_suite/bolt/proof_sizes",
         "--output",
-        "/Users/anubhavbaweja/Desktop/Research/research-git/canopy-system/results/gf256_suite/bolt/timing_n20_w16"
+        "./results/gf256_suite/bolt/timing_n20_w16"
       ],
       "binary_sha256": "0e9fcd645fa336a350fc3837aa5878c91416befeb094ebbd2b76d60936b2da00",
       "threads": 8,
@@ -387,7 +387,7 @@
       "case": "WHIR n=22",
       "field": "GF(2^256)",
       "command": [
-        "/Users/anubhavbaweja/Desktop/Research/research-git/canopy-system/target/release/canopy-system",
+        "./target/release/canopy-system",
         "paper-time",
         "--log-length",
         "22",
@@ -398,7 +398,7 @@
         "--seed",
         "73947765755993",
         "--output-dir",
-        "/Users/anubhavbaweja/Desktop/Research/research-git/canopy-system/results/gf256_suite/whir/timing_n22"
+        "./results/gf256_suite/whir/timing_n22"
       ],
       "binary_sha256": "199731a686f8c2da2d5017cfab757679bbcdb0291385518307e440907110ea94",
       "threads": 8,
@@ -416,7 +416,7 @@
       "case": "Bolt n=22, w=4",
       "field": "GF(2^256)",
       "command": [
-        "/Users/anubhavbaweja/Desktop/Research/research-git/canopy-system/target/release/examples/gf256_bolt_suite",
+        "./target/release/examples/gf256_bolt_suite",
         "time",
         "--log",
         "22",
@@ -427,9 +427,9 @@
         "--repetitions",
         "5",
         "--estimates",
-        "/Users/anubhavbaweja/Desktop/Research/research-git/canopy-system/results/gf256_suite/bolt/proof_sizes",
+        "./results/gf256_suite/bolt/proof_sizes",
         "--output",
-        "/Users/anubhavbaweja/Desktop/Research/research-git/canopy-system/results/gf256_suite/bolt/timing_n22_w4"
+        "./results/gf256_suite/bolt/timing_n22_w4"
       ],
       "binary_sha256": "0e9fcd645fa336a350fc3837aa5878c91416befeb094ebbd2b76d60936b2da00",
       "threads": 8,
@@ -447,7 +447,7 @@
       "case": "Bolt n=22, w=8",
       "field": "GF(2^256)",
       "command": [
-        "/Users/anubhavbaweja/Desktop/Research/research-git/canopy-system/target/release/examples/gf256_bolt_suite",
+        "./target/release/examples/gf256_bolt_suite",
         "time",
         "--log",
         "22",
@@ -458,9 +458,9 @@
         "--repetitions",
         "5",
         "--estimates",
-        "/Users/anubhavbaweja/Desktop/Research/research-git/canopy-system/results/gf256_suite/bolt/proof_sizes",
+        "./results/gf256_suite/bolt/proof_sizes",
         "--output",
-        "/Users/anubhavbaweja/Desktop/Research/research-git/canopy-system/results/gf256_suite/bolt/timing_n22_w8"
+        "./results/gf256_suite/bolt/timing_n22_w8"
       ],
       "binary_sha256": "0e9fcd645fa336a350fc3837aa5878c91416befeb094ebbd2b76d60936b2da00",
       "threads": 8,
@@ -478,7 +478,7 @@
       "case": "Bolt n=22, w=16",
       "field": "GF(2^256)",
       "command": [
-        "/Users/anubhavbaweja/Desktop/Research/research-git/canopy-system/target/release/examples/gf256_bolt_suite",
+        "./target/release/examples/gf256_bolt_suite",
         "time",
         "--log",
         "22",
@@ -489,9 +489,9 @@
         "--repetitions",
         "5",
         "--estimates",
-        "/Users/anubhavbaweja/Desktop/Research/research-git/canopy-system/results/gf256_suite/bolt/proof_sizes",
+        "./results/gf256_suite/bolt/proof_sizes",
         "--output",
-        "/Users/anubhavbaweja/Desktop/Research/research-git/canopy-system/results/gf256_suite/bolt/timing_n22_w16"
+        "./results/gf256_suite/bolt/timing_n22_w16"
       ],
       "binary_sha256": "0e9fcd645fa336a350fc3837aa5878c91416befeb094ebbd2b76d60936b2da00",
       "threads": 8,

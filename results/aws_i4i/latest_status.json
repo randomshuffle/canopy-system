@@ -1,0 +1,41 @@
+{
+  "timestamp": 1789608387.7961264,
+  "completed_points": 10,
+  "completed_jobs": 4,
+  "total_points": 70,
+  "total_jobs": 28,
+  "rough_remaining_seconds": null,
+  "active": [
+    {
+      "name": "whir_n22_eta4",
+      "elapsed_seconds": 7.538395881652832,
+      "tail": [
+        "paper timing iteration 1/4: common stages",
+        "paper timing iteration 1: t=4"
+      ]
+    }
+  ],
+  "errors": [],
+  "available_ram_gib": 732.2589950561523,
+  "processes": [
+    "20877 3698848 2087 ./target/aws-native/release/canopy-system paper-time --log-length 22 --inputs 4 --warmups 1 --repetitions 3 --seed 73947765755993 --canopy-codeword-log-reduction 1 --output-dir ./results/aws_i4i_persistent/timings/whir_n22_eta4"
+  ],
+  "last_completed": [
+    {
+      "name": "bolt_n22_eta1",
+      "wall_seconds": 9.008780241012573,
+      "peak_rss_gib": 1.6105575561523438
+    },
+    {
+      "name": "whir_n22_eta2",
+      "wall_seconds": 28.027806997299194,
+      "peak_rss_gib": 3.7088470458984375
+    },
+    {
+      "name": "bolt_n22_eta2",
+      "wall_seconds": 17.014081954956055,
+      "peak_rss_gib": 2.3156166076660156
+    }
+  ],
+  "pilot_exit": "0"
+}

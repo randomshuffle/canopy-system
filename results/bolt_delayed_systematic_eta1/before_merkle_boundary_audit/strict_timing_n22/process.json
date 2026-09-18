@@ -1,0 +1,33 @@
+{
+  "field": "GF(2^256)",
+  "command": [
+    "target/release/examples/gf256_bolt_split",
+    "time",
+    "--log",
+    "22",
+    "--inputs",
+    "1",
+    "--warmups",
+    "1",
+    "--repetitions",
+    "5",
+    "--width",
+    "4",
+    "--estimates",
+    "results/bolt_delayed_systematic_eta1/proof_sizes/strictly_delayed",
+    "--paper-only",
+    "--output",
+    "results/bolt_delayed_systematic_eta1/strict_timing_n22"
+  ],
+  "binary_sha256": "ead460f7ceb5b13a3d57cbf453ee60e0dc098915323d307d657f819f357d8173",
+  "threads": 8,
+  "platform": "macOS-14.0-arm64-arm-64bit-Mach-O",
+  "started_unix": 1789578051.9098449,
+  "wall_seconds": 12.832679033279419,
+  "exit_code": 0,
+  "peak_rss_bytes": 1128579072,
+  "peak_rss_gib": 1.0510711669921875,
+  "user_seconds": 44.260776,
+  "system_seconds": 2.927974,
+  "memory_boundary": "Whole child process, including setup and verification; schemes run sequentially."
+}

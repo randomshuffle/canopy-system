@@ -1,7 +1,7 @@
 {
   "field": "GF(2^256)",
   "command": [
-    "/Users/anubhavbaweja/Desktop/Research/research-git/canopy-system/target/release/canopy-system",
+    "./target/release/canopy-system",
     "paper-time",
     "--log-length",
     "22",
@@ -12,7 +12,7 @@
     "--seed",
     "73947765755993",
     "--output-dir",
-    "/Users/anubhavbaweja/Desktop/Research/research-git/canopy-system/results/gf256_suite/whir/timing_n22"
+    "./results/gf256_suite/whir/timing_n22"
   ],
   "binary_sha256": "199731a686f8c2da2d5017cfab757679bbcdb0291385518307e440907110ea94",
   "threads": 8,

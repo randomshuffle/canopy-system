@@ -1,7 +1,7 @@
 {
   "field": "GF(2^256)",
   "command": [
-    "/Users/anubhavbaweja/Desktop/Research/research-git/canopy-system/target/release/examples/gf256_bolt_suite",
+    "./target/release/examples/gf256_bolt_suite",
     "time",
     "--log",
     "22",
@@ -12,9 +12,9 @@
     "--repetitions",
     "5",
     "--estimates",
-    "/Users/anubhavbaweja/Desktop/Research/research-git/canopy-system/results/gf256_suite/bolt/proof_sizes",
+    "./results/gf256_suite/bolt/proof_sizes",
     "--output",
-    "/Users/anubhavbaweja/Desktop/Research/research-git/canopy-system/results/gf256_suite/bolt/timing_n22_w4"
+    "./results/gf256_suite/bolt/timing_n22_w4"
   ],
   "binary_sha256": "0e9fcd645fa336a350fc3837aa5878c91416befeb094ebbd2b76d60936b2da00",
   "threads": 8,

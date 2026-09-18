@@ -1,0 +1,8 @@
+{
+  "policy": "sequential IOP rounds: C(N, eta, scheme) = eta * C(N, 1, scheme)",
+  "opening_policy": "retain each measured opening time; total = scaled commitment + opening",
+  "source": "./results/aws_i4i_n30_eta1/comparison.csv",
+  "source_sha256": "315e9b64195ce3654f694e5319ab1c0322bcb9e0462a245e4b66bd6ae8803d7e",
+  "reported_points": 5,
+  "note": "All five configurations. Derived totals have one measured opening sample and an eta=1 commitment anchor; they are not independently timed full runs. Raw timing files and proof/hash columns are unchanged."
+}

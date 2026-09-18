@@ -1,12 +1,12 @@
 {
   "field": "GF(2^256)",
   "command": [
-    "/Users/anubhavbaweja/Desktop/Research/research-git/canopy-system/target/release/examples/gf256_bolt_split",
+    "./target/release/examples/gf256_bolt_split",
     "validate",
     "--input",
-    "/Users/anubhavbaweja/Desktop/Research/research-git/canopy-system/results/gf256_split_w16_suite/half/proof_sizes/proof_sizes.csv",
+    "./results/gf256_split_w16_suite/half/proof_sizes/proof_sizes.csv",
     "--output",
-    "/Users/anubhavbaweja/Desktop/Research/research-git/canopy-system/results/gf256_split_w16_suite/half/fiat_shamir_validation.csv"
+    "./results/gf256_split_w16_suite/half/fiat_shamir_validation.csv"
   ],
   "binary_sha256": "c1b5fc97d2fcfc95156e68a632e01796f1fa636ca81c00706c24738316748a5e",
   "threads": 8,

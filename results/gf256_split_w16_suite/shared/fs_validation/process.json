@@ -1,12 +1,12 @@
 {
   "field": "GF(2^256)",
   "command": [
-    "/Users/anubhavbaweja/Desktop/Research/research-git/canopy-system/target/release/examples/gf256_bolt_suite",
+    "./target/release/examples/gf256_bolt_suite",
     "validate",
     "--input",
-    "/Users/anubhavbaweja/Desktop/Research/research-git/canopy-system/results/gf256_split_w16_suite/shared/merkle_proof_sizes.csv",
+    "./results/gf256_split_w16_suite/shared/merkle_proof_sizes.csv",
     "--output",
-    "/Users/anubhavbaweja/Desktop/Research/research-git/canopy-system/results/gf256_split_w16_suite/shared/fiat_shamir_validation.csv"
+    "./results/gf256_split_w16_suite/shared/fiat_shamir_validation.csv"
   ],
   "binary_sha256": "a185b5acdeda8a378fe79b2eafbcb4fcafca04161043788057f0715b3e7b6b9c",
   "threads": 8,

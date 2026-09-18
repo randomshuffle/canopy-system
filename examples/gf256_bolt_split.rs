@@ -9,6 +9,22 @@ struct Cli {
 }
 #[derive(Subcommand)]
 enum Command {
+    /// Half-rate systematic Canopy with an independently folded join; parity is fixed.
+    EstimateDelayed {
+        #[arg(long, value_delimiter = ',', default_value = "18,20,22,24,26,28,30")]
+        logs: Vec<usize>,
+        #[arg(long, value_delimiter = ',', default_value = "1")]
+        inputs: Vec<usize>,
+        #[arg(long, default_value_t = 100)]
+        samples: usize,
+        #[arg(long, default_value = "results/gf256_split_half_suite")]
+        reference: PathBuf,
+        #[arg(
+            long,
+            default_value = "results/bolt_delayed_systematic_eta1/proof_sizes"
+        )]
+        output: PathBuf,
+    },
     Estimate {
         #[arg(long, value_delimiter = ',', default_value = "18,20,22,24,26,28,30")]
         logs: Vec<usize>,
@@ -38,6 +54,9 @@ enum Command {
         shared_estimates: PathBuf,
         #[arg(long)]
         paper_only: bool,
+        /// Keep the paper's faster shared-tail Merkle baseline fixed.
+        #[arg(long, requires = "paper_only")]
+        shared_merkle_baseline: bool,
         #[arg(long, default_value_t = 4)]
         width: usize,
         #[arg(long)]
@@ -61,6 +80,13 @@ enum Command {
 }
 fn main() -> Result<()> {
     match Cli::parse().command {
+        Command::EstimateDelayed {
+            logs,
+            inputs,
+            samples,
+            reference,
+            output,
+        } => split::delayed::estimate(&logs, &inputs, samples, &reference, &output),
         Command::Estimate {
             logs,
             inputs,
@@ -85,6 +111,7 @@ fn main() -> Result<()> {
             estimates,
             shared_estimates,
             paper_only,
+            shared_merkle_baseline,
             width,
             alternate_estimates,
             output,
@@ -99,6 +126,7 @@ fn main() -> Result<()> {
             paper_only,
             width,
             alternate_estimates.as_deref(),
+            shared_merkle_baseline,
         ),
         #[cfg(feature = "fs-accounting")]
         Command::Validate { input, output } => split::validate(&input, &output),

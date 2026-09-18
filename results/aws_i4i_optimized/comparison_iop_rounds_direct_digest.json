@@ -1,0 +1,10 @@
+{
+  "source": "./results/aws_i4i_optimized/comparison_iop_rounds.csv",
+  "source_sha256": "22864534c4cd4a25e9cda7e69eb05989b9235e0b5d31f1c8f97e5236d80bb666",
+  "output_sha256": "bce4c86e7ec6acb172bd9a4d2a2396d5fa586403306df8663bfab63459dae7c6",
+  "reported_points": 70,
+  "verifier_hashes": "authentication + Fiat-Shamir finalizations; digest conversion is zero hashes",
+  "proof_sizes": "unchanged sampled query geometry and parameters",
+  "prover_timings": "unchanged AWS measurements, including the obsolete rehash for Canopy; no rerun",
+  "previous_values": "retained in pre_direct_digest_* columns"
+}

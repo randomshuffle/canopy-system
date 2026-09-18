@@ -1,0 +1,26 @@
+{
+  "field": "GF(2^256)",
+  "command": [
+    "target/release/canopy-system",
+    "paper-estimate",
+    "--samples",
+    "100",
+    "--canopy-codeword-log-reduction",
+    "1",
+    "--inputs",
+    "1",
+    "--output-dir",
+    "results/whir_half_block_eta1/proof_sizes"
+  ],
+  "binary_sha256": "11c8bb81f372028c4b2482d79d4a14aeaa085a27118827a1a9c1ae5a6bec2ca5",
+  "threads": 8,
+  "platform": "macOS-14.0-arm64-arm-64bit-Mach-O",
+  "started_unix": 1789577072.283809,
+  "wall_seconds": 61.293710231781006,
+  "exit_code": 0,
+  "peak_rss_bytes": 8945664,
+  "peak_rss_gib": 0.008331298828125,
+  "user_seconds": 60.968152,
+  "system_seconds": 0.09000699999999999,
+  "memory_boundary": "Whole child process, including setup and verification; schemes run sequentially."
+}

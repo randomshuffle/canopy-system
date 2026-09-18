@@ -45,6 +45,11 @@ fn tail(l: &mut Ledger, p: &WhirParameters, sources: usize) {
 /// combination challenge; Merkle-authenticated WHIR openings remain hints.
 fn model(row: &HybridProofSizeRow, bottom_words_per_input: usize) -> Result<Ledger> {
     let canopy = row.scheme == "canopy_schwartz_zippel";
+    let reduction = if canopy {
+        row.canopy_codeword_log_reduction.unwrap_or(0)
+    } else {
+        1
+    };
     let schedule = row
         .outer_folding_schedule
         .split(';')
@@ -61,7 +66,7 @@ fn model(row: &HybridProofSizeRow, bottom_words_per_input: usize) -> Result<Ledg
         WhirDecodingRegime::Johnson,
         row.outer_terminal_message_variables,
         &schedule,
-        usize::from(!canopy),
+        reduction,
     )?;
     let mut l = Ledger::domain();
     if row.input_oracles == 1 && !canopy {
@@ -74,7 +79,7 @@ fn model(row: &HybridProofSizeRow, bottom_words_per_input: usize) -> Result<Ledg
     let f = row.outer_initial_folding_log;
     let shared = paper_parameters(
         row.log_message_length - f,
-        rate + f - usize::from(!canopy),
+        rate + f - reduction,
         WhirDecodingRegime::Johnson,
         row.outer_terminal_message_variables,
         &schedule[1..],

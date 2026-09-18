@@ -1,0 +1,17 @@
+{
+  "host": "benchmark-host.invalid",
+  "user": "anonymous",
+  "remote_directory": ".",
+  "remote_output": "./results/aws_i4i_optimized",
+  "remote_bin_directory": "./target/aws-native/release",
+  "campaign_session": "canopy-aws-optimized",
+  "progress_automation": "canopy-aws-benchmark-progress",
+  "source_bundle_sha256": "250d52ff0cd64e6e1a99aca7e6b4a55e80d04c8d287c9b2fbe01ef3725c72263",
+  "threads": 32,
+  "cpu_affinity": "0-15,48-63",
+  "other_experiment_cpu_affinity": "16-47,64-95",
+  "warmups": 0,
+  "repetitions": 1,
+  "status": "complete",
+  "progress_monitor_status": "PAUSED"
+}

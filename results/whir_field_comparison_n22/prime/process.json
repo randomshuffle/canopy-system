@@ -1,7 +1,7 @@
 {
   "field": "prime",
   "command": [
-    "/Users/anubhavbaweja/Desktop/Research/research-git/canopy-system/target/release/canopy-system",
+    "./target/release/canopy-system",
     "paper-time",
     "--log-length",
     "22",
@@ -12,7 +12,7 @@
     "--seed",
     "73947765755993",
     "--output-dir",
-    "/Users/anubhavbaweja/Desktop/Research/research-git/canopy-system/results/whir_field_comparison_n22/prime"
+    "./results/whir_field_comparison_n22/prime"
   ],
   "binary_sha256": "626a6271e19c3c0fa9adda5e2a019cf8c8182df894619e4f6cbff9646f075789",
   "platform": "macOS-14.0-arm64-arm-64bit-Mach-O",

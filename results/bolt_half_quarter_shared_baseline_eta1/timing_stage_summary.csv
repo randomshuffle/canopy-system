@@ -1,0 +1,105 @@
+scheme,phase,part,stage,mean_seconds
+bolt_canopy_split,commitment,Bolt,parity RS encoding Y=RS(U),0.0342442293
+bolt_canopy_split,commitment,Bolt,sparse syndrome U=HX,0.0595676499
+bolt_canopy_split,commitment,X,Canopy RS encode and WHIR oracle commitment,0.0189287333
+bolt_canopy_split,commitment,X,Canopy WHIR configuration,6.6583e-06
+bolt_canopy_split,commitment,X,Canopy hash-to-field,0.0419027499
+bolt_canopy_split,commitment,X,row Merkle tree or forest,0.0851324043
+bolt_canopy_split,commitment,Y,Canopy RS encode and WHIR oracle commitment,0.0138224542
+bolt_canopy_split,commitment,Y,Canopy WHIR configuration,4.4917e-06
+bolt_canopy_split,commitment,Y,Canopy hash-to-field,0.0052497292
+bolt_canopy_split,commitment,Y,row Merkle tree or forest,0.0227191541
+bolt_canopy_split,commitment,other,unassigned phase work and timing overhead,4.741699999993854e-06
+bolt_canopy_split,opening,Bolt,column projections x=Xr and u=Ur,0.0125160957
+bolt_canopy_split,opening,Bolt,parity query covector and transpose RS FFT,0.0111964293
+bolt_canopy_split,opening,Bolt,partial evaluation g,0.0523606459
+bolt_canopy_split,opening,Bolt,project queried rows and sample batching challenges,0.0010285792
+bolt_canopy_split,opening,Bolt,public H transpose covector,0.0506556458
+bolt_canopy_split,opening,Bolt,sample row queries,0.0067774832
+bolt_canopy_split,opening,Bolt,syndrome evaluation sigma,0.0021996083
+bolt_canopy_split,opening,Bolt,systematic query covector,0.0049272625
+bolt_canopy_split,opening,X,Canopy OOD evaluations,0.0009018209
+bolt_canopy_split,opening,X,Canopy SEP batching covector,0.0013044916999999999
+bolt_canopy_split,opening,X,Canopy ancestor claims,0.0002232417
+bolt_canopy_split,opening,X,collect and serialize row authentication paths,0.0049827043
+bolt_canopy_split,opening,X,copy and serialize queried row values,0.0051906002
+bolt_canopy_split,opening,Y,Canopy OOD evaluations,0.0002345499
+bolt_canopy_split,opening,Y,Canopy SEP batching covector,4.91874e-05
+bolt_canopy_split,opening,Y,Canopy ancestor claims,3.9249e-06
+bolt_canopy_split,opening,Y,collect and serialize row authentication paths,0.0001126791
+bolt_canopy_split,opening,Y,copy and serialize queried row values,9.16501e-05
+bolt_canopy_split,opening,common WHIR,WHIR configuration,9.6166e-06
+bolt_canopy_split,opening,other,unassigned phase work and timing overhead,0.013222716999999967
+bolt_canopy_split,opening,parity tail,authenticated WHIR alignment and constraint combination,0.0212735707
+bolt_canopy_split,opening,parity tail,distinct-functional cross evaluations,0.001394579
+bolt_canopy_split,opening,parity tail,shared recursive WHIR proof,0.0186518168
+bolt_canopy_split,opening,systematic tail,authenticated WHIR alignment and constraint combination,0.08792524139999999
+bolt_canopy_split,opening,systematic tail,distinct-functional cross evaluations,0.0116489334
+bolt_canopy_split,opening,systematic tail,shared recursive WHIR proof,0.0327421584
+bolt_canopy_split,opening,u,common WHIR RS encode and oracle commitment,0.011293853999999999
+bolt_canopy_split,opening,x,common WHIR RS encode and oracle commitment,0.082840825
+bolt_canopy_split_quarter,commitment,Bolt,parity RS encoding Y=RS(U),0.0351743002
+bolt_canopy_split_quarter,commitment,Bolt,sparse syndrome U=HX,0.0576289666
+bolt_canopy_split_quarter,commitment,X,Canopy RS encode and WHIR oracle commitment,0.0091607209
+bolt_canopy_split_quarter,commitment,X,Canopy WHIR configuration,4.8749e-06
+bolt_canopy_split_quarter,commitment,X,Canopy hash-to-field,0.0209873291
+bolt_canopy_split_quarter,commitment,X,row Merkle tree or forest,0.0898558876
+bolt_canopy_split_quarter,commitment,Y,Canopy RS encode and WHIR oracle commitment,0.0067694917
+bolt_canopy_split_quarter,commitment,Y,Canopy WHIR configuration,3.7167e-06
+bolt_canopy_split_quarter,commitment,Y,Canopy hash-to-field,0.0052170917
+bolt_canopy_split_quarter,commitment,Y,row Merkle tree or forest,0.0228331998
+bolt_canopy_split_quarter,commitment,other,unassigned phase work and timing overhead,4.8749000000097855e-06
+bolt_canopy_split_quarter,opening,Bolt,column projections x=Xr and u=Ur,0.0132707374
+bolt_canopy_split_quarter,opening,Bolt,parity query covector and transpose RS FFT,0.0099458417
+bolt_canopy_split_quarter,opening,Bolt,partial evaluation g,0.0588053749
+bolt_canopy_split_quarter,opening,Bolt,project queried rows and sample batching challenges,0.0009583042
+bolt_canopy_split_quarter,opening,Bolt,public H transpose covector,0.0503164668
+bolt_canopy_split_quarter,opening,Bolt,sample row queries,0.00660625
+bolt_canopy_split_quarter,opening,Bolt,syndrome evaluation sigma,0.0020548958
+bolt_canopy_split_quarter,opening,Bolt,systematic query covector,0.0037736499
+bolt_canopy_split_quarter,opening,X,Canopy OOD evaluations,0.0005497
+bolt_canopy_split_quarter,opening,X,Canopy SEP batching covector,0.0006047543
+bolt_canopy_split_quarter,opening,X,Canopy ancestor claims,0.00013265
+bolt_canopy_split_quarter,opening,X,collect and serialize row authentication paths,0.0075046791
+bolt_canopy_split_quarter,opening,X,copy and serialize queried row values,0.0050748791
+bolt_canopy_split_quarter,opening,Y,Canopy OOD evaluations,0.0002296291
+bolt_canopy_split_quarter,opening,Y,Canopy SEP batching covector,4.45375e-05
+bolt_canopy_split_quarter,opening,Y,Canopy ancestor claims,8.1334e-06
+bolt_canopy_split_quarter,opening,Y,collect and serialize row authentication paths,0.0001025542
+bolt_canopy_split_quarter,opening,Y,copy and serialize queried row values,8.84373e-05
+bolt_canopy_split_quarter,opening,common WHIR,WHIR configuration,9.812300000000001e-06
+bolt_canopy_split_quarter,opening,other,unassigned phase work and timing overhead,0.010616142299999992
+bolt_canopy_split_quarter,opening,parity tail,authenticated WHIR alignment and constraint combination,0.0149196001
+bolt_canopy_split_quarter,opening,parity tail,distinct-functional cross evaluations,0.0014238751
+bolt_canopy_split_quarter,opening,parity tail,shared recursive WHIR proof,0.0107667459
+bolt_canopy_split_quarter,opening,systematic tail,authenticated WHIR alignment and constraint combination,0.0688456583
+bolt_canopy_split_quarter,opening,systematic tail,distinct-functional cross evaluations,0.0081087958
+bolt_canopy_split_quarter,opening,systematic tail,shared recursive WHIR proof,0.0190416374
+bolt_canopy_split_quarter,opening,u,common WHIR RS encode and oracle commitment,0.0110471915
+bolt_canopy_split_quarter,opening,x,common WHIR RS encode and oracle commitment,0.0765702251
+bolt_merkle_shared,commitment,Bolt,parity RS encoding Y=RS(U),0.0368962249
+bolt_merkle_shared,commitment,Bolt,sparse syndrome U=HX,0.0590622334
+bolt_merkle_shared,commitment,X,Merkle root transcript,1.874e-07
+bolt_merkle_shared,commitment,X,row Merkle tree or forest,0.1063311791
+bolt_merkle_shared,commitment,Y,Merkle root transcript,5.042e-07
+bolt_merkle_shared,commitment,Y,row Merkle tree or forest,0.0244147457
+bolt_merkle_shared,commitment,other,unassigned phase work and timing overhead,3.975400000008622e-06
+bolt_merkle_shared,opening,Bolt,column projections x=Xr and u=Ur,0.0126255207
+bolt_merkle_shared,opening,Bolt,parity query covector and transpose RS FFT,0.0108084708
+bolt_merkle_shared,opening,Bolt,partial evaluation g,0.0519769
+bolt_merkle_shared,opening,Bolt,project queried rows and sample batching challenges,0.0009951875
+bolt_merkle_shared,opening,Bolt,public H transpose covector,0.0514584748
+bolt_merkle_shared,opening,Bolt,sample row queries,0.0067510291
+bolt_merkle_shared,opening,Bolt,syndrome evaluation sigma,0.0021758626
+bolt_merkle_shared,opening,Bolt,systematic query covector,0.0058874085999999996
+bolt_merkle_shared,opening,X,collect and serialize row authentication paths,0.0141284294
+bolt_merkle_shared,opening,X,copy and serialize queried row values,0.0050699667
+bolt_merkle_shared,opening,Y,collect and serialize row authentication paths,0.0004235502
+bolt_merkle_shared,opening,Y,copy and serialize queried row values,8.94708e-05
+bolt_merkle_shared,opening,batched WHIR,distinct-functional cross evaluations,0.0058242252
+bolt_merkle_shared,opening,batched WHIR,shared recursive WHIR proof,0.0180760209
+bolt_merkle_shared,opening,common WHIR,WHIR configuration,7.625e-06
+bolt_merkle_shared,opening,other,unassigned phase work and timing overhead,0.0077072407999999705
+bolt_merkle_shared,opening,source,authenticated WHIR alignment and constraint combination,0.0651332751
+bolt_merkle_shared,opening,u,common WHIR RS encode and oracle commitment,0.0102629459
+bolt_merkle_shared,opening,x,common WHIR RS encode and oracle commitment,0.0759777915

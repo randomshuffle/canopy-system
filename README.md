@@ -7,6 +7,61 @@ contains **five configurations**, all using **GF(2^256)**, 32-byte field element
 additive FFTs on Cantor-subspace domains, including conversion from monomial
 coefficients to the FFT basis. Fiat–Shamir uses a BLAKE3 XOF; there is no proof of work.
 
+## Direct digest-to-field conversion
+
+Canopy now interprets each 32-byte subtree digest directly as a GF(2^256)
+field element. This invertible mapping invokes no hash. The corrected AWS
+report is [comparison_iop_rounds_direct_digest.csv](results/aws_i4i_optimized/comparison_iop_rounds_direct_digest.csv):
+verifier hashes include authentication and Fiat–Shamir only. Proof-size models
+and all recorded prover times are unchanged; Canopy timings still include the
+obsolete rehash and have not been rerun. Earlier CSVs retain their original
+hash accounting for provenance.
+
+## Prepared AWS campaign
+
+The [fairness audit and reporting policy](results/aws_i4i_fair/README.md) records
+the implementation audit. Since input oracles are committed in different IOP
+rounds, all five reported commitment times use `eta * commitment(N, eta=1)`.
+Opening times remain measured at the requested eta; total time is recomputed.
+The original sequential-round report is `comparison_iop_rounds.csv`; use the
+corrected direct-digest report above for current hash comparisons. Original raw
+concurrent commitment measurements are retained separately. Sequential-round
+scaling changes timing totals only; the direct-digest correction changes hashes.
+
+The [AWS experiment plan](experiments/aws-r5/README.md) fixes the next campaign
+to the two batched WHIR baselines, half-length Canopy–WHIR, the shared-tail
+Bolt–Merkle baseline, and Bolt–Canopy with both blocks `k/4` (`w=4`). It contains
+70 points: `N=2^22,2^24,2^26` at `eta=1,2,4,8`, plus `N=2^28` at `eta=1,2`.
+Use 32 pinned workers on i4i.24xlarge (CPUs `0-15,48-63`), zero warmups and one measured pass per point. The other experiment can use CPUs `16-47,64-95`.
+The plan includes the native Intel field backend, correctness checks, resource
+records, resumable jobs, and proof-size/verifier-hash accounting. The [optimized AWS campaign](results/aws_i4i_optimized/README.md) restarts with all parallel changes; the [original campaign](results/aws_i4i/README.md) was stopped with its partial results preserved. The older paper
+snapshot below is retained separately.
+
+## Latest local experiments: eta = 1
+
+The [parallel prover rerun](results/parallel_prover_n22_eta1/README.md) compares all five
+AWS configurations locally at `N=2^22, eta=1`, with eight workers and fresh
+before/after controls. It parallelizes Bolt contractions, cross evaluations
+and dot products, plus large additive-FFT sweeps; proof parameters are unchanged.
+
+The [half-length WHIR update](results/whir_half_block_eta1/README.md) uses a
+Canopy RS block of length `N`, half the rate-1/2 base oracle's `2N`. It reports
+proof sizes and verifier hashes for `N=2^18,2^20,...,2^30`, and fresh prover
+times only at `N=2^22`. The two batched WHIR baselines remain the controls.
+At `N=2^30`, the new Canopy proof is 410.49 KiB with 7,844 verifier hashes;
+at `N=2^22`, its measured median prover time is 0.903 s.
+
+The [Bolt k/2 and k/4 rerun](results/bolt_half_quarter_shared_baseline_eta1/README.md)
+fixes the baseline to the paper's faster **shared-tail Merkle** configuration.
+Canopy uses `k/2` blocks for both parts or `k/4` blocks for both parts, with
+independent height optimization and separate systematic/parity WHIR batches.
+There are no independent Canopy folds before joining. Proof sizes and verifier
+hashes cover the full seven-size grid. All three configurations were timed
+together at `N=2^22, eta=1`, using two warmups and ten measured repetitions.
+These studies retain the paper snapshot below and provide separate raw data,
+reproduction commands, and provenance; no new large-input timing estimates
+have been extrapolated.
+
 ## The five configurations
 
 | Configuration | Commitments and batching | CSV scheme |
@@ -14,7 +69,7 @@ coefficients to the FFT basis. Fiat–Shamir uses a BLAKE3 XOF; there is no proo
 | WHIR, rate 1/2 | Merkle commitments; run each input's first transition separately, then batch the resulting claims into one recursive WHIR proof. | `merkle_whir_batched_after_second` |
 | WHIR, rate 1/4 | The same batched Merkle baseline with starting RS rate 1/4. | `merkle_whir_batched_rate_quarter_after_second` |
 | Canopy + WHIR (Experiment 3) | Starting rate 1/2; batch Canopy SEP claims with the claims from the first WHIR transition, giving `2 eta` source claims in one recursive proof. | `canopy_schwartz_zippel` |
-| Bolt + Merkle | Bolt-max with `w=4`; select the smaller proof from shared and separate systematic/parity WHIR tails. The shared tail wins throughout the grid. | `bolt_merkle_shared` |
+| Bolt + Merkle | Bolt-max with `w=4`; retain the paper's shared WHIR tail, with join message `k/8`. | `bolt_merkle_shared` |
 | Bolt + Canopy + WHIR | Bolt-max with `w=4`; both Canopy RS blocks have length `k/2`, where `k=N/4`. Systematic and parity claims use independently optimized Canopy heights and separate recursive WHIR batches. | `bolt_canopy_split` |
 
 Here `N` is the number of field elements **per input polynomial**, and
@@ -158,7 +213,7 @@ python3 scripts/run_gf256_split_half_timings.py
 
 The Bolt runner resumes completed cases. For fresh measurements, move its completed
 `results/gf256_split_half_suite/timing_n*_eta*` directories to an archive before
-rerunning. Each case uses the smaller-proof Merkle architecture and the split
+rerunning. Each case uses the fixed shared-tail Merkle baseline and the split
 Canopy configuration.
 
 After timing, regenerate and validate transcript accounting, then rebuild reports:

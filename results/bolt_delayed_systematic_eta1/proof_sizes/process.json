@@ -1,0 +1,26 @@
+{
+  "field": "GF(2^256)",
+  "command": [
+    "target/release/examples/gf256_bolt_split",
+    "estimate-delayed",
+    "--inputs",
+    "1",
+    "--samples",
+    "100",
+    "--reference",
+    "results/gf256_split_half_suite",
+    "--output",
+    "results/bolt_delayed_systematic_eta1/proof_sizes"
+  ],
+  "binary_sha256": "24fa1d7339959b1c33adfd193aaeec8073fda8671cfaf3c547045a0c964e14e4",
+  "threads": 8,
+  "platform": "macOS-14.0-arm64-arm-64bit-Mach-O",
+  "started_unix": 1789578721.9526012,
+  "wall_seconds": 9.963972806930542,
+  "exit_code": 0,
+  "peak_rss_bytes": 7733248,
+  "peak_rss_gib": 0.0072021484375,
+  "user_seconds": 9.743467,
+  "system_seconds": 0.027136,
+  "memory_boundary": "Whole child process, including setup and verification; schemes run sequentially."
+}

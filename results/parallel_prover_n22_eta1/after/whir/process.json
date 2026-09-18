@@ -1,0 +1,32 @@
+{
+  "field": "GF(2^256)",
+  "command": [
+    "results/parallel_prover_n22_eta1/after/bin/canopy-system",
+    "paper-time",
+    "--log-length",
+    "22",
+    "--inputs",
+    "1",
+    "--warmups",
+    "2",
+    "--repetitions",
+    "10",
+    "--seed",
+    "73947765755993",
+    "--canopy-codeword-log-reduction",
+    "1",
+    "--output-dir",
+    "results/parallel_prover_n22_eta1/after/whir"
+  ],
+  "binary_sha256": "cbc88ab0ab450f0f5c214d73ff4c9d7dc62dc20b071a882c560884fe50d85279",
+  "threads": 8,
+  "platform": "macOS-14.0-arm64-arm-64bit-Mach-O",
+  "started_unix": 1789611328.1704261,
+  "wall_seconds": 73.63987469673157,
+  "exit_code": 0,
+  "peak_rss_bytes": 2308866048,
+  "peak_rss_gib": 2.150299072265625,
+  "user_seconds": 371.736137,
+  "system_seconds": 29.725655,
+  "memory_boundary": "Whole child process, including setup and verification; schemes run sequentially."
+}

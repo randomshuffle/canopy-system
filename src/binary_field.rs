@@ -127,9 +127,35 @@ fn clmul(a: u64, b: u64) -> u128 {
     // Apple Silicon has ARMv8 cryptographic PMULL. Other ARM targets must enable +aes.
     unsafe { core::arch::aarch64::vmull_p64(a, b) }
 }
+// AWS Intel builds use RUSTFLAGS="-C target-cpu=native". Compile-time feature
+// selection keeps the hot loop inline and leaves portable builds runnable on
+// older x86 CPUs. The benchmark preflight rejects the portable fallback.
+#[cfg(all(target_arch = "x86_64", target_feature = "pclmulqdq"))]
+#[inline(always)]
+fn clmul(a: u64, b: u64) -> u128 {
+    use core::arch::x86_64::{_mm_clmulepi64_si128, _mm_set_epi64x};
+    unsafe {
+        let product =
+            _mm_clmulepi64_si128::<0>(_mm_set_epi64x(0, a as i64), _mm_set_epi64x(0, b as i64));
+        core::mem::transmute::<core::arch::x86_64::__m128i, u128>(product)
+    }
+}
+
+pub const fn multiplication_backend() -> &'static str {
+    if cfg!(target_arch = "aarch64") {
+        "aarch64-pmull"
+    } else if cfg!(all(target_arch = "x86_64", target_feature = "pclmulqdq")) {
+        "x86_64-pclmulqdq"
+    } else {
+        "portable-reference"
+    }
+}
 #[inline(always)]
 pub fn mul128(a: u128, b: u128) -> u128 {
-    #[cfg(target_arch = "aarch64")]
+    #[cfg(any(
+        target_arch = "aarch64",
+        all(target_arch = "x86_64", target_feature = "pclmulqdq")
+    ))]
     {
         let p0 = clmul(a as u64, b as u64);
         let p2 = clmul((a >> 64) as u64, (b >> 64) as u64);
@@ -151,7 +177,10 @@ pub fn mul128(a: u128, b: u128) -> u128 {
             ^ (overflow << 2)
             ^ (overflow << 7)
     }
-    #[cfg(not(target_arch = "aarch64"))]
+    #[cfg(not(any(
+        target_arch = "aarch64",
+        all(target_arch = "x86_64", target_feature = "pclmulqdq")
+    )))]
     {
         mul128_reference(a, b)
     }
@@ -483,6 +512,21 @@ impl spongefish::NargDeserialize for Binary256 {
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[test]
+    fn carryless_kernel_all_basis_pairs() {
+        // Covers every coefficient of this bilinear multiplication/reduction
+        // map, including the high-bit overflow in polynomial reduction.
+        for i in 0..128 {
+            for j in 0..128 {
+                assert_eq!(mul128(1 << i, 1 << j), mul128_reference(1 << i, 1 << j));
+            }
+        }
+        for a in [0, 1, u128::MAX, 1 << 127, 0x87] {
+            for b in [0, 1, u128::MAX, 1 << 127, 0x87] {
+                assert_eq!(mul128(a, b), mul128_reference(a, b));
+            }
+        }
+    }
     #[test]
     fn field_axioms_and_kernel() {
         let mut rng = rand::thread_rng();

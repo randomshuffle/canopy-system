@@ -2,7 +2,6 @@ use std::collections::BTreeMap;
 use std::time::{Duration, Instant};
 
 use anyhow::{ensure, Result};
-use ark_ff::BigInt;
 use rayon::prelude::*;
 use whir_ref::{
     buffer::BufferOps,
@@ -11,7 +10,7 @@ use whir_ref::{
 };
 
 use crate::executable_whir::{
-    commit_matrix_with_whir, encode_many_interleaved_with_whir, WhirEncodedMatrix,
+    commit_many_matrices_with_whir, encode_many_interleaved_with_whir, WhirEncodedMatrix,
     WhirMatrixCommitment,
 };
 use crate::merkle::{reconstruct_roots, Digest, MerkleLevels};
@@ -24,31 +23,11 @@ use crate::{Fr, FIELD_BYTES, HASH_BYTES};
 /// WHIR groups one folding column into each Merkle leaf.
 pub const WHIR_LEAF_WIDTH: usize = DEFAULT_FOLDING_FACTOR;
 
-pub(crate) fn hash_bytes_to_field(root: &[u8; HASH_BYTES]) -> Fr {
-    // All 256-bit strings represent binary-field elements. Keep the v2 input
-    // framing (including counter zero) to preserve the measured H2F workload.
-    for counter in 0u32.. {
-        let mut hasher = blake3::Hasher::new();
-        hasher.update(b"canopy-system/hash-to-field/v2");
-        hasher.update(root);
-        hasher.update(&counter.to_le_bytes());
-        let bytes = hasher.finalize();
-        let bytes = bytes.as_bytes();
-        let candidate = BigInt::<4>::new([
-            u64::from_le_bytes(bytes[0..8].try_into().unwrap()),
-            u64::from_le_bytes(bytes[8..16].try_into().unwrap()),
-            u64::from_le_bytes(bytes[16..24].try_into().unwrap()),
-            u64::from_le_bytes(bytes[24..32].try_into().unwrap()),
-        ]);
-        if let Some(value) = Fr::from_bigint(candidate) {
-            return value;
-        }
-    }
-    unreachable!("the 32-bit H2F rejection counter cannot be exhausted")
-}
-
-fn hash_to_field(root: &Digest) -> Fr {
-    hash_bytes_to_field(root)
+/// Canopy's invertible injection from 256-bit digests into GF(2^256).
+/// Every bit string is a field element; serialization is the inverse.
+/// This is a representation conversion, with no hash invocation.
+pub(crate) fn digest_to_field(root: &Digest) -> Fr {
+    Fr::from_bytes(*root)
 }
 
 /// Hash one Merkle parent layer with the same BLAKE3 engine and 64-byte
@@ -114,6 +93,8 @@ pub struct WhirCanopyProverData {
 pub struct CanopyCommitmentProfile {
     pub total: Duration,
     pub bottom_forest: Duration,
+    /// Digest-to-field conversion time. Legacy name retained for CSV compatibility;
+    /// the conversion itself performs no hashing.
     pub hash_to_field: Duration,
     pub reed_solomon_encoding: Duration,
     pub codeword_merkle_tree: Duration,
@@ -227,7 +208,7 @@ impl CanopyVectorCommitment {
         let canopy_message: Vec<Fr> = bottom_forest
             .roots()
             .par_iter()
-            .map(hash_to_field)
+            .map(digest_to_field)
             .collect();
         let rs_length = values.len() >> reduction;
         let codeword = reed_solomon::encode(&canopy_message, rs_length)?;
@@ -297,7 +278,7 @@ impl CanopyVectorCommitment {
         let canopy_message: Vec<Fr> = bottom_forest
             .roots()
             .par_iter()
-            .map(hash_to_field)
+            .map(digest_to_field)
             .collect();
         let hash_to_field_time = start.elapsed();
 
@@ -444,7 +425,7 @@ impl CanopyVectorCommitment {
                     .last()
                     .unwrap()
                     .par_iter()
-                    .map(|root| hash_bytes_to_field(&root.0))
+                    .map(|root| digest_to_field(&root.0))
                     .collect::<Vec<_>>()
             })
             .collect::<Vec<_>>();
@@ -464,23 +445,15 @@ impl CanopyVectorCommitment {
         let reed_solomon_encoding_time = start.elapsed();
 
         let merkle_row_width = 1usize << folding_log;
-        let start = Instant::now();
-        let committed_codewords = codewords
-            .into_par_iter()
-            .map(|codeword| {
-                let (codeword_commitment, _) =
-                    commit_matrix_with_whir(&codeword, merkle_row_width)?;
-                Ok((codeword, codeword_commitment))
-            })
-            .collect::<Result<Vec<_>>>()?;
-        let codeword_merkle_tree_time = start.elapsed();
+        let (codeword_commitments, codeword_merkle_tree_time) =
+            commit_many_matrices_with_whir(&codewords, merkle_row_width)?;
 
         let mut commitments = Vec::with_capacity(base_codewords.len());
         let mut prover_data = Vec::with_capacity(base_codewords.len());
         for ((bottom_levels, canopy_message), (codeword, codeword_commitment)) in bottom_levels
             .into_iter()
             .zip(canopy_messages)
-            .zip(committed_codewords)
+            .zip(codewords.into_iter().zip(codeword_commitments))
         {
             commitments.push(CanopyCommitment {
                 root: codeword_commitment.root.0,
@@ -596,7 +569,7 @@ impl CanopyVectorCommitment {
         )?;
         let ancestor_claims: Vec<_> = roots
             .into_iter()
-            .map(|(index, root)| (index, hash_to_field(&root)))
+            .map(|(index, root)| (index, digest_to_field(&root)))
             .collect();
         ensure!(
             !ancestor_claims.is_empty(),
@@ -661,6 +634,25 @@ pub fn claimed_message_values(
 mod tests {
     use super::*;
     use crate::executable_whir::encode_interleaved_with_whir;
+
+    #[test]
+    fn digest_injection_is_inverted_by_field_serialization() {
+        use ark_serialize::CanonicalSerialize;
+        // Include the complete byte range and every basis bit, including the
+        // high bits that a prime-field conversion would reduce or reject.
+        let byte_patterns = (0u8..=255).map(|byte| [byte; HASH_BYTES]);
+        let basis_patterns = (0..256).map(|bit| {
+            let mut root = [0; HASH_BYTES];
+            root[bit / 8] = 1 << (bit % 8);
+            root
+        });
+        for root in byte_patterns.chain(basis_patterns) {
+            let field = digest_to_field(&root);
+            let mut encoded = Vec::new();
+            field.serialize_compressed(&mut encoded).unwrap();
+            assert_eq!(encoded.as_slice(), root);
+        }
+    }
 
     #[test]
     fn canopy_reduces_batch_to_sep() {

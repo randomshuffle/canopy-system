@@ -33,7 +33,7 @@ use whir_ref::{
 use crate::{
     benchmark::sample_unique_indices,
     bolt::{self, BoltMaxEncoder},
-    canopy::hash_bytes_to_field,
+    canopy::digest_to_field,
     executable_whir::register_field_ntt,
     merkle::{
         frontier_hash_count, hash_children, hash_field_leaf, reconstruct_roots, MerkleLevels,
@@ -209,8 +209,7 @@ fn eq_weights(point: &[Fr]) -> Vec<Fr> {
 }
 
 fn dot(a: &[Fr], b: &[Fr]) -> Fr {
-    assert_eq!(a.len(), b.len());
-    a.iter().zip(b).map(|(&a, &b)| a * b).sum()
+    whir_ref::algebra::mixed_dot(&Identity::new(), a, b)
 }
 
 fn sparse_claim(size: usize, indices: &[usize], values: &[Fr], gamma: Fr) -> (Covector<Fr>, Fr) {
@@ -258,7 +257,7 @@ fn opening_claims(
     let roots = reconstruct_roots(rows, width, height, indices, opened, hashes)?;
     Ok(roots
         .into_iter()
-        .map(|(i, root)| (i, hash_bytes_to_field(&root)))
+        .map(|(i, root)| (i, digest_to_field(&root)))
         .unzip())
 }
 
@@ -303,10 +302,14 @@ impl Layer {
                 (minimum_canopy_height(rows, rs_length)..=rows.ilog2() as usize).contains(&h),
                 "invalid Canopy height"
             );
+            // Preserve the historical stage label for report compatibility;
+            // this now measures only the invertible byte conversion.
             let m = measure(profile, "commitment", part, "Canopy hash-to-field", || {
+                use rayon::prelude::*;
+
                 tree.roots()
-                    .iter()
-                    .map(hash_bytes_to_field)
+                    .par_iter()
+                    .map(digest_to_field)
                     .collect::<Vec<_>>()
             });
             if m.len() == 1 {
@@ -888,15 +891,7 @@ fn prove_mode(
         || {
             let z = public_point(k.ilog2() as usize);
             let z_weights = eq_weights(&z);
-            let g = (0..width)
-                .map(|col| {
-                    input
-                        .chunks_exact(width)
-                        .zip(&z_weights)
-                        .map(|(row, &w)| row[col] * w)
-                        .sum::<Fr>()
-                })
-                .collect::<Vec<_>>();
+            let g = bolt::partial_evaluation(input, &z_weights, width);
             let evaluation = dot(&g, &eq_weights(&public_point(width.ilog2() as usize)));
             state.prover_messages(&g);
             (z, z_weights, g, evaluation)
@@ -1907,7 +1902,7 @@ pub fn estimate_with_layout(
     write_csv(output.join("proof_sizes.csv"), &rows)?;
     write_csv(output.join("height_search.csv"), &grid)?;
     let geometry = layout.description();
-    let mut report = format!("# Bolt-max with Canopy\n\nField: `{}`. BLAKE3-256 commitments, H2F, and Fiat-Shamir challenges; 128-bit composed target (132-bit external tests; 136-bit WHIR), no PoW.\n\nDegree 8, compression 8, rate-1/2 syndrome RS, {width} field elements per row.\nThe LDPC ensemble distance gamma=0.013 remains an explicit assumption for these measurements.\n\nSystematic/parity parts have separate commitments in both schemes. {geometry} Heights count Merkle levels above whole rows.\n\nConstrained RS uses unique-decoding WHIR; Canopy uses Johnson WHIR. Three-variable folds (smaller for tiny messages), native terminal, independent proofs. Public H is evaluated directly; Spark/Mulperm is excluded. Full executable protocol and limits: [experiment notes](../../docs/experiment_bolt_max.md).\n\nQueries before full-read saturation: X={qx}, Y={qy}. External queries are sampled without replacement; when the budget exceeds the row count, read all rows. WHIR retains repeated row values from its native with-replacement queries; authentication paths are merged.\n\nSizes include both commitment roots, opened rows, g, sigma, both common WHIR proofs, and Canopy proofs. Estimates omit reference serialization framing; timings record actual serialized bytes. {samples} deterministic samples per height.\n\n| log2 input | h X / Y | Merkle MiB | Canopy MiB | ratio | Merkle auth KiB | Canopy auth KiB |\n|---:|:---:|---:|---:|---:|---:|---:|\n", crate::whir::FIELD_256.modulus);
+    let mut report = format!("# Bolt-max with Canopy\n\nField: `{}`. BLAKE3-256 commitments and Fiat-Shamir challenges; direct, invertible digest-to-field conversion; 128-bit composed target (132-bit external tests; 136-bit WHIR), no PoW.\n\nDegree 8, compression 8, rate-1/2 syndrome RS, {width} field elements per row.\nThe LDPC ensemble distance gamma=0.013 remains an explicit assumption for these measurements.\n\nSystematic/parity parts have separate commitments in both schemes. {geometry} Heights count Merkle levels above whole rows.\n\nConstrained RS uses unique-decoding WHIR; Canopy uses Johnson WHIR. Three-variable folds (smaller for tiny messages), native terminal, independent proofs. Public H is evaluated directly; Spark/Mulperm is excluded. Full executable protocol and limits: [experiment notes](../../docs/experiment_bolt_max.md).\n\nQueries before full-read saturation: X={qx}, Y={qy}. External queries are sampled without replacement; when the budget exceeds the row count, read all rows. WHIR retains repeated row values from its native with-replacement queries; authentication paths are merged.\n\nSizes include both commitment roots, opened rows, g, sigma, both common WHIR proofs, and Canopy proofs. Estimates omit reference serialization framing; timings record actual serialized bytes. {samples} deterministic samples per height.\n\n| log2 input | h X / Y | Merkle MiB | Canopy MiB | ratio | Merkle auth KiB | Canopy auth KiB |\n|---:|:---:|---:|---:|---:|---:|---:|\n", crate::whir::FIELD_256.modulus);
     for row in &rows {
         report.push_str(&format!(
             "| {} | {} / {} | {:.3} | {:.3} | {:.5} | {:.2} | {:.2} |\n",

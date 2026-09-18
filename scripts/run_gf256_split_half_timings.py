@@ -17,5 +17,5 @@ for n in [18, 20, 22]:
             print('Already complete:', d.name, flush=True)
             continue
         subprocess.run([sys.executable, str(ROOT/'scripts/measure_gf256_run.py'), '--record-dir', str(d), '--threads', '8', '--',
-            str(a.binary.resolve()), 'time', '--log', str(n), '--inputs', str(eta), '--warmups', '1', '--repetitions', '5', '--estimates', str(OUT/'proof_sizes'), '--paper-only', '--output', str(d)], cwd=ROOT, check=True)
+            str(a.binary.resolve()), 'time', '--log', str(n), '--inputs', str(eta), '--warmups', '1', '--repetitions', '5', '--estimates', str(OUT/'proof_sizes'), '--paper-only', '--shared-merkle-baseline', '--output', str(d)], cwd=ROOT, check=True)
 print('All 120 measured proofs and 24 warmup proofs verified.', flush=True)

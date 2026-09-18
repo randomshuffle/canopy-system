@@ -2,6 +2,7 @@
 //! by authenticated WHIR transitions to the Canopy message length. The source
 //! commitments stay separate; one native matrix-batched WHIR proves the tail.
 use super::*;
+use rayon::prelude::*;
 use whir_ref::{buffer::BufferMath, protocols::geometric_challenge::geometric_challenge};
 
 pub(super) struct ProverClaim {
@@ -63,7 +64,7 @@ pub(super) fn next_config(current: &WhirConfig, common: &WhirConfig) -> Result<W
     whir_config_fold(
         next,
         rate,
-        false,
+        !current.initial_committer.unique_decoding(),
         FOLD.min(next - common.initial_num_variables()),
     )
 }
@@ -264,20 +265,33 @@ pub(super) fn prove_batch(
     // Distinct linear forms require the full evaluation matrix. The known
     // diagonal is not resent; bind every cross evaluation before native RLC.
     let cross_start = Instant::now();
-    let mut evaluations = Vec::with_capacity(count * count);
-    for (i, claim) in reduced.iter().enumerate() {
-        for (j, other) in reduced.iter().enumerate() {
-            let value = if i == j {
-                claim.values[0]
+    // reduce_prover has already made each form dense. Borrow those vectors
+    // instead of allocating and copying one for every off-diagonal entry.
+    let covectors = reduced
+        .iter()
+        .map(|claim| {
+            let form: &dyn std::any::Any = claim.forms[0].as_ref();
+            &form
+                .downcast_ref::<Covector<Fr>>()
+                .expect("reduced form is dense")
+                .vector
+        })
+        .collect::<Vec<_>>();
+    let evaluations = (0..count * count)
+        .into_par_iter()
+        .map(|entry| {
+            let (i, j) = (entry / count, entry % count);
+            if i == j {
+                reduced[i].values[0]
             } else {
-                let value = dot(
-                    &Covector::from(claim.forms[0].as_ref()).vector,
-                    other.message.to_slice(),
-                );
-                state.prover_message(&value);
-                value
-            };
-            evaluations.push(value);
+                dot(covectors[i], reduced[j].message.to_slice())
+            }
+        })
+        .collect::<Vec<_>>();
+    // Parallel arithmetic must not reorder Fiat--Shamir messages.
+    for (entry, value) in evaluations.iter().enumerate() {
+        if entry / count != entry % count {
+            state.prover_message(value);
         }
     }
     profile.push(StageTiming {
@@ -286,12 +300,12 @@ pub(super) fn prove_batch(
         stage: "distinct-functional cross evaluations",
         seconds: cross_start.elapsed().as_secs_f64(),
     });
+    let forms = reduced
+        .iter_mut()
+        .map(|c| c.forms.pop().expect("reduced form"))
+        .collect();
     let vectors = reduced.iter().map(|c| &c.message).collect::<Vec<_>>();
     let witnesses = reduced.iter().map(|c| &c.witness).collect();
-    let forms = reduced
-        .iter()
-        .map(|c| Box::new(Covector::from(c.forms[0].as_ref())) as Box<dyn LinearForm<Fr>>)
-        .collect();
     measure(
         profile,
         "opening",
@@ -516,7 +530,14 @@ fn one_input() -> usize {
 }
 
 pub(super) fn prefix_size(log: usize, common: &WhirConfig, rng: &mut ChaCha20Rng) -> Result<Size> {
-    let mut current = initial_config(log, common)?;
+    prefix_size_from_config(initial_config(log, common)?, common, rng)
+}
+
+pub(super) fn prefix_size_from_config(
+    mut current: WhirConfig,
+    common: &WhirConfig,
+    rng: &mut ChaCha20Rng,
+) -> Result<Size> {
     let mut size = Size {
         hashes: 1.,
         fields: current.initial_out_domain_samples as f64,
@@ -655,7 +676,8 @@ pub fn estimate_grid(
                             external_leaf + measured.verifier_leaf_hashes / samples as f64;
                         let mut parent =
                             external_parent + measured.verifier_parent_hashes / samples as f64;
-                        let h2f = if choice.is_some() { bx[3] + by[3] } else { 0.0 };
+                        // Digest-to-field conversion performs no hashing.
+                        let h2f = 0.0;
                         if choice.is_none() {
                             auth += (2 * HASH_BYTES * input_oracles) as f64;
                         } else if !has_canopy {

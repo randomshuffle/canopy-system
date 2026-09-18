@@ -29,6 +29,9 @@ pub struct BoltMaxEncoder {
     pub message_rows: usize,
     pub interleaving: usize,
     constraints: Vec<Vec<usize>>,
+    // Each message row has exactly DEGREE incident checks. Preserve repeated
+    // edges, so the gather computes the same characteristic-two sum as H.
+    transpose_checks: Vec<[u32; DEGREE]>,
 }
 
 impl BoltMaxEncoder {
@@ -42,7 +45,7 @@ impl BoltMaxEncoder {
             .flat_map(|i| std::iter::repeat_n(i, DEGREE))
             .collect::<Vec<_>>();
         edges.shuffle(&mut ChaCha20Rng::seed_from_u64(seed));
-        let constraints = edges
+        let constraints: Vec<Vec<usize>> = edges
             .chunks_exact(DEGREE * COMPRESSION)
             .map(|c| {
                 let mut c = c.to_vec();
@@ -50,10 +53,23 @@ impl BoltMaxEncoder {
                 c
             })
             .collect();
+        ensure!(
+            constraints.len() <= u32::MAX as usize,
+            "too many Bolt checks"
+        );
+        let mut transpose_checks = vec![[0; DEGREE]; message_rows];
+        let mut degrees = vec![0u8; message_rows];
+        for (check, rows) in constraints.iter().enumerate() {
+            for &row in rows {
+                transpose_checks[row][degrees[row] as usize] = check as u32;
+                degrees[row] += 1;
+            }
+        }
         Ok(Self {
             message_rows,
             interleaving,
             constraints,
+            transpose_checks,
         })
     }
 
@@ -82,13 +98,12 @@ impl BoltMaxEncoder {
             weights.len() == self.constraints.len(),
             "wrong syndrome covector size"
         );
-        let mut result = vec![Fr::ZERO; self.message_rows];
-        for (&weight, rows) in weights.iter().zip(&self.constraints) {
-            for &row in rows {
-                result[row] += weight;
-            }
-        }
-        Ok(result)
+        Ok(self
+            .transpose_checks
+            .par_iter()
+            .with_min_len(1024)
+            .map(|checks| checks.iter().map(|&check| weights[check as usize]).sum())
+            .collect())
     }
 
     pub fn encode(&self, values: &[Fr]) -> Result<EncodedBolt> {
@@ -147,9 +162,92 @@ pub fn project_rows(values: &[Fr], weights: &[Fr]) -> Vec<Fr> {
         .collect()
 }
 
+/// Contract the row dimension of a row-major matrix. Each task walks contiguous
+/// rows and accumulates all columns, avoiding width strided passes over X.
+pub fn partial_evaluation(values: &[Fr], weights: &[Fr], width: usize) -> Vec<Fr> {
+    assert!(width > 0 && values.len() == weights.len() * width);
+    const ROWS_PER_CHUNK: usize = 1024;
+    values
+        .par_chunks(width * ROWS_PER_CHUNK)
+        .zip(weights.par_chunks(ROWS_PER_CHUNK))
+        .map(|(rows, weights)| {
+            let mut sum = vec![Fr::ZERO; width];
+            for (row, &weight) in rows.chunks_exact(width).zip(weights) {
+                for (dst, &value) in sum.iter_mut().zip(row) {
+                    *dst += value * weight;
+                }
+            }
+            sum
+        })
+        .reduce(
+            || vec![Fr::ZERO; width],
+            |mut a, b| {
+                for (a, b) in a.iter_mut().zip(b) {
+                    *a += b;
+                }
+                a
+            },
+        )
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn parallel_contractions_match_serial_including_duplicate_edges() {
+        let rows = 16384;
+        let width = 4;
+        let enc = BoltMaxEncoder::new(rows, width, 42).unwrap();
+        let weights = (0..rows)
+            .map(|i| crate::benchmark_field_element(7, 1, i as u64))
+            .collect::<Vec<_>>();
+        let values = (0..rows * width)
+            .map(|i| crate::benchmark_field_element(7, 2, i as u64))
+            .collect::<Vec<_>>();
+        let expected_g = (0..width)
+            .map(|col| {
+                values
+                    .chunks_exact(width)
+                    .zip(&weights)
+                    .map(|(row, &w)| row[col] * w)
+                    .sum::<Fr>()
+            })
+            .collect::<Vec<_>>();
+        let mut expected_transpose = vec![Fr::ZERO; rows];
+        let mut duplicates = 0;
+        for (&w, checks) in weights.iter().zip(&enc.constraints) {
+            duplicates += checks.windows(2).filter(|p| p[0] == p[1]).count();
+            for &row in checks {
+                expected_transpose[row] += w;
+            }
+        }
+        assert!(duplicates > 0);
+        for threads in [1, 4] {
+            rayon::ThreadPoolBuilder::new()
+                .num_threads(threads)
+                .build()
+                .unwrap()
+                .install(|| {
+                    assert_eq!(partial_evaluation(&values, &weights, width), expected_g);
+                    assert_eq!(
+                        enc.transpose(&weights[..rows / COMPRESSION]).unwrap(),
+                        expected_transpose
+                    );
+                    // Also exercise a final partial chunk.
+                    assert_eq!(
+                        partial_evaluation(&values[..4100], &weights[..1025], width),
+                        (0..width)
+                            .map(|col| values[..4100]
+                                .chunks_exact(width)
+                                .zip(&weights)
+                                .map(|(row, &w)| row[col] * w)
+                                .sum::<Fr>())
+                            .collect::<Vec<_>>()
+                    );
+                });
+        }
+    }
 
     #[test]
     fn binary_field_encoder_is_linear_and_rs_matches_direct_evaluation() {

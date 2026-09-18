@@ -1,0 +1,15 @@
+{
+  "host": "benchmark-host.invalid",
+  "user": "anonymous",
+  "remote_directory": ".",
+  "remote_output": "./results/aws_i4i_persistent",
+  "remote_bin_directory": "./target/aws-native/release",
+  "pilot_session": "canopy-aws-pilot",
+  "source_bundle_sha256": "0423df4d58c8c236d34931ca7d35b66e17ed348fdf7d52285d02d4d7ae04d08a",
+  "initial_pilot_output": "./results/aws_i4i",
+  "campaign_session": "canopy-aws-persistent",
+  "progress_automation": "canopy-aws-benchmark-progress",
+  "campaign_status": "stopped_by_user",
+  "completed_points": 55,
+  "replacement_connection": "../aws_i4i_optimized/connection.json"
+}

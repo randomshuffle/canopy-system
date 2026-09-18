@@ -56,15 +56,7 @@ pub(super) fn prove_front(
         measure(profile, "opening", "Bolt", "partial evaluation g", || {
             let z = public_point(k.ilog2() as usize);
             let z_weights = eq_weights(&z);
-            let g = (0..width)
-                .map(|col| {
-                    input
-                        .chunks_exact(width)
-                        .zip(&z_weights)
-                        .map(|(row, &w)| row[col] * w)
-                        .sum::<Fr>()
-                })
-                .collect::<Vec<_>>();
+            let g = bolt::partial_evaluation(input, &z_weights, width);
             let evaluation = dot(&g, &eq_weights(&public_point(width.ilog2() as usize)));
             state.prover_messages(&g);
             (z, z_weights, g, evaluation)

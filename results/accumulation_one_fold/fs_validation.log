@@ -1,0 +1,6 @@
+N=2^10: RS0 msg=1024 code=2048 rows=256 q=317; RS1 msg=128 code=1024 rows=128 q=96
+merkle_same_code_batch n=10 rep=0 step=0.001954s incoming=0.000556s hashes=1114 FS=14 verified=true
+canopy_one_fold_three_claims n=10 rep=0 step=0.001161s incoming=0.000584s hashes=928 FS=19 verified=true
+N=2^18: RS0 msg=262144 code=524288 rows=65536 q=317; RS1 msg=32768 code=262144 rows=32768 q=96
+merkle_same_code_batch n=18 rep=0 step=0.026244s incoming=0.025269s hashes=5534 FS=22 verified=true
+canopy_one_fold_three_claims n=18 rep=0 step=0.024544s incoming=0.023262s hashes=3354 FS=27 verified=true
