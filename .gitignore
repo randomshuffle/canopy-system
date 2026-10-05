@@ -25,3 +25,7 @@ target
 __pycache__/
 *.py[cod]
 /results/**/bin/
+
+# Fresh reproduction outputs; the published reference datasets stay tracked.
+/results/reproduce*/
+/results/aws_r5/

@@ -30,6 +30,7 @@ pub use layout::LayoutError;
 pub use protocol_config::{
     BasecasePlan, MaskOracleConfig, MaskOracleInfo, ProtocolConfig, RoundConfig, RoundMode,
 };
+pub use regime::{bcgm_affine_mca_log2, BCGM_RS_MULTIPLICITY};
 pub use solved::Solved;
 pub use spec::{
     DecodingRegime, FoldingFactor, KneeWeight, ListSize, LogInvRate, MaskCodeMessageLen, Mode,

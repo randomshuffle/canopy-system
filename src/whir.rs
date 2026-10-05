@@ -2,7 +2,8 @@
 //! conjectural capacity-bound regimes.
 //!
 //! The radius is `1 - sqrt(rho) - eta`, with the reference implementation's
-//! conservative canonical slack `eta = sqrt(rho) / 20`. The capacity variant
+//! BCGM26 canonical slack `eta = sqrt(rho) / (2m)`, with `m = 10`.
+//! The same BCGM26 affine MCA bound is used by the executable WHIR. The capacity variant
 //! follows STIR Conjecture 5.6 with `eta = rho / 20`. No proof of work is used.
 
 use std::collections::BTreeSet;
@@ -11,6 +12,7 @@ use anyhow::{ensure, Context, Result};
 use rand::{Rng, RngCore, SeedableRng};
 use rand_chacha::ChaCha20Rng;
 use serde::Serialize;
+use whir_ref::protocols::params::{bcgm_affine_mca_log2, BCGM_RS_MULTIPLICITY};
 
 use crate::merkle::frontier_hash_count;
 use crate::HASH_BYTES;
@@ -269,7 +271,9 @@ fn effective_security_bits() -> usize {
 fn log_eta(regime: WhirDecodingRegime, log_inverse_rate: usize) -> f64 {
     match regime {
         // eta = sqrt(rho) / 20.
-        WhirDecodingRegime::Johnson => -(0.5 * log_inverse_rate as f64 + 20.0_f64.log2()),
+        WhirDecodingRegime::Johnson => {
+            -(0.5 * log_inverse_rate as f64 + ((2 * BCGM_RS_MULTIPLICITY) as f64).log2())
+        }
         // eta = rho / 20.
         WhirDecodingRegime::Capacity => -(log_inverse_rate as f64 + 20.0_f64.log2()),
     }
@@ -328,12 +332,13 @@ fn folding_security_bits_per_challenge(
 ) -> f64 {
     let list = list_size_bits(regime, message_variables, log_inverse_rate);
     let prox_gaps_error = match regime {
-        // BCSS25, Theorem 4.6. Here gamma is the agreement gap used by
-        // WHIR, M=1 because the folding curve is linear, and n is the RS
-        // block length. We retain eta=sqrt(rho)/20, hence m=20.
-        WhirDecodingRegime::Johnson => {
-            field_log2_size - johnson_exceptional_set_log2(message_variables, log_inverse_rate)
-        }
+        // BCGM26 Definition 9.1 / Theorem 9.2 with m=10, d=1 per challenge.
+        // Multilinear folds sum these errors over their coordinates below.
+        WhirDecodingRegime::Johnson => -bcgm_affine_mca_log2(
+            message_variables as f64,
+            log_inverse_rate as f64,
+            field_log2_size,
+        ),
         // STIR Conj. 5.6: eps ~= d / (eta rho^2 |F|), eta = rho/20.
         WhirDecodingRegime::Capacity => {
             field_log2_size
@@ -344,24 +349,12 @@ fn folding_security_bits_per_challenge(
     prox_gaps_error.min(sumcheck_error)
 }
 
-fn johnson_exceptional_set_log2(message_variables: usize, log_inverse_rate: usize) -> f64 {
-    let rho = 2.0_f64.powi(-(log_inverse_rate as i32));
-    let sqrt_rho = rho.sqrt();
-    let eta = sqrt_rho / 20.0;
-    let gamma = 1.0 - sqrt_rho - eta;
-    let multiplicity = (sqrt_rho / eta).ceil().max(3.0);
-    let shifted = multiplicity + 0.5;
-    let block_length = 2.0_f64.powi((message_variables + log_inverse_rate) as i32);
-    let leading = (2.0 * shifted.powi(5) + 3.0 * shifted * gamma * rho) / (3.0 * rho.powf(1.5))
-        * block_length;
-    let additive = shifted / sqrt_rho;
-    (leading + additive).log2()
-}
-
 fn query_distance(regime: WhirDecodingRegime, log_inverse_rate: usize) -> f64 {
     let rate = 2.0_f64.powi(-(log_inverse_rate as i32));
     match regime {
-        WhirDecodingRegime::Johnson => 1.0 - rate.sqrt() - rate.sqrt() / 20.0,
+        WhirDecodingRegime::Johnson => {
+            1.0 - rate.sqrt() - rate.sqrt() / (2 * BCGM_RS_MULTIPLICITY) as f64
+        }
         WhirDecodingRegime::Capacity => 1.0 - rate - rate / 20.0,
     }
 }
@@ -441,6 +434,9 @@ impl WhirParameters {
     }
 
     /// Concrete bad-event exponents used by the round-by-round model.
+    /// Folding/sumcheck events aggregate their coordinate challenges: BCGM26
+    /// Theorem 9.2 gives s times the affine error for an s-variable multilinear
+    /// generator, so the block exponent loses log2(s) bits.
     pub fn rbr_security_events(&self) -> Vec<WhirRbrEvent> {
         let mut events = Vec::new();
         let mut message_variables = self.message_variables;
@@ -449,7 +445,8 @@ impl WhirParameters {
         if !self.folding_schedule.is_empty() {
             events.push(WhirRbrEvent {
                 event: "initial folding / sumcheck".to_owned(),
-                security_bits: self.initial_folding_security_bits_per_challenge,
+                security_bits: self.initial_folding_security_bits_per_challenge
+                    - (self.folding_log as f64).log2(),
             });
             events.push(WhirRbrEvent {
                 event: "initial OOD sampling".to_owned(),
@@ -480,7 +477,8 @@ impl WhirParameters {
             log_inverse_rate = round.log_inverse_rate_after;
             events.push(WhirRbrEvent {
                 event: format!("recursive round {} folding / sumcheck", round.round + 1),
-                security_bits: round.folding_security_bits_per_challenge,
+                security_bits: round.folding_security_bits_per_challenge
+                    - (round.folding_log as f64).log2(),
             });
             events.push(WhirRbrEvent {
                 event: format!("recursive round {} claim combination", round.round + 1),
@@ -497,10 +495,13 @@ impl WhirParameters {
                 ),
             });
         }
-        events.push(WhirRbrEvent {
-            event: "terminal sumcheck".to_owned(),
-            security_bits: self.final_sumcheck_security_bits_per_challenge,
-        });
+        if self.final_sumcheck_rounds > 0 {
+            events.push(WhirRbrEvent {
+                event: "terminal sumcheck".to_owned(),
+                security_bits: self.final_sumcheck_security_bits_per_challenge
+                    - (self.final_sumcheck_rounds as f64).log2(),
+            });
+        }
         events
     }
 
@@ -1770,19 +1771,22 @@ mod tests {
     }
 
     #[test]
-    fn theorem_4_6_uses_multiplicity_twenty_for_the_canonical_slack() {
-        let message_variables = 30;
-        let log_inverse_rate = 1;
-        let rho = 0.5_f64;
-        let sqrt_rho = rho.sqrt();
-        let eta = sqrt_rho / 20.0;
-        assert_eq!((sqrt_rho / eta).ceil(), 20.0);
-
-        let exact = johnson_exceptional_set_log2(message_variables, log_inverse_rate);
-        let old_approximation =
-            (2.0 * 10.5_f64.powi(5) / 3.0).log2() + message_variables as f64 + 2.5;
-        assert!(exact > old_approximation + 4.0);
-        assert!(exact < old_approximation + 6.0);
+    fn bcgm_m10_radius_and_multilinear_error() {
+        let params = WhirParameters::johnson_bound(30, 1).unwrap();
+        assert_eq!(BCGM_RS_MULTIPLICITY, 10);
+        assert!(
+            (query_distance(WhirDecodingRegime::Johnson, 1) - (1.0 - 1.05 * 0.5_f64.sqrt())).abs()
+                < 1e-12
+        );
+        let n = 2.0_f64.powi(31);
+        let affine_bits =
+            -(10.5_f64.powi(7) * n.powi(2) / (3.0 * 0.5_f64.powf(1.5) * 2.0_f64.powi(256))).log2();
+        assert!((params.initial_folding_security_bits_per_challenge - affine_bits).abs() < 1e-12);
+        let event = &params.initial_rbr_security_events()[0];
+        assert!(
+            (event.security_bits - (affine_bits - (params.folding_log as f64).log2())).abs()
+                < 1e-12
+        );
     }
 
     #[test]

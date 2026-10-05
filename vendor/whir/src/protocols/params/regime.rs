@@ -3,8 +3,9 @@
 //!
 //! # References
 //!
-//! - Johnson proximity-gap error follows the BCSS25 improvement
-//!   (`O(n/η^5)`, m=10 at canonical slack) over BCIKS '20.
+//! - Johnson mutual-correlated-agreement error follows BCGM26, Definition 9.1
+//!   and Theorem 9.2, with m=10: `(10.5^7 / (3 ρ^(3/2))) n^2 / |F|`
+//!   per affine challenge. See <https://eprint.iacr.org/2025/2051>.
 //! - Capacity bound follows STIR Conjecture 5.6: `(1 − ρ − η, d/(ρ·η))`-list
 //!   decodability for RS codes.
 
@@ -17,6 +18,21 @@ use crate::protocols::params::{
     bounds::{rate, usize_to_f64},
     spec::DecodingRegime,
 };
+
+/// BCGM26 interpolation multiplicity, shared with the paper estimator.
+pub const BCGM_RS_MULTIPLICITY: usize = 10;
+
+/// Log2 of the BCGM26 affine MCA error at `δ <= 1 - (1 + 1/(2m)) sqrt(ρ)`.
+///
+/// Definition 9.1 and Theorem 9.2 of <https://eprint.iacr.org/2025/2051>
+/// give `(m + 1/2)^7 n^2 / (3 ρ^(3/2) |F|)` for one degree-one challenge.
+/// Here `n = k/ρ`; an s-coordinate multilinear generator incurs s such errors.
+/// A nonnegative result is a vacuous bound, not positive security.
+pub fn bcgm_affine_mca_log2(log_message_length: f64, log_inv_rate: f64, field_bits: f64) -> f64 {
+    let shifted = BCGM_RS_MULTIPLICITY as f64 + 0.5;
+    7.0 * shifted.log2() - 3.0_f64.log2() + 2.0 * log_message_length + 3.5 * log_inv_rate
+        - field_bits
+}
 
 /// Materialized decoding-regime parameters at a known rate.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize)]
@@ -41,7 +57,7 @@ impl DecodingRegimeParams {
     /// Johnson regime with the canonical `η = √ρ / 20` slack.
     pub fn johnson_canonical(rate: f64) -> Self {
         Self::Johnson {
-            slack: OrderedFloat(rate.sqrt() / 20.0),
+            slack: OrderedFloat(rate.sqrt() / (2 * BCGM_RS_MULTIPLICITY) as f64),
         }
     }
 
@@ -102,8 +118,8 @@ impl DecodingRegimeParams {
     /// `log₂ ε_mca(C, δ)` for the per-step proximity-gaps error.
     ///
     /// - Unique: `(k − 1) / |F|`, log = `log k − |F|` (with `+ log ρ⁻¹`).
-    /// - Johnson: BCSS25 Theorem 1.5 at canonical `η = √ρ/20`, `m = 10`:
-    ///   `ε ≈ (2·10.5⁵/3) · n · ρ^{−3/2} / |F|`.
+    /// - Johnson: BCGM26 Definition 9.1 / Theorem 9.2, `η = √ρ/(2m)`, `m = 10`:
+    ///   `ε = (10.5⁷/3) · n² · ρ^{−3/2} / |F|` per affine challenge.
     /// - Capacity: STIR Conj 5.6, `ε ≈ d / (η · ρ²) / |F|`.
     pub fn eps_mca_log2(self, log_inv_rate: f64, message_length: usize, field_bits: f64) -> f64 {
         let log_k = usize_to_f64(message_length).log2();
@@ -111,14 +127,12 @@ impl DecodingRegimeParams {
             Self::Unique => log_k + log_inv_rate,
             Self::Johnson { slack } => {
                 assert!(
-                    slack.into_inner().log2() >= -(0.5 * log_inv_rate + LOG2_10 + 1.0) - 1e-6,
-                    "Johnson slack η below BCSS25 lower bound; ε_mca would be over-optimistic",
+                    slack.into_inner().log2()
+                        >= -(0.5 * log_inv_rate + ((2 * BCGM_RS_MULTIPLICITY) as f64).log2())
+                            - 1e-12,
+                    "Johnson slack η below BCGM26 m=10 lower bound; ε_mca would be over-optimistic",
                 );
-                // BCSS25 with m = 10: log_2(2·10.5⁵/3) + log n + 1.5·log ρ⁻¹.
-                // Substituting n = k/ρ (codeword length) gives the `log_k`
-                // (message length) + 2.5·log ρ⁻¹ form below.
-                let bcss25_const = (2.0 * 10.5_f64.powi(5) / 3.0).log2();
-                bcss25_const + log_k + 2.5 * log_inv_rate
+                return bcgm_affine_mca_log2(log_k, log_inv_rate, field_bits);
             }
             Self::Capacity { slack } => {
                 // η lower bound from STIR Conj 5.6; see the Johnson arm for why
@@ -315,7 +329,7 @@ mod tests {
         assert_close(got, expected);
     }
 
-    /// MCA error, Johnson (BCSS25): `log₂(2·10.5⁵/3) + log k + 2.5·log_inv_rate − field_bits`.
+    /// Compare the log-space implementation to the BCGM26 expression in n and ρ.
     #[test]
     fn eps_mca_log2_johnson_formula() {
         let canonical_slack = 2_f64.powf(-MCA_LOG_INV_RATE).sqrt() / 20.0;
@@ -325,9 +339,11 @@ mod tests {
             MCA_MESSAGE_LENGTH,
             MCA_FIELD_BITS,
         );
-        let bcss25_const = (2.0 * 10.5_f64.powi(5) / 3.0).log2();
-        let expected = bcss25_const + (MCA_MESSAGE_LENGTH as f64).log2() + 2.5 * MCA_LOG_INV_RATE
-            - MCA_FIELD_BITS;
+        let rho = 2_f64.powf(-MCA_LOG_INV_RATE);
+        let n = MCA_MESSAGE_LENGTH as f64 / rho;
+        let expected = (10.5_f64.powi(7) * n.powi(2)
+            / (3.0 * rho.powf(1.5) * 2_f64.powf(MCA_FIELD_BITS)))
+        .log2();
         assert_close(got, expected);
     }
 
@@ -358,10 +374,8 @@ mod tests {
         assert_close(got, -58.0);
     }
 
-    /// Johnson (BCSS25 Theorem 1.5, η = √ρ/20, m = 10):
-    /// `ε = (2·10.5⁵/3) · n · ρ^{−3/2} / |F|` with codeword length n = k/ρ = 64.
-    /// log₂ε = log₂(2·10.5⁵/3) + log₂64 + log₂(ρ^{−3/2}) − 64
-    ///       = 16.376624613… + 6 + 3 − 64 = −38.623375386…
+    /// BCGM26 at m=10, k=16, ρ=1/4, n=64, |F|=2^64:
+    /// log₂ε = 7 log₂10.5 − log₂3 + 12 + 3 − 64 = −26.838740541…
     #[test]
     fn eps_mca_log2_johnson_theorem_anchor() {
         let canonical_slack = 2_f64.powf(-MCA_LOG_INV_RATE).sqrt() / 20.0;
@@ -370,7 +384,20 @@ mod tests {
             MCA_MESSAGE_LENGTH,
             MCA_FIELD_BITS,
         );
-        assert_close(got, -38.623_375_386_827_36);
+        assert_close(got, -26.838740541269836);
+    }
+
+    #[test]
+    fn bcgm_error_is_quadratic_in_codeword_length() {
+        let base = bcgm_affine_mca_log2(20.0, 2.0, 256.0);
+        assert_close(bcgm_affine_mca_log2(21.0, 2.0, 256.0) - base, 2.0);
+        assert_close(bcgm_affine_mca_log2(20.0, 3.0, 256.0) - base, 3.5);
+    }
+
+    #[test]
+    #[should_panic(expected = "below BCGM26 m=10 lower bound")]
+    fn bcgm_rejects_radius_beyond_m10_guarantee() {
+        johnson(0.5 / 21.0).eps_mca_log2(2.0, 16, 256.0);
     }
 
     /// Capacity (STIR Conj 5.6, η = ρ/20): `ε = d / (η · ρ²) / |F|` with d = k = 16,

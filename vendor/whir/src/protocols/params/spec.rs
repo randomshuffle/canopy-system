@@ -342,7 +342,7 @@ impl Deref for ZkSpec<'_> {
 ///
 /// - `Unique`: `δ < (1 − ρ)/2`, list size 1, no conjectures.
 /// - `Johnson`: `δ < 1 − √ρ − η`, canonical `η = √ρ/20`. Proximity-gap error
-///   per the BCHKS25 improvement to BCIKS '20.
+///   per BCGM26 Definition 9.1 / Theorem 9.2 with m=10.
 /// - `Capacity`: `δ < 1 − ρ − η`, canonical `η = ρ/20`. Conjectured list size
 ///   `d/(ρ·η)` and proximity-gap error per STIR Conjecture 5.6.
 ///

@@ -32,3 +32,24 @@ The earlier single-pass apparent speedup did not reproduce. These repeated measu
 The four timing jobs took 99.62 seconds including warmups, setup, and verification; proof/hash parameter preparation is additional. Peak RSS was 3.73 GiB.
 
 Files: [reported summary](remote/results/summary_iop_rounds.csv), [raw timing samples](remote/results/raw_samples.csv), [stage means](remote/results/stage_summary.csv), [raw stages](remote/results/raw_stages.csv), [validation](remote/results/completion-validation.json), and per-job logs/build provenance in `remote/results/`. The earlier campaigns and manuscript have not been changed.
+
+
+## Reproduce into a fresh directory
+
+On Linux x86_64 with the configured CPU allocation, Rust 1.92.0 and cached or
+fetchable dependencies:
+
+```sh
+python3 scripts/reproduce_bolt_recheck.py --log 22 --output results/reproduce_bolt_n22
+```
+
+The runner builds and validates native binaries, uses one discarded warmup and
+four alternating measured passes at eta=1,2,4,8, verifies all 32 measured
+serialized proofs, and writes raw samples, stage means, and the sequential-IOP
+summary. It requires a fresh output directory and never replaces these stored
+measurements. Add `--offline` after dependencies are cached, or `--plan` to
+inspect the commands locally. `--skip-build` requires a native build receipt
+matching current sources. See the [campaign guide](../../experiments/aws-r5/README.md)
+for resources and provenance. Current-source reruns use BCGM m=10 parameters.
+Original launchers are in [the archive](../../archive/launchers/README.md);
+scripts under `remote/` are historical source snapshots.

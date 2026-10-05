@@ -105,5 +105,4 @@ pub const FIELD_TWO_ADICITY: usize = 0;
 pub const FIELD_MAX_DOMAIN_LOG: usize = 32;
 
 #[cfg(test)]
-#[path = "../experiments/binary-whir/src/protocol_tests.rs"]
 mod binary_protocol_tests;

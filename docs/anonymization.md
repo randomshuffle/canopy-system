@@ -1,4 +1,4 @@
-# Anonymous source distribution
+# Public source distribution
 
 The published files use an anonymous first-party copyright notice, relative
 checkout paths, and placeholder benchmark hostnames. Saved source and measurement
@@ -16,9 +16,10 @@ The third-party copyright names in `vendor/whir/LICENSE-MIT` are upstream
 attributions, not an author list for this repository.
 
 Git history, remotes, commit identities, and ignored local build directories are
-outside this file-content cleanup. Share the sanitized snapshot through the GitHub
-anonymizer, rather than distributing the local `.git` or `target` directories.
-Include the content changes and bytecode deletions in the snapshot before sharing.
+separate from this file-content cleanup. Deleted pre-GF256 outputs remain in
+Git history. A public Git repository exposes that history and its commit
+identities; an anonymous snapshot should omit `.git` and build directories.
+The current source bundle command excludes those directories.
 
 The measurement and reporting helpers redact the current checkout and home paths
 from saved metadata. New AWS source bundles omit filesystem ownership and time
@@ -28,3 +29,11 @@ Archived campaign launchers now locate their own directory, with `CAMPAIGN_DIR`
 available as an override. Set `PRIOR_CAMPAIGN_DIR` when importing an earlier
 campaign. Recheck scripts use the current checkout, or `CANOPY_ROOT` when provided,
 instead of the original machine's directory layout.
+
+
+The current final artifacts are indexed in [results](../results/README.md);
+historical experiments are indexed in [archive](../archive/README.md). The
+retained numerical data, logs, receipts, and original bundles are unchanged.
+Historical paths inside receipts describe the original run; relocations are
+listed in `archive/cleanup_manifest.json`. Current runners reject published
+result directories and the archive as output destinations.

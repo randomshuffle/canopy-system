@@ -37,6 +37,19 @@ def digest(path):
     return h.hexdigest()
 
 
+def require_writable_campaign_output(out):
+    """Published evidence and archived runs are inputs, never rerun destinations."""
+    out = out.resolve()
+    published = [ROOT / 'results' / name for name in (
+        'aws_i4i_optimized', 'aws_i4i_n30_eta1',
+        'aws_i4i_bolt_n22_recheck_20260917',
+        'aws_i4i_bolt_n24_recheck_20260917', 'paper_bcgm_m10')]
+    protected = [ROOT / 'archive', *published]
+    if out in (ROOT, ROOT / 'results') or any(
+            out == path or path in out.parents for path in protected):
+        raise ValueError(f'{out}: retained evidence; select a fresh output directory')
+
+
 def source_files():
     files = [ROOT / x for x in ('Cargo.toml', 'Cargo.lock')]
     for directory in SOURCE_DIRS:
@@ -320,7 +333,7 @@ def preflight(cfg, bins, out):
         assert os.sched_getaffinity(0) == set(cfg['cpu_affinity']), 'CPU allocation mismatch'
     memory = meminfo()
     assert memory['SwapTotal'] == 0, 'Disable swap before this in-memory campaign'
-    assert memory['MemAvailable'] > cfg['memory_limit_gib'] * 2**30, 'Host needs at least 640 GiB available at start'
+    assert memory['MemAvailable'] > cfg['memory_limit_gib'] * 2**30, f"Host needs more than {cfg['memory_limit_gib']} GiB available at start"
     backend = json.loads(subprocess.check_output([str(bins / BINS[4]), '--require-intel'], text=True))
     receipt = json.loads((bins.parent / 'native-build.json').read_text())
     assert receipt['source_sha256'] == snapshot(), 'Sources changed since the native build'
@@ -351,9 +364,13 @@ def main():
     p.add_argument('--offline', action='store_true', help='Cargo uses cached dependencies only')
     a = p.parse_args()
     cfg = json.loads(a.config.read_text())
+    out, bins = a.output.resolve(), a.bin_dir.resolve()
+    try:
+        require_writable_campaign_output(out)
+    except ValueError as error:
+        p.error(str(error))
     if a.action in ('build', 'prepare', 'run'):
         apply_cpu_affinity(cfg)
-    out, bins = a.output.resolve(), a.bin_dir.resolve()
     out.mkdir(parents=True, exist_ok=True)
     if a.action == 'plan':
         jobs = timing_jobs(cfg, bins, out)
@@ -398,6 +415,9 @@ def main():
     elif a.action == 'bundle':
         path = out/'canopy-aws-source.tar.gz'
         files = source_files()+[ROOT/'README.md',ROOT/'LICENSE',ROOT/'experiments/aws-r5/README.md',
+                              ROOT/'docs/experiment_bolt_max.md', ROOT/'docs/anonymization.md',
+                              ROOT/'results/README.md', ROOT/'results/paper_bcgm_m10/README.md',
+                              ROOT/'results/paper_bcgm_m10/proof_sizes_and_hashes.csv',
                               ROOT/'vendor/whir/LICENSE-APACHE',ROOT/'vendor/whir/LICENSE-MIT',
                               ROOT/'vendor/whir/README.md']
         with path.open('wb') as raw, gzip.GzipFile(fileobj=raw, mode='wb', filename='', mtime=0) as gz:

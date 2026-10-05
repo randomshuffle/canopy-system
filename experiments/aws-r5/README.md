@@ -1,6 +1,6 @@
 # Five-configuration AWS campaign
 
-Approved grid: **70 points**, on one **i4i.24xlarge**, **32 Rayon workers pinned to CPUs `0-15,48-63`**, **zero warmups and one measured pass per point**. Campaign jobs run sequentially. The user may run another experiment concurrently on CPUs `16-47,64-95`; memory and some cache/bandwidth resources remain shared. There are 28 executable jobs because the WHIR harness reports three methods together and the Bolt harness reports two.
+Main grid: **70 points**, on one **i4i.24xlarge**, **32 Rayon workers pinned to CPUs `0-15,48-63`**, **zero warmups and one measured pass per point**. Campaign jobs run sequentially. Avoid overlapping memory-intensive workloads when measuring; CPU affinity does not isolate memory bandwidth. There are 28 executable jobs because the WHIR harness reports three methods together and the Bolt harness reports two.
 
 | N (field elements per input) | eta (inputs) | Configuration points |
 |---|---|---:|
@@ -9,7 +9,7 @@ Approved grid: **70 points**, on one **i4i.24xlarge**, **32 Rayon workers pinned
 | 2^26 | 1, 2, 4, 8 | 20 |
 | 2^28 | 1, 2 | 10 |
 
-**No 2^30 jobs.** All methods use GF(2^256), BLAKE3-256, and the existing composed 128-bit security target. Local WHIR subarguments use 136 bits. Commit and opening times both include executed Fiat–Shamir work; input generation, setup, and verification are excluded from reported prover time and included in process wall time/RSS.
+**The main config excludes 2^30; `config-n30-eta1.json` supplies the five-point N=2^30, eta=1 extension.** All methods use GF(2^256), BLAKE3-256, and the existing composed 128-bit security target. Local WHIR subarguments use 136 bits. Commit and opening times both include executed Fiat–Shamir work; input generation, setup, and verification are excluded from reported prover time and included in process wall time/RSS.
 
 The current headline commitment policy models sequential IOP rounds: for all
 five schemes use C(N, eta) = eta * C(N, 1), retain measured openings, and recompute
@@ -35,11 +35,11 @@ Bolt retains the explicitly assumed distance gamma=0.013 over GF(2^256), the pre
 - WHIR headline proof sizes retain the existing optimized folding schedules over {3,4}, terminal message at most 2^10. Its timing harness retains the fixed three-variable folding schedule. These are separately labelled methodologies, not a claim that the timed proof uses the proof-minimizing schedule.
 - Bolt height choices are frozen by the proof search before timings. Its two schemes rotate execution order each repetition; WHIR component execution order is fixed by the existing harness.
 
-## Build and run on the supplied AWS host
+## Build and run on Linux x86_64
 
 Requirements: Linux x86_64, Rust **1.92.0**, Cargo, C linker/build tools, Git, Python 3.10+, and network access for the initial locked dependency fetch. `Cargo.lock`, the vendored WHIR changes, and the pinned Spongefish git revision are included. There is no automatic instance provisioning or SSH in this runner.
 
-From the extracted `canopy-system` directory:
+From the repository root (a clone or extracted current source bundle):
 
 ```sh
 # Install the pinned Rust toolchain if absent.
@@ -59,7 +59,7 @@ python3 scripts/aws_benchmark.py run
 python3 scripts/aws_benchmark.py report
 ```
 
-`run --only-log 24` (or 26, 28) can also advance by size. The jobs are ordered by increasing N and eta. A default output directory is `results/aws_r5`; `--output` selects a new campaign directory. Do not reuse a directory after changing binaries, sources, or settings.
+`run --only-log 24` (or 26, 28) can also advance by size. The jobs are ordered by increasing N and eta. The default output directory is `results/aws_r5`; `--output` selects a new campaign directory. Do not reuse a directory after changing binaries, sources, or settings.
 
 Preparation has no large input allocations and can also run locally with `--bin-dir target/release`; the resulting `proof_sizes_and_hashes.csv` is hardware-independent. It has exactly 70 rows. Each family's raw geometry, candidate searches, and hash ledgers are retained under `estimates/n*/`.
 
@@ -69,7 +69,7 @@ To create a source bundle from the working tree, including uncommitted implement
 python3 scripts/aws_benchmark.py bundle --output results/aws_r5_prepared
 ```
 
-This produces `canopy-aws-source.tar.gz` and a SHA-256 manifest. It includes the benchmark sources, vendored Rust sources, scripts and locked dependency metadata; it excludes `.git`, compiled binaries, old result directories, SSH keys and unrelated files. Dependencies are fetched on the host by `cargo --locked`; this is not an offline dependency cache.
+This produces `canopy-aws-source.tar.gz` and a SHA-256 manifest. It includes benchmark sources, vendored Rust sources, current scripts, locked dependency metadata, guides, and the current estimate reference table; it excludes `.git`, compiled binaries, old result directories, SSH keys and unrelated files. Dependencies are fetched on the host by `cargo --locked`; this is not an offline dependency cache.
 
 ## Intel backend and validation
 
@@ -90,3 +90,26 @@ The Linux runner requires swap disabled and at least 640 GiB available at campai
 `comparison.csv` contains all 70 proof/hash rows and any completed timing summaries. Unrun points explicitly say `not_measured`. `process_peak_rss_gib` is a **whole grouped-job peak**, including setup and verification, not per-method memory. All raw proof/timing/stage CSVs and process logs remain available.
 
 The campaign now runs on the user-supplied i4i.24xlarge (Intel Xeon 8375C); the historical `experiments/aws-r5` path is retained. The grid is unchanged. The original four-pass campaign was stopped at 55 completed points at the user’s request; its partial results remain separate. This restart uses the parallel prover and one pass per point. Single-pass timings do not measure run-to-run variability.
+
+## Local estimates and repeated Bolt checks
+
+Run `python3 scripts/reproduce_estimates.py --output results/reproduce_estimates`
+to build locked local release binaries, regenerate the main grid plus the
+N=2^30 extension, and compare all 75 rows to the current BCGM report. This does
+not allocate full input polynomials or require AWS. The pinned toolchain must
+be installed; use `--offline` after dependencies are cached.
+
+On the native Linux host, run
+`python3 scripts/reproduce_bolt_recheck.py --log 22 --output results/reproduce_bolt_n22`
+and the corresponding `--log 24` command. Each runner builds and validates native
+binaries, uses 32 pinned workers and a 64 GiB process limit, prepares both selected
+Bolt methods, and measures one discarded warmup and four balanced repetitions
+for eta=1,2,4,8. `--plan` displays the exact commands without executing them;
+`--skip-build` reuses a native build whose provenance matches current sources.
+Each output must be new or empty. Canonical datasets and archive directories
+are protected from use as current-run destinations.
+
+The current source uses BCGM m=10 RS parameters and direct digest conversion.
+Historical source bundles and receipts retain their original implementations;
+rerunning current sources does not replace them or make old single-pass timings
+an exact current-source measurement.

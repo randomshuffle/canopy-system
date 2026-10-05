@@ -1,0 +1,49 @@
+{
+  "folding_log": 3,
+  "log_message_lengths": [
+    3,
+    30
+  ],
+  "log_codeword_length_maximum": 32,
+  "security_targets": [
+    128,
+    136
+  ],
+  "tested_configurations": 868,
+  "unchanged_configurations": 863,
+  "paper_covering_range": {
+    "log_inverse_rate_maximum": 22,
+    "tested_configurations": 812,
+    "all_configs_identical": true
+  },
+  "changed_outside_paper_range": [
+    [
+      3,
+      28,
+      136
+    ],
+    [
+      3,
+      29,
+      136
+    ],
+    [
+      4,
+      28,
+      136
+    ],
+    [
+      5,
+      27,
+      136
+    ],
+    [
+      6,
+      26,
+      136
+    ]
+  ],
+  "method": "Compare complete Debug serialization of native WHIR Config before and after the BCGM change; covers query counts, rates, OOD samples, folds, and PoW thresholds.",
+  "before_sha256": "44bd4081636909b493a8288c34e0206d03e7f884ca052ad5938c6cefd674d6a4",
+  "after_sha256": "93528ece799c196321cd481302364b9f81d33f73a88ae6b29fa0bfedd142ed77"
+}

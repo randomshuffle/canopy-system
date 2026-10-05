@@ -11,6 +11,19 @@ Canopy interprets each 32-byte subtree digest directly as a GF(2^256) element.
 This invertible conversion invokes no hash; current verifier hash counts include
 only authentication and Fiat–Shamir finalizations.
 
+Start with the [final artifact index](results/README.md). The final campaign
+inputs are in `experiments/aws-r5/`, and the current reproduction tools are in
+`scripts/`. Earlier experiments, runners, and notes are separate under
+[`archive/`](archive/README.md); every retained study has an `EXPERIMENT.md`.
+
+RS list decoding in both the estimator and executable WHIR uses BCGM26 with
+`m=10` and radius `1 - (1 + 1/20) sqrt(rho)`. The shared affine MCA bound is
+`10.5^7 * n_RS^2 / (3 * rho^(3/2) * |F|)`; an s-coordinate multilinear fold
+incurs s such errors. See [Definition 9.1 and Theorem 9.2](https://eprint.iacr.org/2025/2051).
+Bolt's general-code systematic test retains Khatam, and unique-decoding paths
+retain their stronger bounds. The [regenerated 75-point estimates](results/paper_bcgm_m10/README.md)
+record the BCGM parameters separately from the historical AWS timings.
+
 ## The final five configurations
 
 Here `N` is the number of field elements per input polynomial, `eta` is the
@@ -110,7 +123,7 @@ use three-variable folds. Proof-minimizing estimates and timed components
 therefore have separately recorded parameters.
 
 The composed 128-bit soundness target is conditional on the protocol
-assumptions. WHIR uses Johnson parameters with a 136-bit local budget. Bolt
+assumptions. WHIR uses BCGM RS list-decoding parameters with a 136-bit local budget. Bolt
 assumes ensemble distance `gamma=0.013` over GF(2^256) and retains separate
 systematic and parity proximity analyses. See the
 [protocol and soundness notes](docs/experiment_bolt_max.md#arithmetic-and-soundness)
@@ -120,21 +133,43 @@ for these assumptions and the public-`H` scope.
 
 | Artifact | Contents |
 |---|---|
+| [Current 75-point estimates](results/paper_bcgm_m10/README.md) | Final proof sizes and verifier hashes using BCGM26 with `m=10`; no timings were rerun. |
 | [Main 70-point comparison](results/aws_i4i_optimized/comparison_iop_rounds_direct_digest.csv) | Final five configurations with sequential-round timing and corrected direct-digest hash accounting. The original Canopy timings still include the removed rehash; these timings have not been rerun. |
 | [Measured `N=2^30` extension](results/aws_i4i_n30_eta1/remote/comparison_iop_rounds.csv) | Five measured points at `eta=1`, using direct digest conversion throughout. |
 | [Bolt `N=2^22` recheck](results/aws_i4i_bolt_n22_recheck_20260917/remote/results/summary_iop_rounds.csv) | Repeated timing means for both Bolt configurations at all four input counts. |
 | [Bolt `N=2^24` recheck](results/aws_i4i_bolt_n24_recheck_20260917/remote/results/summary_iop_rounds.csv) | The corresponding repeated checks at `N=2^24`. |
-| [Reporting audit](results/aws_i4i_fair/README.md) | Commitment scheduling audit and the sequential-IOP reporting policy. |
+| [Reporting audit](archive/results/aws_i4i_fair/README.md) | Commitment scheduling audit and the sequential-IOP reporting policy. |
 
 Earlier full-length WHIR, Bolt `k/2` and full-block studies, and extrapolated
-local timing tables remain under `results/` as historical data. Their geometry,
-hash accounting, and hardware differ from the final suite. The
-[archived README](docs/archive/readme_legacy_experiments.md) documents older
-standalone-commitment and field experiments.
+local timing tables are under `archive/results/`. Their geometry, hash accounting,
+and hardware differ from the final suite. The GF(2^256) transition occurred on
+September 15–16, 2026: binary-field runs began September 15, and commit
+`3603dd8` first records the default-field switch on September 16 at 11:13 a.m.
+Eastern. Confirmed prime-field-era outputs were removed; the mixed-field binary
+pilot was retained. See the [archive index](archive/README.md) for the cutoff
+evidence and removal list.
 
 ## Reproduce the final suite
 
-Run from the repository root. The campaign runner requires Linux x86_64,
+Run from the repository root. Rust dependencies are locked in `Cargo.lock`;
+WHIR is vendored and Spongefish is pinned to a Git revision. Python runners use
+only the standard library. Install Rust through rustup, Python 3.10+, Git, and
+a C linker/build toolchain; the first Cargo build needs network access.
+
+The 75 proof-size and verifier-hash estimates are hardware independent and do
+not allocate the full input polynomials. Reproduce them locally first:
+
+```sh
+rustup toolchain install 1.92.0 --profile minimal
+python3 scripts/reproduce_estimates.py --output results/reproduce_estimates
+```
+
+This builds the four estimator executables with `--locked`, runs the main grid
+and `N=2^30` extension, and compares every exported field against the retained
+BCGM report. Commands, source/binary hashes, logs, and validation are saved in
+the fresh output directory. Add `--offline` after dependencies are cached.
+
+For measured timings, the campaign runner requires Linux x86_64,
 Rust 1.92.0, Cargo, Python 3.10+, and a C linker/build toolchain. Its supplied
 configuration targets the CPU allocation above and requires sufficient memory
 for the large workloads. The preflight checks enforce CPU affinity, native
@@ -170,6 +205,21 @@ Fresh builds already use direct digest conversion; the legacy correction script
 is only for the older 70-point dataset and must not be reapplied to these results.
 See the [campaign guide](experiments/aws-r5/README.md) for resource limits,
 per-job records, and source bundling.
+
+To repeat the balanced Bolt checks, run each check on that Linux host into a
+fresh directory. The first command builds and validates native binaries:
+
+```sh
+set -e
+python3 scripts/reproduce_bolt_recheck.py --log 22 --output results/reproduce_bolt_n22
+python3 scripts/reproduce_bolt_recheck.py --log 24 --output results/reproduce_bolt_n24 --skip-build
+```
+
+These checks use one discarded warmup and four measured repetitions at
+`eta=1,2,4,8`, alternating scheme order. Stored result directories are protected
+from use as reproduction outputs. New timings depend on the host and run
+conditions; the saved single-pass campaign still predates removal of the Canopy
+rehash and is not replaced by a current-source rerun.
 
 ## Code map
 
