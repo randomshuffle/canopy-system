@@ -1,0 +1,1593 @@
+{
+  "description": "Unmodified evidence selected from the completed October 28 campaign. Paths describe the original checkout; missing historical files were intentionally pruned.",
+  "files": {
+    "snark_comparison.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/snark_comparison.csv",
+      "sha256": "8796633c670ea20020d4179e58f5186f54b23498e85ffb2a8ce3dc013d36cc29"
+    },
+    "proof_sizes_and_hashes.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/proof_sizes_and_hashes.csv",
+      "sha256": "531cb6336d45a6349cac98f90374667190715da6bbcd7be87b252cdb81ece1e6"
+    },
+    "accumulation_comparison.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/accumulation_n24/accumulation_comparison.csv",
+      "sha256": "11ebaf21d15012b736cac21f0a5ea797d2c01aeefb47ede1799f46a23aea95af"
+    },
+    "provenance/native-build.json": {
+      "original_path": "results/aws_r7a_20261028/remote/native-build.json",
+      "sha256": "ee97145d07bb0a1feada5a3b7dbeb46d5ab6bcea4fbd84ef9a257dae1b5ca3d1"
+    },
+    "provenance/host.json": {
+      "original_path": "results/aws_r7a_20261028/remote/host.json",
+      "sha256": "086a1c4e5def0f6ef6aafbe54d6ae4e8357d31c73142ed8979be9e161229d73b"
+    },
+    "provenance/original-validation.json": {
+      "original_path": "results/aws_r7a_20261028/final-validation.json",
+      "sha256": "6de1633dfa7dd3a9f97ebdc6bd432ffae8a441d7f36149ec9df47bda7d5ca619"
+    },
+    "source.tar.gz": {
+      "original_path": "results/aws_r7a_20261028/canopy-r7a-source.tar.gz",
+      "sha256": "1d2d1e41d7297b0b58a34f2ee4c63688417e6d45295912a859d2a03a0e68676e"
+    },
+    "provenance/original-config.json": {
+      "original_path": "experiments/aws-r7a-20261028/config.json",
+      "sha256": "e55e617a7ed4e91f876fca65d47003a990081398be74dd5a72ec8a1b4c6f633c"
+    },
+    "estimates/n26/bolt/height_search.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/estimates/n26/bolt/height_search.csv",
+      "sha256": "9f29c22bbaf8f5eb69fb865cbc42ac1284a5a3ce054b4692b3558545e7aabe27"
+    },
+    "estimates/n26/bolt/proof_sizes.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/estimates/n26/bolt/proof_sizes.csv",
+      "sha256": "75ee3ebda635cb928be729159acd2632edb03a00f906d35587b355149d50cc03"
+    },
+    "estimates/n26/whir/fiat_shamir.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/estimates/n26/whir/fiat_shamir.csv",
+      "sha256": "d8ff826bef4c29c0cdcdde4f2076f5838f76b03a78ed6a8fe2e2d2c7ffa0e355"
+    },
+    "estimates/n26/whir/experiment3_vs_merkle_oracle_queries.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/estimates/n26/whir/experiment3_vs_merkle_oracle_queries.csv",
+      "sha256": "3130baa6ca613d88bf10c800ee077c80974ce5ab015792fa1382760eb4c85461"
+    },
+    "estimates/n26/whir/hybrid_parameter_grid.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/estimates/n26/whir/hybrid_parameter_grid.csv",
+      "sha256": "86e473ceec1ba97c8ee20c865775708240e2700a8ff4a222f4598e07b22bdbab"
+    },
+    "estimates/n26/whir/experiment3_vs_merkle_proof_sizes.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/estimates/n26/whir/experiment3_vs_merkle_proof_sizes.csv",
+      "sha256": "4a9acce38d607d7cb150e7b2673cd167557aea03186de7b0e595ef770b9521a0"
+    },
+    "estimates/n26/whir/rbr_security_breakdown.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/estimates/n26/whir/rbr_security_breakdown.csv",
+      "sha256": "184073669fcf6181bdd610f78506d0d7033fa04bbdc7a621b82ec43e590a7c57"
+    },
+    "estimates/n26/whir/hybrid_proof_sizes.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/estimates/n26/whir/hybrid_proof_sizes.csv",
+      "sha256": "4a9acce38d607d7cb150e7b2673cd167557aea03186de7b0e595ef770b9521a0"
+    },
+    "estimates/n26/whir/oracle_query_breakdown.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/estimates/n26/whir/oracle_query_breakdown.csv",
+      "sha256": "3130baa6ca613d88bf10c800ee077c80974ce5ab015792fa1382760eb4c85461"
+    },
+    "estimates/n28/bolt/height_search.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/estimates/n28/bolt/height_search.csv",
+      "sha256": "9321ff6089889e79e0799e26cd00781fbd7b4b1c4b2908ddca183e49ce442a49"
+    },
+    "estimates/n28/bolt/proof_sizes.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/estimates/n28/bolt/proof_sizes.csv",
+      "sha256": "c106a86c9906a12e0fb80648746b41fd739c8d0a759a34688d7ad5841a0258e3"
+    },
+    "estimates/n28/whir/fiat_shamir.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/estimates/n28/whir/fiat_shamir.csv",
+      "sha256": "d5bfdbe71a56dc8c6a64d81388f5de9934eb8cdd56df6883e8558d3169362614"
+    },
+    "estimates/n28/whir/experiment3_vs_merkle_oracle_queries.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/estimates/n28/whir/experiment3_vs_merkle_oracle_queries.csv",
+      "sha256": "57c55ccf43e47a9f8a8add6f53028d7983cd86eebaf92ffcaf70778bbd1b136f"
+    },
+    "estimates/n28/whir/hybrid_parameter_grid.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/estimates/n28/whir/hybrid_parameter_grid.csv",
+      "sha256": "ca864e7f2f3c0ec1a639fad6e99f97827ecd1d42d402abad2779a044db5292d0"
+    },
+    "estimates/n28/whir/experiment3_vs_merkle_proof_sizes.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/estimates/n28/whir/experiment3_vs_merkle_proof_sizes.csv",
+      "sha256": "6cfb04ed033149fb0dd3e2c99e777f84241317592fb0f75210dae61bce49bcab"
+    },
+    "estimates/n28/whir/rbr_security_breakdown.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/estimates/n28/whir/rbr_security_breakdown.csv",
+      "sha256": "b3f7073fd1ade03767e77ece9cf681711e993153ecebc5538337d1d6f58655e3"
+    },
+    "estimates/n28/whir/hybrid_proof_sizes.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/estimates/n28/whir/hybrid_proof_sizes.csv",
+      "sha256": "6cfb04ed033149fb0dd3e2c99e777f84241317592fb0f75210dae61bce49bcab"
+    },
+    "estimates/n28/whir/oracle_query_breakdown.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/estimates/n28/whir/oracle_query_breakdown.csv",
+      "sha256": "57c55ccf43e47a9f8a8add6f53028d7983cd86eebaf92ffcaf70778bbd1b136f"
+    },
+    "estimates/n30/bolt/height_search.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/estimates/n30/bolt/height_search.csv",
+      "sha256": "22a652c5d5f8d0d2f0d922bbbe55ae01a6cb57e7bf3dab895e6275e118301dff"
+    },
+    "estimates/n30/bolt/proof_sizes.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/estimates/n30/bolt/proof_sizes.csv",
+      "sha256": "8df7cf72c990742e6a31adc21fa05c0a841224b11e75b5bf5adf029f3c90c849"
+    },
+    "estimates/n30/whir/fiat_shamir.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/estimates/n30/whir/fiat_shamir.csv",
+      "sha256": "7c9faba3955482aa0fd1aada71b30b6796894cf4e3ecf42feeceb9a74decf913"
+    },
+    "estimates/n30/whir/experiment3_vs_merkle_oracle_queries.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/estimates/n30/whir/experiment3_vs_merkle_oracle_queries.csv",
+      "sha256": "ee073bcc961a5b8eab83eee34c73925d5432e26ddc4ac928d9618e1299468c31"
+    },
+    "estimates/n30/whir/hybrid_parameter_grid.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/estimates/n30/whir/hybrid_parameter_grid.csv",
+      "sha256": "a544272ed319b71127182b4445cd4007e9dad5f1b8bf0f1f8746cc145f40420c"
+    },
+    "estimates/n30/whir/experiment3_vs_merkle_proof_sizes.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/estimates/n30/whir/experiment3_vs_merkle_proof_sizes.csv",
+      "sha256": "6127eaab51123a67133caa00177a8cce69d93a3e8773f30f3a7bfc41ed55082c"
+    },
+    "estimates/n30/whir/rbr_security_breakdown.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/estimates/n30/whir/rbr_security_breakdown.csv",
+      "sha256": "5ae3aea1c97e8e30346d21962152d0023068b2f24623c943bf8c35a02e92df1f"
+    },
+    "estimates/n30/whir/hybrid_proof_sizes.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/estimates/n30/whir/hybrid_proof_sizes.csv",
+      "sha256": "6127eaab51123a67133caa00177a8cce69d93a3e8773f30f3a7bfc41ed55082c"
+    },
+    "estimates/n30/whir/oracle_query_breakdown.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/estimates/n30/whir/oracle_query_breakdown.csv",
+      "sha256": "ee073bcc961a5b8eab83eee34c73925d5432e26ddc4ac928d9618e1299468c31"
+    },
+    "estimates/n22/bolt/height_search.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/estimates/n22/bolt/height_search.csv",
+      "sha256": "23c9d7f552a23d537bd4a9e6c87a35b1f44cc87e75763cdd853faef045bb62d4"
+    },
+    "estimates/n22/bolt/proof_sizes.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/estimates/n22/bolt/proof_sizes.csv",
+      "sha256": "8bf251073974f3294263bdc40e61e97cb6bd818b027a4674ec984bffa2f09ccd"
+    },
+    "estimates/n22/whir/fiat_shamir.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/estimates/n22/whir/fiat_shamir.csv",
+      "sha256": "da5b0a8d83500a12a9ab99edb2770b9125270e796e1912db2ee15104be69ca00"
+    },
+    "estimates/n22/whir/experiment3_vs_merkle_oracle_queries.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/estimates/n22/whir/experiment3_vs_merkle_oracle_queries.csv",
+      "sha256": "4695720d72f817d6bed36e65d93b6610fe1d2591d99a169827d45b2ac0d9d058"
+    },
+    "estimates/n22/whir/hybrid_parameter_grid.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/estimates/n22/whir/hybrid_parameter_grid.csv",
+      "sha256": "43225f5795f22bbab6f28527627f0374910a6d096416ef9ae22c79a4c2072280"
+    },
+    "estimates/n22/whir/experiment3_vs_merkle_proof_sizes.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/estimates/n22/whir/experiment3_vs_merkle_proof_sizes.csv",
+      "sha256": "c9e2908395676c988844816d325a85756a3b202658d1da32074217276619cae6"
+    },
+    "estimates/n22/whir/rbr_security_breakdown.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/estimates/n22/whir/rbr_security_breakdown.csv",
+      "sha256": "24d7b519584d1ef881aeec20b63d33fe46270b287e965f861edabfddc92e24eb"
+    },
+    "estimates/n22/whir/hybrid_proof_sizes.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/estimates/n22/whir/hybrid_proof_sizes.csv",
+      "sha256": "c9e2908395676c988844816d325a85756a3b202658d1da32074217276619cae6"
+    },
+    "estimates/n22/whir/oracle_query_breakdown.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/estimates/n22/whir/oracle_query_breakdown.csv",
+      "sha256": "4695720d72f817d6bed36e65d93b6610fe1d2591d99a169827d45b2ac0d9d058"
+    },
+    "estimates/n24/bolt/height_search.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/estimates/n24/bolt/height_search.csv",
+      "sha256": "ee5ff305018cc8a624623d734678731f84f971aaa2e383064516b6e0ad9769a3"
+    },
+    "estimates/n24/bolt/proof_sizes.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/estimates/n24/bolt/proof_sizes.csv",
+      "sha256": "b76746825460448acf22f75e2ff08c57508c4c4211755fb3ad89642b6ea917d7"
+    },
+    "estimates/n24/whir/fiat_shamir.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/estimates/n24/whir/fiat_shamir.csv",
+      "sha256": "3b68e1e38b4d00e886056fe905318d598da87185747eb16a4e9be3aa7d93e432"
+    },
+    "estimates/n24/whir/experiment3_vs_merkle_oracle_queries.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/estimates/n24/whir/experiment3_vs_merkle_oracle_queries.csv",
+      "sha256": "ad2938c1897959985a9ef2bef466437b64415cba3d87c63683e4a45f1327907f"
+    },
+    "estimates/n24/whir/hybrid_parameter_grid.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/estimates/n24/whir/hybrid_parameter_grid.csv",
+      "sha256": "c1b8e3000b5251b6280ab87a687a4ad1810d8b73b35c08405f32b5fb05f967b0"
+    },
+    "estimates/n24/whir/experiment3_vs_merkle_proof_sizes.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/estimates/n24/whir/experiment3_vs_merkle_proof_sizes.csv",
+      "sha256": "952984bb2437b1b4c6277b10f819a16f9476c73176ee54fbb6f86606077372d3"
+    },
+    "estimates/n24/whir/rbr_security_breakdown.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/estimates/n24/whir/rbr_security_breakdown.csv",
+      "sha256": "4ef7b451e482174688b8bc6d72745320ebba601f56484efc536a55c695ee4991"
+    },
+    "estimates/n24/whir/hybrid_proof_sizes.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/estimates/n24/whir/hybrid_proof_sizes.csv",
+      "sha256": "952984bb2437b1b4c6277b10f819a16f9476c73176ee54fbb6f86606077372d3"
+    },
+    "estimates/n24/whir/oracle_query_breakdown.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/estimates/n24/whir/oracle_query_breakdown.csv",
+      "sha256": "ad2938c1897959985a9ef2bef466437b64415cba3d87c63683e4a45f1327907f"
+    },
+    "estimates/accumulation/estimates.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/accumulation_n24/estimates/accumulation/estimates.csv",
+      "sha256": "2768fa4317d3789e4fba4fa6296fd5a6a4c583d2ba7f85def55c788a0a5b6b79"
+    },
+    "estimates/accumulation/height_search.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/accumulation_n24/estimates/accumulation/height_search.csv",
+      "sha256": "ad53f41017093f95b4bdd967618fa81cb817c9ae8b125a90bb9e6d07bcd8e979"
+    },
+    "timings/t1_bolt_n22_eta1/run.log": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t1_bolt_n22_eta1/run.log",
+      "sha256": "4ba0c2616c566c45803aca52bc7f31700f1848b4a9ba75b604f83fdbdb179990"
+    },
+    "timings/t1_bolt_n22_eta1/process.json": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t1_bolt_n22_eta1/process.json",
+      "sha256": "d82b832b18906f43802496450c286b8200af3c8153e8956d3038287b862fe865"
+    },
+    "timings/t1_bolt_n22_eta1/prover_timing_stages.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t1_bolt_n22_eta1/prover_timing_stages.csv",
+      "sha256": "fc5b44e6a12c0dfa16227f99516ed8706170242f9752c67a13762bcd798e0285"
+    },
+    "timings/t1_bolt_n22_eta1/prover_timings.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t1_bolt_n22_eta1/prover_timings.csv",
+      "sha256": "b7ecb9f90bd1da17e5b43542eaa6851e55028e56b4668cceb3ef38ebcc7b4643"
+    },
+    "timings/t1_bolt_n22_eta2/run.log": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t1_bolt_n22_eta2/run.log",
+      "sha256": "4aed6a68a2b6939057a482d29b18263e758c43443c4015ba448c10be300a84b0"
+    },
+    "timings/t1_bolt_n22_eta2/process.json": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t1_bolt_n22_eta2/process.json",
+      "sha256": "3e35e9614c52abfe36855994550860f3315129acbb6fb673be0cf685d31ca6a2"
+    },
+    "timings/t1_bolt_n22_eta2/prover_timing_stages.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t1_bolt_n22_eta2/prover_timing_stages.csv",
+      "sha256": "1be617e95570c59c698ee13508305217eb4228e37f479872ef65db52afab4292"
+    },
+    "timings/t1_bolt_n22_eta2/prover_timings.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t1_bolt_n22_eta2/prover_timings.csv",
+      "sha256": "cabf6557519877e2406cb5ca49d79351e4d252b158963a4dab0a74fade6dfe26"
+    },
+    "timings/t1_bolt_n22_eta4/run.log": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t1_bolt_n22_eta4/run.log",
+      "sha256": "35017d196d931c86a0c4892b402dda0ba60d308e6fff0d6f541adedb0ba7fc67"
+    },
+    "timings/t1_bolt_n22_eta4/process.json": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t1_bolt_n22_eta4/process.json",
+      "sha256": "1945f1476a051831131c3ea2478f66e8c24219efc7fefdc0717cc7b713fa2328"
+    },
+    "timings/t1_bolt_n22_eta4/prover_timing_stages.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t1_bolt_n22_eta4/prover_timing_stages.csv",
+      "sha256": "1b67299f140d8f167e1efff16f563bea0a56b9019aabcefd840ad486ad4130cb"
+    },
+    "timings/t1_bolt_n22_eta4/prover_timings.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t1_bolt_n22_eta4/prover_timings.csv",
+      "sha256": "943f0112c021021feb1aa3a4a5c8486c4ac420e4315d9b466e7b0b7a62d8cadd"
+    },
+    "timings/t1_bolt_n22_eta8/run.log": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t1_bolt_n22_eta8/run.log",
+      "sha256": "749b8275b85ed9a9fad18a55f5f6850df6e0c271ae911654cc4a566876f5e11e"
+    },
+    "timings/t1_bolt_n22_eta8/process.json": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t1_bolt_n22_eta8/process.json",
+      "sha256": "7125168018d1cda37e7a50dda26af8368faa2c3e1e498aa4b9a53d7769329960"
+    },
+    "timings/t1_bolt_n22_eta8/prover_timing_stages.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t1_bolt_n22_eta8/prover_timing_stages.csv",
+      "sha256": "38e6e03200a8f361d0586490ea0ffc4c3ae6719c041fd8a3bd14b76e6a4b45e6"
+    },
+    "timings/t1_bolt_n22_eta8/prover_timings.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t1_bolt_n22_eta8/prover_timings.csv",
+      "sha256": "4a5bca2d7c358105f4ee516815922cdfb838fec97909dc7d639d10eaa3dd2450"
+    },
+    "timings/t1_bolt_n24_eta1/run.log": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t1_bolt_n24_eta1/run.log",
+      "sha256": "5d8e957db8a9d33cfa739a7418bd0ee061bd4ca6e26a92c5656c903cbcc63f5b"
+    },
+    "timings/t1_bolt_n24_eta1/process.json": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t1_bolt_n24_eta1/process.json",
+      "sha256": "ca394c0f8eac40f3bbe54eaa834d8b0f3746af04ce7e3dd33450eaec5142bc30"
+    },
+    "timings/t1_bolt_n24_eta1/prover_timing_stages.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t1_bolt_n24_eta1/prover_timing_stages.csv",
+      "sha256": "ffa3fa35264ddbef5a9f2d3d1732cfd52d737c61c49af36788413b26f47c62f7"
+    },
+    "timings/t1_bolt_n24_eta1/prover_timings.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t1_bolt_n24_eta1/prover_timings.csv",
+      "sha256": "2308a97dcb207bc0a2dbb9be51abf7140bab3c93827c1eddbf9ca730901ec694"
+    },
+    "timings/t1_bolt_n24_eta2/run.log": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t1_bolt_n24_eta2/run.log",
+      "sha256": "325eccc60a3a37db44ba2640ed269827a414c640402d99387174453b7ece3156"
+    },
+    "timings/t1_bolt_n24_eta2/process.json": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t1_bolt_n24_eta2/process.json",
+      "sha256": "a80a11b0916bcde38a07fc0f8aae748be309110618e10f70915ebd99bb6ac2fb"
+    },
+    "timings/t1_bolt_n24_eta2/prover_timing_stages.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t1_bolt_n24_eta2/prover_timing_stages.csv",
+      "sha256": "1b5eb7b65eedfe23d8a954a01cf9edd4737a107159bd815bc5113358b1828c1f"
+    },
+    "timings/t1_bolt_n24_eta2/prover_timings.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t1_bolt_n24_eta2/prover_timings.csv",
+      "sha256": "6212464d96d60d8c8701cc3321014bbd94cff9a09c53f28ac9b399348448644b"
+    },
+    "timings/t1_bolt_n24_eta4/run.log": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t1_bolt_n24_eta4/run.log",
+      "sha256": "2aa092ddf3fab46e1094d1db82d126ee700ad561328a17d8da6208e0bc879aa1"
+    },
+    "timings/t1_bolt_n24_eta4/process.json": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t1_bolt_n24_eta4/process.json",
+      "sha256": "7ef0184ca0d67fb3aefa6d911e13f29aa0b2930fb2694497daa0bf5829128bd3"
+    },
+    "timings/t1_bolt_n24_eta4/prover_timing_stages.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t1_bolt_n24_eta4/prover_timing_stages.csv",
+      "sha256": "906b51d5d573d6b41126e3b32adbd3a7cbc061e26f34c5f56e3be6c455b0115b"
+    },
+    "timings/t1_bolt_n24_eta4/prover_timings.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t1_bolt_n24_eta4/prover_timings.csv",
+      "sha256": "928bfdae6a0067bee7e12cc9aa0478488a59fbe6842cc1b41604f98e9ceef923"
+    },
+    "timings/t1_bolt_n24_eta8/run.log": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t1_bolt_n24_eta8/run.log",
+      "sha256": "cf48fecd8943416c6fd7afe0cd028a39d42a6d1d98f6c0b6e6d5c7c877ad3654"
+    },
+    "timings/t1_bolt_n24_eta8/process.json": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t1_bolt_n24_eta8/process.json",
+      "sha256": "92d78a150cad9520575c8bfb0f4e706a9c35dbc23a1e1bd893a54abf7c4c180a"
+    },
+    "timings/t1_bolt_n24_eta8/prover_timing_stages.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t1_bolt_n24_eta8/prover_timing_stages.csv",
+      "sha256": "5d8f145f6454614c0960921d7e7b4bce3d71266501f400dac258649f792bc54f"
+    },
+    "timings/t1_bolt_n24_eta8/prover_timings.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t1_bolt_n24_eta8/prover_timings.csv",
+      "sha256": "456b02b4f0b1a7e12e3333839d3e62ca3c071162bc8d073fcbd777f3143ebe7f"
+    },
+    "timings/t1_bolt_n26_eta1/run.log": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t1_bolt_n26_eta1/run.log",
+      "sha256": "9b45193189695cc04f8455bfed5c0f89ea790abffdbfeac082014fd7e0a239f5"
+    },
+    "timings/t1_bolt_n26_eta1/process.json": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t1_bolt_n26_eta1/process.json",
+      "sha256": "b69d6dbe94f6931108dea91cce33ce68c2188258d3dd6b0436f19cf8bee4dfb0"
+    },
+    "timings/t1_bolt_n26_eta1/prover_timing_stages.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t1_bolt_n26_eta1/prover_timing_stages.csv",
+      "sha256": "56285f8ab9e5cfbd6f3bd7314316327bf17a4a8cebdb5a39bb8bd5e964ce182f"
+    },
+    "timings/t1_bolt_n26_eta1/prover_timings.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t1_bolt_n26_eta1/prover_timings.csv",
+      "sha256": "a3653d0d194746d89d3cc6e3040ddcd973f124523311aa0542c94a2b4eafdab3"
+    },
+    "timings/t1_bolt_n26_eta2/run.log": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t1_bolt_n26_eta2/run.log",
+      "sha256": "ad9b1919cd08539c2e2614f4f1ee38eec3775cf562ba650271a6a89e6a35d78b"
+    },
+    "timings/t1_bolt_n26_eta2/process.json": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t1_bolt_n26_eta2/process.json",
+      "sha256": "54325735c737029691903c51a74eb380162d69aa2ab8cd9b9cb229efcfa3b77d"
+    },
+    "timings/t1_bolt_n26_eta2/prover_timing_stages.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t1_bolt_n26_eta2/prover_timing_stages.csv",
+      "sha256": "cbe7070f90d0f46495c6211388693c6a4a79df30a5ab74f7a378ac9513ac24fc"
+    },
+    "timings/t1_bolt_n26_eta2/prover_timings.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t1_bolt_n26_eta2/prover_timings.csv",
+      "sha256": "fa8984ea83d9a8924f60ce6f800b39a85eb680f945568688a219fff8e3ee92e3"
+    },
+    "timings/t1_bolt_n26_eta4/run.log": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t1_bolt_n26_eta4/run.log",
+      "sha256": "1c73e7d72f7e50dfd2ebce9c3689d09eb5198f6c58eb71a8cafe7da7a60b3189"
+    },
+    "timings/t1_bolt_n26_eta4/process.json": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t1_bolt_n26_eta4/process.json",
+      "sha256": "d3bfa968f2f05b33e713052ce58ab2a99c313d5f4cb5a21e9d0eb700fd6aae67"
+    },
+    "timings/t1_bolt_n26_eta4/prover_timing_stages.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t1_bolt_n26_eta4/prover_timing_stages.csv",
+      "sha256": "fec4aa64d06662acf2abbe5c15440c81b821edbe6db24a88c50defafb17f89d7"
+    },
+    "timings/t1_bolt_n26_eta4/prover_timings.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t1_bolt_n26_eta4/prover_timings.csv",
+      "sha256": "215f5603d9609d1c08321eab1c7399b8a988f74ba9d5f6938f9fc67bc0d221ca"
+    },
+    "timings/t1_bolt_n26_eta8/run.log": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t1_bolt_n26_eta8/run.log",
+      "sha256": "ee128680324fbadbd6c21b6147099b6af03f3a89bfc5b71f21d4e8434eaa20c5"
+    },
+    "timings/t1_bolt_n26_eta8/process.json": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t1_bolt_n26_eta8/process.json",
+      "sha256": "d1fc678400ee88b0c0b634119d088171855ad3831c5577768745d02690e90964"
+    },
+    "timings/t1_bolt_n26_eta8/prover_timing_stages.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t1_bolt_n26_eta8/prover_timing_stages.csv",
+      "sha256": "d4e2c27912a491125b3a619f222120c57c780aab657fd64540445f4223785fda"
+    },
+    "timings/t1_bolt_n26_eta8/prover_timings.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t1_bolt_n26_eta8/prover_timings.csv",
+      "sha256": "343e80b1d1653bec878afd696c565ec56135976623779a308a62527cd1ba0fcf"
+    },
+    "timings/t1_whir_n22_eta1/run.log": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t1_whir_n22_eta1/run.log",
+      "sha256": "4b0b7669a0d4a51fd81eeb5f2636b6a39d05a906b1669a9a45888c71ccb53e46"
+    },
+    "timings/t1_whir_n22_eta1/prover_timing_samples.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t1_whir_n22_eta1/prover_timing_samples.csv",
+      "sha256": "46f4820fd178cd78422a3928da3d7eff7d47f13ba9812b04f8981b71137bc23c"
+    },
+    "timings/t1_whir_n22_eta1/timing_method.json": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t1_whir_n22_eta1/timing_method.json",
+      "sha256": "fbc9cc9ef07bb5eef06aaac8c32253157e3556bb52e72396a37649a61ab3a8b9"
+    },
+    "timings/t1_whir_n22_eta1/process.json": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t1_whir_n22_eta1/process.json",
+      "sha256": "02732131a7860a93972a1a666e716193ccc363e88b292260586db96d64746c0e"
+    },
+    "timings/t1_whir_n22_eta1/prover_timing_stages.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t1_whir_n22_eta1/prover_timing_stages.csv",
+      "sha256": "a4277241d9c1b1ee5fc79313a65914ecb3219e6a9e9921cf989792846415f7af"
+    },
+    "timings/t1_whir_n22_eta1/prover_timings.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t1_whir_n22_eta1/prover_timings.csv",
+      "sha256": "88253b20a476aa1e6f18f609df2d8b7cd49a5e6691c4cb5b5f079d0b7fb5fa77"
+    },
+    "timings/t1_whir_n22_eta2/run.log": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t1_whir_n22_eta2/run.log",
+      "sha256": "2af3489170ae01fb0e84c9393168652fa2a01e37f2b91a0e672fc6e0516b1e35"
+    },
+    "timings/t1_whir_n22_eta2/prover_timing_samples.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t1_whir_n22_eta2/prover_timing_samples.csv",
+      "sha256": "947ee64dbdc718884d4f8a98aac79676f19b12e90662b6a735a366c9eea7f327"
+    },
+    "timings/t1_whir_n22_eta2/timing_method.json": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t1_whir_n22_eta2/timing_method.json",
+      "sha256": "fbc9cc9ef07bb5eef06aaac8c32253157e3556bb52e72396a37649a61ab3a8b9"
+    },
+    "timings/t1_whir_n22_eta2/process.json": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t1_whir_n22_eta2/process.json",
+      "sha256": "88b78b55550d777a1601ffbc2faddacc129374d19640baa973aff9b6136b8a4a"
+    },
+    "timings/t1_whir_n22_eta2/prover_timing_stages.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t1_whir_n22_eta2/prover_timing_stages.csv",
+      "sha256": "d4f34989675f0a87ec25bc4f13055ae3f17d0ad643aa2fe8ffa55bafe453fd4e"
+    },
+    "timings/t1_whir_n22_eta2/prover_timings.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t1_whir_n22_eta2/prover_timings.csv",
+      "sha256": "27def7f039f9dfe41110ba5c646e529e882ffefacc53d868989a5a14d3b5f7ff"
+    },
+    "timings/t1_whir_n22_eta4/run.log": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t1_whir_n22_eta4/run.log",
+      "sha256": "523affe5d81cd9da3adcfca5400f7b2213c98cd0802368189d23adba83ec293b"
+    },
+    "timings/t1_whir_n22_eta4/prover_timing_samples.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t1_whir_n22_eta4/prover_timing_samples.csv",
+      "sha256": "e2bdb7e66096fb12a35a08161864686062ac6b41f298f0f5a9f791157cefa970"
+    },
+    "timings/t1_whir_n22_eta4/timing_method.json": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t1_whir_n22_eta4/timing_method.json",
+      "sha256": "fbc9cc9ef07bb5eef06aaac8c32253157e3556bb52e72396a37649a61ab3a8b9"
+    },
+    "timings/t1_whir_n22_eta4/process.json": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t1_whir_n22_eta4/process.json",
+      "sha256": "e9ba0b06a8a866d969218ac50dce8ab75dbe470e300dc1bd4e3e17d2c7d5c626"
+    },
+    "timings/t1_whir_n22_eta4/prover_timing_stages.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t1_whir_n22_eta4/prover_timing_stages.csv",
+      "sha256": "8fba6a9dba397b3a575eda9681b1c9c5a2649c5db1a6b6b83668590c013ecf70"
+    },
+    "timings/t1_whir_n22_eta4/prover_timings.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t1_whir_n22_eta4/prover_timings.csv",
+      "sha256": "1b77994a88442a48c680b5422f80cc1c361ddb8483dc103f0665ef074a0ab0d1"
+    },
+    "timings/t1_whir_n22_eta8/run.log": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t1_whir_n22_eta8/run.log",
+      "sha256": "3bee776b6237f607946106c3e1769e999e8bd1c6a0147dd91bb24f50b5bd8f82"
+    },
+    "timings/t1_whir_n22_eta8/prover_timing_samples.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t1_whir_n22_eta8/prover_timing_samples.csv",
+      "sha256": "7f9b9d8c55f2730526908d2f40dc3229c808ea03a347a375f8e3572b5f1b7d6c"
+    },
+    "timings/t1_whir_n22_eta8/timing_method.json": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t1_whir_n22_eta8/timing_method.json",
+      "sha256": "fbc9cc9ef07bb5eef06aaac8c32253157e3556bb52e72396a37649a61ab3a8b9"
+    },
+    "timings/t1_whir_n22_eta8/process.json": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t1_whir_n22_eta8/process.json",
+      "sha256": "b0d37bd4a3a51b112165dbd08fb7d17eae66db7b5d80547e94dc982615b6e8b9"
+    },
+    "timings/t1_whir_n22_eta8/prover_timing_stages.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t1_whir_n22_eta8/prover_timing_stages.csv",
+      "sha256": "6bf6a5adabea5da3c2439eca68db999e4e17699e53d745fd91c5d84f34e6a59e"
+    },
+    "timings/t1_whir_n22_eta8/prover_timings.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t1_whir_n22_eta8/prover_timings.csv",
+      "sha256": "9326a7f41fbf2a2418ea8293bd5f77d01e8eba8824fa27b15af72ea11a594857"
+    },
+    "timings/t1_whir_n24_eta1/run.log": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t1_whir_n24_eta1/run.log",
+      "sha256": "494687dcdc7127217963b3f8e451fe7c5ea2518ab1e11d18426892bb5ef385c0"
+    },
+    "timings/t1_whir_n24_eta1/prover_timing_samples.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t1_whir_n24_eta1/prover_timing_samples.csv",
+      "sha256": "03c1cb7fd99a8576e59506d48858f8b00e6c8dd5eb5822cb19d73a215c422f30"
+    },
+    "timings/t1_whir_n24_eta1/timing_method.json": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t1_whir_n24_eta1/timing_method.json",
+      "sha256": "fbc9cc9ef07bb5eef06aaac8c32253157e3556bb52e72396a37649a61ab3a8b9"
+    },
+    "timings/t1_whir_n24_eta1/process.json": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t1_whir_n24_eta1/process.json",
+      "sha256": "a3c7759df8e5446b247604ed04a2d8e94eec7c6f62593f2776f8813b13d824f5"
+    },
+    "timings/t1_whir_n24_eta1/prover_timing_stages.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t1_whir_n24_eta1/prover_timing_stages.csv",
+      "sha256": "05afd901a975fa0497ca0fc422e3c590ad185ee97edd88fb1643bc6410547ace"
+    },
+    "timings/t1_whir_n24_eta1/prover_timings.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t1_whir_n24_eta1/prover_timings.csv",
+      "sha256": "f4b265e16cc48186fc9b6ab1bd6b742e0de08f975628c4cf34494daf92c6a4e9"
+    },
+    "timings/t1_whir_n24_eta2/run.log": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t1_whir_n24_eta2/run.log",
+      "sha256": "fb392537be5588e4dd44eb9a02159758cadb51f07318433641f37f9e3ac35f9a"
+    },
+    "timings/t1_whir_n24_eta2/prover_timing_samples.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t1_whir_n24_eta2/prover_timing_samples.csv",
+      "sha256": "f6c7d912edad22db74bb543f2eb4daf27ac1a3c669c2d9cd20c4dd01c13e2d2c"
+    },
+    "timings/t1_whir_n24_eta2/timing_method.json": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t1_whir_n24_eta2/timing_method.json",
+      "sha256": "fbc9cc9ef07bb5eef06aaac8c32253157e3556bb52e72396a37649a61ab3a8b9"
+    },
+    "timings/t1_whir_n24_eta2/process.json": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t1_whir_n24_eta2/process.json",
+      "sha256": "224d04bf584155372fa56ee0cedebe8ccc993123e6c42288bc713c6289acdca8"
+    },
+    "timings/t1_whir_n24_eta2/prover_timing_stages.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t1_whir_n24_eta2/prover_timing_stages.csv",
+      "sha256": "d6a65450c210dfb03284f6735000db72b95cc16762f70be8e842bdddd0206a74"
+    },
+    "timings/t1_whir_n24_eta2/prover_timings.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t1_whir_n24_eta2/prover_timings.csv",
+      "sha256": "cddf4b051eb5b643cf9820a94fd4497b70480a1684d98997582bcc902fe5b78e"
+    },
+    "timings/t1_whir_n24_eta4/run.log": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t1_whir_n24_eta4/run.log",
+      "sha256": "b65cf8eec01c6abf4e2ab087817265d8662750fe74c1e9c9317f1610114f820a"
+    },
+    "timings/t1_whir_n24_eta4/prover_timing_samples.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t1_whir_n24_eta4/prover_timing_samples.csv",
+      "sha256": "c08e2f2ba86f5ea147d6559d0a79da3dcc08d671399b41151235f4cc957df7a6"
+    },
+    "timings/t1_whir_n24_eta4/timing_method.json": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t1_whir_n24_eta4/timing_method.json",
+      "sha256": "fbc9cc9ef07bb5eef06aaac8c32253157e3556bb52e72396a37649a61ab3a8b9"
+    },
+    "timings/t1_whir_n24_eta4/process.json": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t1_whir_n24_eta4/process.json",
+      "sha256": "73a47bbcda645b6825d73c3660fa87b6570fcb20e3532c3df8a730e544208366"
+    },
+    "timings/t1_whir_n24_eta4/prover_timing_stages.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t1_whir_n24_eta4/prover_timing_stages.csv",
+      "sha256": "2c05b86f49b3f1e5d7d099fcc4291bc96de0e2af54748dba9b319004ef71514f"
+    },
+    "timings/t1_whir_n24_eta4/prover_timings.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t1_whir_n24_eta4/prover_timings.csv",
+      "sha256": "228ceeb9729d1c510f7e1a0059044e6e141e8b313d577a35e75b046401b04d46"
+    },
+    "timings/t1_whir_n24_eta8/run.log": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t1_whir_n24_eta8/run.log",
+      "sha256": "93412717240626ea7f946d8595d520ca6f1277cb4d62aefab1cb024954147aa8"
+    },
+    "timings/t1_whir_n24_eta8/prover_timing_samples.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t1_whir_n24_eta8/prover_timing_samples.csv",
+      "sha256": "21f221e07340665f86a8b84f604eaf1828d464f29816f73a4be778a6ae81e116"
+    },
+    "timings/t1_whir_n24_eta8/timing_method.json": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t1_whir_n24_eta8/timing_method.json",
+      "sha256": "fbc9cc9ef07bb5eef06aaac8c32253157e3556bb52e72396a37649a61ab3a8b9"
+    },
+    "timings/t1_whir_n24_eta8/process.json": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t1_whir_n24_eta8/process.json",
+      "sha256": "9a474fb2d695c051d0f929889d450b8b272cce06598f77135962c93b3c790b8d"
+    },
+    "timings/t1_whir_n24_eta8/prover_timing_stages.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t1_whir_n24_eta8/prover_timing_stages.csv",
+      "sha256": "50cdca117901f40adedb981e30ef7845f09cdb5496d715fce5db4e3d031366f0"
+    },
+    "timings/t1_whir_n24_eta8/prover_timings.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t1_whir_n24_eta8/prover_timings.csv",
+      "sha256": "1fdb9845d70227f05725f918896bb786039b6196dc0fc4ba114b7f04bf30cba1"
+    },
+    "timings/t1_whir_n26_eta1/run.log": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t1_whir_n26_eta1/run.log",
+      "sha256": "25e51d418a43c42786359ac7d1c244098c90bed9f7296f77ec7807ad22be28fe"
+    },
+    "timings/t1_whir_n26_eta1/prover_timing_samples.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t1_whir_n26_eta1/prover_timing_samples.csv",
+      "sha256": "b0d0aea0dc2cc0b15a4c67ea28e067cbc43d41bb46f7550ad5e36afa2a265489"
+    },
+    "timings/t1_whir_n26_eta1/timing_method.json": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t1_whir_n26_eta1/timing_method.json",
+      "sha256": "fbc9cc9ef07bb5eef06aaac8c32253157e3556bb52e72396a37649a61ab3a8b9"
+    },
+    "timings/t1_whir_n26_eta1/process.json": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t1_whir_n26_eta1/process.json",
+      "sha256": "77f0b9a27ea893af2487970d147fe06841e4de1af4a06fe3077450b590af0f09"
+    },
+    "timings/t1_whir_n26_eta1/prover_timing_stages.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t1_whir_n26_eta1/prover_timing_stages.csv",
+      "sha256": "0c4694780cf5e4c4897f49debf312b176c31daf78defb52999d6fa5fe427dd8f"
+    },
+    "timings/t1_whir_n26_eta1/prover_timings.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t1_whir_n26_eta1/prover_timings.csv",
+      "sha256": "b621784dc62062f1cb3f5754dce61141b84b646d911cec29433dbb852e28c1e3"
+    },
+    "timings/t1_whir_n26_eta2/run.log": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t1_whir_n26_eta2/run.log",
+      "sha256": "87a40fb54466d3ff999c2331f02f31b0560f696522f5df612dd60cb409700c87"
+    },
+    "timings/t1_whir_n26_eta2/prover_timing_samples.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t1_whir_n26_eta2/prover_timing_samples.csv",
+      "sha256": "9e752bfc0617c278feb781a1a1132e9e6056657c7a835e29b7c53e9fdd165020"
+    },
+    "timings/t1_whir_n26_eta2/timing_method.json": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t1_whir_n26_eta2/timing_method.json",
+      "sha256": "fbc9cc9ef07bb5eef06aaac8c32253157e3556bb52e72396a37649a61ab3a8b9"
+    },
+    "timings/t1_whir_n26_eta2/process.json": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t1_whir_n26_eta2/process.json",
+      "sha256": "8eba35a71d5e1402575574ad0b29d53991010088b42634ae20afce5d2106a396"
+    },
+    "timings/t1_whir_n26_eta2/prover_timing_stages.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t1_whir_n26_eta2/prover_timing_stages.csv",
+      "sha256": "76b99c3ec5d0d759c8b9fe01605e8f053e934bc44b8a2ad729be1c5d0cf35f3d"
+    },
+    "timings/t1_whir_n26_eta2/prover_timings.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t1_whir_n26_eta2/prover_timings.csv",
+      "sha256": "edfbe8906fd93652a61bc41f9129937846607e4f3f03897a14f83e40d3366839"
+    },
+    "timings/t1_whir_n26_eta4/run.log": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t1_whir_n26_eta4/run.log",
+      "sha256": "4826be05572fa8fe135188900f3b14d8d7245a853697554b172b751dbecfce8f"
+    },
+    "timings/t1_whir_n26_eta4/prover_timing_samples.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t1_whir_n26_eta4/prover_timing_samples.csv",
+      "sha256": "d16f2505cef5ee5aa61a5d2d88356700c2ecb9d55fa0d826289cab8cea08fada"
+    },
+    "timings/t1_whir_n26_eta4/timing_method.json": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t1_whir_n26_eta4/timing_method.json",
+      "sha256": "fbc9cc9ef07bb5eef06aaac8c32253157e3556bb52e72396a37649a61ab3a8b9"
+    },
+    "timings/t1_whir_n26_eta4/process.json": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t1_whir_n26_eta4/process.json",
+      "sha256": "d0878df9b13470a3f6cd56acef20e849ef2c592fcbe99b1991c43037516e3604"
+    },
+    "timings/t1_whir_n26_eta4/prover_timing_stages.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t1_whir_n26_eta4/prover_timing_stages.csv",
+      "sha256": "690ee4d7d064eb2589d10f4a25f7d87d7141ecd6b7c8db37479ba36312564332"
+    },
+    "timings/t1_whir_n26_eta4/prover_timings.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t1_whir_n26_eta4/prover_timings.csv",
+      "sha256": "a285bcb695f1748b7f11e4cdc702c5e2b85b337f3ffe8d2505f64e930ed157dc"
+    },
+    "timings/t1_whir_n26_eta8/run.log": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t1_whir_n26_eta8/run.log",
+      "sha256": "ce09576914d933c4ae8812c17d245785581dd6ee575954cd7c75724ec0b1abcc"
+    },
+    "timings/t1_whir_n26_eta8/prover_timing_samples.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t1_whir_n26_eta8/prover_timing_samples.csv",
+      "sha256": "daa7f798dece9c542048977a2c5b739e6072b42b885f90a649d2f7dba5ce4c06"
+    },
+    "timings/t1_whir_n26_eta8/timing_method.json": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t1_whir_n26_eta8/timing_method.json",
+      "sha256": "fbc9cc9ef07bb5eef06aaac8c32253157e3556bb52e72396a37649a61ab3a8b9"
+    },
+    "timings/t1_whir_n26_eta8/process.json": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t1_whir_n26_eta8/process.json",
+      "sha256": "bab274367c86ad0403bbbea3ff21b60fbb670931880dc8dda53fea89af55a76a"
+    },
+    "timings/t1_whir_n26_eta8/prover_timing_stages.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t1_whir_n26_eta8/prover_timing_stages.csv",
+      "sha256": "cc88f8a2822f77937390b2b0b76d3f94a74a505a8b6960f0c247de4c322c2fe1"
+    },
+    "timings/t1_whir_n26_eta8/prover_timings.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t1_whir_n26_eta8/prover_timings.csv",
+      "sha256": "e520b636552838c09c2fd61832d4c74e63754afb55c59801bdfd8790e418bf2c"
+    },
+    "timings/t32_bolt_n22_eta1/run.log": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_bolt_n22_eta1/run.log",
+      "sha256": "4ba0c2616c566c45803aca52bc7f31700f1848b4a9ba75b604f83fdbdb179990"
+    },
+    "timings/t32_bolt_n22_eta1/process.json": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_bolt_n22_eta1/process.json",
+      "sha256": "28f3803d54d0f8bcfbb6865159e18f44db578149b9477cf38502cbbf7a5e60b6"
+    },
+    "timings/t32_bolt_n22_eta1/prover_timing_stages.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_bolt_n22_eta1/prover_timing_stages.csv",
+      "sha256": "bcc1466f253dd47c5ab6a52c22a458413c94faab96234885f093152e4686c8ee"
+    },
+    "timings/t32_bolt_n22_eta1/prover_timings.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_bolt_n22_eta1/prover_timings.csv",
+      "sha256": "a7c6ff2a3c197a886a1a6b33cbf221cc880409605ea5b2c57098ccc36816789f"
+    },
+    "timings/t32_bolt_n22_eta2/run.log": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_bolt_n22_eta2/run.log",
+      "sha256": "4aed6a68a2b6939057a482d29b18263e758c43443c4015ba448c10be300a84b0"
+    },
+    "timings/t32_bolt_n22_eta2/process.json": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_bolt_n22_eta2/process.json",
+      "sha256": "0af81dfe3439fe775601efcd35cf28269639ad8ba9a3eeda740b956fffd8a370"
+    },
+    "timings/t32_bolt_n22_eta2/prover_timing_stages.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_bolt_n22_eta2/prover_timing_stages.csv",
+      "sha256": "ec57f95454d159e61c2c2a8db9e7fdd91962564897e331b32004119f3cc43a42"
+    },
+    "timings/t32_bolt_n22_eta2/prover_timings.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_bolt_n22_eta2/prover_timings.csv",
+      "sha256": "c4c2a9efcdd16f4af7bcc1693bc69bb083e9c4de1d9012eb0f586380bb4be067"
+    },
+    "timings/t32_bolt_n22_eta4/run.log": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_bolt_n22_eta4/run.log",
+      "sha256": "35017d196d931c86a0c4892b402dda0ba60d308e6fff0d6f541adedb0ba7fc67"
+    },
+    "timings/t32_bolt_n22_eta4/process.json": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_bolt_n22_eta4/process.json",
+      "sha256": "1032c620640d9d83f8ac62be02490e04884511eb907cac57c0d566d911172221"
+    },
+    "timings/t32_bolt_n22_eta4/prover_timing_stages.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_bolt_n22_eta4/prover_timing_stages.csv",
+      "sha256": "4000bcbb708f07041bed4417f5424fcef6133d513f8fca2f248c9f159072507e"
+    },
+    "timings/t32_bolt_n22_eta4/prover_timings.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_bolt_n22_eta4/prover_timings.csv",
+      "sha256": "c405dd7b1b34b9c6001086417556788b367ed347b8300be38885644685c57f63"
+    },
+    "timings/t32_bolt_n22_eta8/run.log": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_bolt_n22_eta8/run.log",
+      "sha256": "fe594323a95c8c473f36b08793ff54eb590dea3d18ccd1a6edeee29d104e1624"
+    },
+    "timings/t32_bolt_n22_eta8/process.json": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_bolt_n22_eta8/process.json",
+      "sha256": "ba11d440aa0c89589265a316f302c1924b78fb60161ef4455e29ea03901e50f9"
+    },
+    "timings/t32_bolt_n22_eta8/prover_timing_stages.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_bolt_n22_eta8/prover_timing_stages.csv",
+      "sha256": "ea3e7d6ddc971709c3e26786d7e2f589c6f2ad908d22a68300751f62994875b2"
+    },
+    "timings/t32_bolt_n22_eta8/prover_timings.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_bolt_n22_eta8/prover_timings.csv",
+      "sha256": "44923d48987c5ad142e7eaab827e6ad808711e7002f66534f8744caf4b271512"
+    },
+    "timings/t32_bolt_n24_eta1/run.log": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_bolt_n24_eta1/run.log",
+      "sha256": "5d8e957db8a9d33cfa739a7418bd0ee061bd4ca6e26a92c5656c903cbcc63f5b"
+    },
+    "timings/t32_bolt_n24_eta1/process.json": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_bolt_n24_eta1/process.json",
+      "sha256": "22eb28b6de1bfce6c9466b82cedd3b73468ef69fa117df34f93477e03e10a3fc"
+    },
+    "timings/t32_bolt_n24_eta1/prover_timing_stages.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_bolt_n24_eta1/prover_timing_stages.csv",
+      "sha256": "b17f1567f9f8480fa22672cb62b5bb364f867ec1434563306b8d0f67e98920b5"
+    },
+    "timings/t32_bolt_n24_eta1/prover_timings.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_bolt_n24_eta1/prover_timings.csv",
+      "sha256": "2b7e60d948b9aa619d1db8924682bc0e84154b1b3cbba91fc6004d4818eeaec7"
+    },
+    "timings/t32_bolt_n24_eta2/run.log": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_bolt_n24_eta2/run.log",
+      "sha256": "325eccc60a3a37db44ba2640ed269827a414c640402d99387174453b7ece3156"
+    },
+    "timings/t32_bolt_n24_eta2/process.json": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_bolt_n24_eta2/process.json",
+      "sha256": "0f7255beb4fd9e0697a2f7e605164d60378ae5eb0d353875695e38de892c6910"
+    },
+    "timings/t32_bolt_n24_eta2/prover_timing_stages.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_bolt_n24_eta2/prover_timing_stages.csv",
+      "sha256": "6dfe936786ce195e9c0297a2497a37b37925326ea861088523ef963edd513667"
+    },
+    "timings/t32_bolt_n24_eta2/prover_timings.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_bolt_n24_eta2/prover_timings.csv",
+      "sha256": "650451a6861bb4e68e48641d7cdbddd79b7f68631077557ddde87993dd495f8c"
+    },
+    "timings/t32_bolt_n24_eta4/run.log": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_bolt_n24_eta4/run.log",
+      "sha256": "2aa092ddf3fab46e1094d1db82d126ee700ad561328a17d8da6208e0bc879aa1"
+    },
+    "timings/t32_bolt_n24_eta4/process.json": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_bolt_n24_eta4/process.json",
+      "sha256": "5882d8df544aed6dd9061d6f3666258cdfef5ee9ff7fd43dbec7f05d663e1be1"
+    },
+    "timings/t32_bolt_n24_eta4/prover_timing_stages.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_bolt_n24_eta4/prover_timing_stages.csv",
+      "sha256": "f413eb6c33188c8b62a75fc55d2e617ba48cb55b81495603f876303d07eb6972"
+    },
+    "timings/t32_bolt_n24_eta4/prover_timings.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_bolt_n24_eta4/prover_timings.csv",
+      "sha256": "ec888d2bc706a5036ad8db744e1561c0737be1ad69afa9c6dad7f6af13a98ad1"
+    },
+    "timings/t32_bolt_n24_eta8/run.log": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_bolt_n24_eta8/run.log",
+      "sha256": "cf48fecd8943416c6fd7afe0cd028a39d42a6d1d98f6c0b6e6d5c7c877ad3654"
+    },
+    "timings/t32_bolt_n24_eta8/process.json": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_bolt_n24_eta8/process.json",
+      "sha256": "0c3d298454506510237456f3696bf764c3ba686e15c77964da86a21f0dc0a0bb"
+    },
+    "timings/t32_bolt_n24_eta8/prover_timing_stages.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_bolt_n24_eta8/prover_timing_stages.csv",
+      "sha256": "3523789a3e216795e882676b2e315ddd401f3d4bc59fab8c32020bab58cd1d37"
+    },
+    "timings/t32_bolt_n24_eta8/prover_timings.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_bolt_n24_eta8/prover_timings.csv",
+      "sha256": "be23427c794290a25b187e84ecef4e4845e785237fd38d71c065989dad989161"
+    },
+    "timings/t32_bolt_n26_eta1/run.log": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_bolt_n26_eta1/run.log",
+      "sha256": "9b45193189695cc04f8455bfed5c0f89ea790abffdbfeac082014fd7e0a239f5"
+    },
+    "timings/t32_bolt_n26_eta1/process.json": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_bolt_n26_eta1/process.json",
+      "sha256": "c4075492dc3fc497a982a02571ddda1c88d51f671773dc8c354bed5e90228b01"
+    },
+    "timings/t32_bolt_n26_eta1/prover_timing_stages.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_bolt_n26_eta1/prover_timing_stages.csv",
+      "sha256": "78429203cd7fba919413d5f2043c05a03155adaf4bf16e858ac5ac0c5f643cb9"
+    },
+    "timings/t32_bolt_n26_eta1/prover_timings.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_bolt_n26_eta1/prover_timings.csv",
+      "sha256": "8448d8ea9601cbdf215a60148ae45d7e6e35efb71e0656841383f0fbe4cd7269"
+    },
+    "timings/t32_bolt_n26_eta2/run.log": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_bolt_n26_eta2/run.log",
+      "sha256": "ad9b1919cd08539c2e2614f4f1ee38eec3775cf562ba650271a6a89e6a35d78b"
+    },
+    "timings/t32_bolt_n26_eta2/process.json": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_bolt_n26_eta2/process.json",
+      "sha256": "aaee6e422faa1cdbea284cacf7a82ff3e1a68bf9c84d4192f2b789c42225f031"
+    },
+    "timings/t32_bolt_n26_eta2/prover_timing_stages.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_bolt_n26_eta2/prover_timing_stages.csv",
+      "sha256": "03cc96bc5f206259b27267ca33e66ef84a2932a2c98b8b66517f21dc5bfb56e5"
+    },
+    "timings/t32_bolt_n26_eta2/prover_timings.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_bolt_n26_eta2/prover_timings.csv",
+      "sha256": "cc48b157c8693b56fe931bc926dcce28fbd5b21a7d8f12e6b85f126144f8cf73"
+    },
+    "timings/t32_bolt_n26_eta4/run.log": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_bolt_n26_eta4/run.log",
+      "sha256": "1c73e7d72f7e50dfd2ebce9c3689d09eb5198f6c58eb71a8cafe7da7a60b3189"
+    },
+    "timings/t32_bolt_n26_eta4/process.json": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_bolt_n26_eta4/process.json",
+      "sha256": "1fe82bb0334296bb2245d8b8713680106a118f44f016c66bbe0e859809a6b5ba"
+    },
+    "timings/t32_bolt_n26_eta4/prover_timing_stages.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_bolt_n26_eta4/prover_timing_stages.csv",
+      "sha256": "5d264cd3219146117bce4eba39f91deb9f6d7410aa700be67763f162483d996c"
+    },
+    "timings/t32_bolt_n26_eta4/prover_timings.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_bolt_n26_eta4/prover_timings.csv",
+      "sha256": "4cca2e91a9aca4ab3e6048b04d2129c3534f2ddc821a89fc320833b1a5091c91"
+    },
+    "timings/t32_bolt_n26_eta8/run.log": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_bolt_n26_eta8/run.log",
+      "sha256": "ee128680324fbadbd6c21b6147099b6af03f3a89bfc5b71f21d4e8434eaa20c5"
+    },
+    "timings/t32_bolt_n26_eta8/process.json": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_bolt_n26_eta8/process.json",
+      "sha256": "369582744684c14c1514af4672e061306e7520e449fb9c5dfa79e9afd08e763e"
+    },
+    "timings/t32_bolt_n26_eta8/prover_timing_stages.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_bolt_n26_eta8/prover_timing_stages.csv",
+      "sha256": "c5226298dc194f341aa27d96d2c3f09d59e345c27c73cc35f0ebc102d76be20b"
+    },
+    "timings/t32_bolt_n26_eta8/prover_timings.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_bolt_n26_eta8/prover_timings.csv",
+      "sha256": "a0202248025141e6b6f82e7dd8a27400d4720733bc9de57de6a7023e66634c5f"
+    },
+    "timings/t32_bolt_n28_eta1/run.log": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_bolt_n28_eta1/run.log",
+      "sha256": "32a5c454a319418206c9b10a3d1cafeffc59a372db46c8cee011cf0545f44676"
+    },
+    "timings/t32_bolt_n28_eta1/process.json": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_bolt_n28_eta1/process.json",
+      "sha256": "07a5865de84da07a4ce183d668f0803d2f8640bc3bb7083eeed1fc5606e38646"
+    },
+    "timings/t32_bolt_n28_eta1/prover_timing_stages.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_bolt_n28_eta1/prover_timing_stages.csv",
+      "sha256": "2f18df595c5e7c90385096650610a8f525c5f9cdf25aafa7f5eec5d0288a4449"
+    },
+    "timings/t32_bolt_n28_eta1/prover_timings.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_bolt_n28_eta1/prover_timings.csv",
+      "sha256": "578a3fa329a6f99594efebea59dc226c57c6b76ea75cef23037fdf5e04cc756b"
+    },
+    "timings/t32_bolt_n28_eta2/run.log": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_bolt_n28_eta2/run.log",
+      "sha256": "a4111a1715b8d97b8b1dd6c0e4a404ed5f8d3f3cafbf3e7fb1a9c47f2ecc6b7b"
+    },
+    "timings/t32_bolt_n28_eta2/process.json": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_bolt_n28_eta2/process.json",
+      "sha256": "ed980bfb8ea706f434fb58e3d2dc5df47063a3a1a0865c6746b7445a44562f5e"
+    },
+    "timings/t32_bolt_n28_eta2/prover_timing_stages.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_bolt_n28_eta2/prover_timing_stages.csv",
+      "sha256": "398217d6a359f24aa8f39355dd35a61ff9a312f70366eb9b83e6980e956f330c"
+    },
+    "timings/t32_bolt_n28_eta2/prover_timings.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_bolt_n28_eta2/prover_timings.csv",
+      "sha256": "53a4edddd75a0d3e2621374c4a9658b3888cf8a28b373ae6142b9c72f77b7ca7"
+    },
+    "timings/t32_bolt_n30_eta1/run.log": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_bolt_n30_eta1/run.log",
+      "sha256": "6e9ac749ee2dfe4a032c711826cb383713aa96a590b5f90912ee0261242ce8e0"
+    },
+    "timings/t32_bolt_n30_eta1/process.json": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_bolt_n30_eta1/process.json",
+      "sha256": "edb9a2535b1053a3d0ae9e37d19fa7ae9e5e0f1477c4ac8a50a8ddc6d4f120c6"
+    },
+    "timings/t32_bolt_n30_eta1/prover_timing_stages.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_bolt_n30_eta1/prover_timing_stages.csv",
+      "sha256": "f4df1af89430b20e42a92a75b010d915a5b73a05bc27553068947c119942fa3a"
+    },
+    "timings/t32_bolt_n30_eta1/prover_timings.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_bolt_n30_eta1/prover_timings.csv",
+      "sha256": "8d30b68824843109c5d3d2f91281de6d63f03ed343a13e0727eef5dcb6e17d77"
+    },
+    "timings/t32_whir_n22_eta1/run.log": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_whir_n22_eta1/run.log",
+      "sha256": "120079af36628939f8f87482a0d74bc779e599e8ce1de3c96f4ee9bc8aa2a5f0"
+    },
+    "timings/t32_whir_n22_eta1/prover_timing_samples.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_whir_n22_eta1/prover_timing_samples.csv",
+      "sha256": "23e6d0e931188ffa9e5c98f417b30efeb228919a191351196db495a52804118b"
+    },
+    "timings/t32_whir_n22_eta1/timing_method.json": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_whir_n22_eta1/timing_method.json",
+      "sha256": "a519de6fe6474ed179b52e48df3fe5734def35123cd51d64c49b722a45cbffa1"
+    },
+    "timings/t32_whir_n22_eta1/process.json": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_whir_n22_eta1/process.json",
+      "sha256": "a004b10b892163bed516d1631e60c8cb2dd76798f7db8770e171397395398fa1"
+    },
+    "timings/t32_whir_n22_eta1/prover_timing_stages.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_whir_n22_eta1/prover_timing_stages.csv",
+      "sha256": "105e791ebd0061eb571bcca613d372600619883b30c4631361df123b74f78b24"
+    },
+    "timings/t32_whir_n22_eta1/prover_timings.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_whir_n22_eta1/prover_timings.csv",
+      "sha256": "c8429618c33b3c08baafc79628f61ea539923d7297ababfd61d4a7c7cafe58e5"
+    },
+    "timings/t32_whir_n22_eta2/run.log": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_whir_n22_eta2/run.log",
+      "sha256": "d77ba9532fbe8eab63d8839943c253d50ae107af63a34786243e9a5e32ee83a0"
+    },
+    "timings/t32_whir_n22_eta2/prover_timing_samples.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_whir_n22_eta2/prover_timing_samples.csv",
+      "sha256": "1a7954c2c951ca5201c9970ec28afa262909ddbbe15e0848275d28002bc4bd9c"
+    },
+    "timings/t32_whir_n22_eta2/timing_method.json": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_whir_n22_eta2/timing_method.json",
+      "sha256": "a519de6fe6474ed179b52e48df3fe5734def35123cd51d64c49b722a45cbffa1"
+    },
+    "timings/t32_whir_n22_eta2/process.json": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_whir_n22_eta2/process.json",
+      "sha256": "62c72d5519d240c0f8c38b5e46e6dc0e57e9c3ad3b1017ec29ddf5eafeaf6d0e"
+    },
+    "timings/t32_whir_n22_eta2/prover_timing_stages.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_whir_n22_eta2/prover_timing_stages.csv",
+      "sha256": "ac56ea9e7324bfe1bd76e32c2279bbbfac963ac3266fc6d3d004f88bca594206"
+    },
+    "timings/t32_whir_n22_eta2/prover_timings.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_whir_n22_eta2/prover_timings.csv",
+      "sha256": "ebde1de8c2030c6d543ebcfcbc383ea3467f87cd12de67581f8712b77277ca71"
+    },
+    "timings/t32_whir_n22_eta4/run.log": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_whir_n22_eta4/run.log",
+      "sha256": "e3141d95ab8707bb1f0616bcaad7e5203019cf2f5076c686b0a73fff82a6bad6"
+    },
+    "timings/t32_whir_n22_eta4/prover_timing_samples.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_whir_n22_eta4/prover_timing_samples.csv",
+      "sha256": "4a511b4bde44cdb433f0e9fea06b012cd15dfd247fb23a320df2338a81cdf0e5"
+    },
+    "timings/t32_whir_n22_eta4/timing_method.json": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_whir_n22_eta4/timing_method.json",
+      "sha256": "a519de6fe6474ed179b52e48df3fe5734def35123cd51d64c49b722a45cbffa1"
+    },
+    "timings/t32_whir_n22_eta4/process.json": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_whir_n22_eta4/process.json",
+      "sha256": "f93e1727bd3f8dc93e534a2dfa1136ea37e2ea127de4f1f6ca085a1876d6c9f1"
+    },
+    "timings/t32_whir_n22_eta4/prover_timing_stages.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_whir_n22_eta4/prover_timing_stages.csv",
+      "sha256": "49ebda44e8b675aa72132ef445f800ab2f333acebe2c27f8427adb53d19d6f28"
+    },
+    "timings/t32_whir_n22_eta4/prover_timings.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_whir_n22_eta4/prover_timings.csv",
+      "sha256": "cc34d5fa8e2278f586db05a67cd33ff48b9ce627e7c5e32ac86f61f7aabb3a80"
+    },
+    "timings/t32_whir_n22_eta8/run.log": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_whir_n22_eta8/run.log",
+      "sha256": "a0b629908da80d0b71aa357b224a29e45d6dfb97a994dabed6f4e1d80785b9c6"
+    },
+    "timings/t32_whir_n22_eta8/prover_timing_samples.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_whir_n22_eta8/prover_timing_samples.csv",
+      "sha256": "0cead0f06d999ae380ea6d8038ad956118e736e1d4cc2a841ce59ec31092883e"
+    },
+    "timings/t32_whir_n22_eta8/timing_method.json": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_whir_n22_eta8/timing_method.json",
+      "sha256": "a519de6fe6474ed179b52e48df3fe5734def35123cd51d64c49b722a45cbffa1"
+    },
+    "timings/t32_whir_n22_eta8/process.json": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_whir_n22_eta8/process.json",
+      "sha256": "6099bd50f5b510c3851eab7e60f300216c7bb212c09fb439ef19a1e216d48004"
+    },
+    "timings/t32_whir_n22_eta8/prover_timing_stages.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_whir_n22_eta8/prover_timing_stages.csv",
+      "sha256": "18b5bb2af9b45a2c360864588ca1e49070facc46c04e6f01f4bb38bdb2a977c1"
+    },
+    "timings/t32_whir_n22_eta8/prover_timings.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_whir_n22_eta8/prover_timings.csv",
+      "sha256": "453849d1e7322df41b09ce546cdeacd5bc053c652662bf61c3606c8baaeef1c3"
+    },
+    "timings/t32_whir_n24_eta1/run.log": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_whir_n24_eta1/run.log",
+      "sha256": "12def977353015b1524dae88f11c8488dd3418c1a982ec8204fd208707f83f57"
+    },
+    "timings/t32_whir_n24_eta1/prover_timing_samples.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_whir_n24_eta1/prover_timing_samples.csv",
+      "sha256": "9fd68954e505a66416d100d2015851cd51410b6ac442ce110756913889b33fdd"
+    },
+    "timings/t32_whir_n24_eta1/timing_method.json": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_whir_n24_eta1/timing_method.json",
+      "sha256": "a519de6fe6474ed179b52e48df3fe5734def35123cd51d64c49b722a45cbffa1"
+    },
+    "timings/t32_whir_n24_eta1/process.json": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_whir_n24_eta1/process.json",
+      "sha256": "9cccab2370d28c39abaeeaffc115ec12ee7bab1eb0249633a6a26975533e6eeb"
+    },
+    "timings/t32_whir_n24_eta1/prover_timing_stages.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_whir_n24_eta1/prover_timing_stages.csv",
+      "sha256": "dfc385a35dc278041a04b4b17b1c5c1f3e558b24fa466ed3cf582851740e7da5"
+    },
+    "timings/t32_whir_n24_eta1/prover_timings.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_whir_n24_eta1/prover_timings.csv",
+      "sha256": "e8e11d61003a7c0970511199c49d2b33ea5cddf374486f7901147423f2b429a3"
+    },
+    "timings/t32_whir_n24_eta2/run.log": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_whir_n24_eta2/run.log",
+      "sha256": "502dc87ce6c2486431dcd196bbf712fc5be71019eb7e25dda8fbd2703ffbf02b"
+    },
+    "timings/t32_whir_n24_eta2/prover_timing_samples.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_whir_n24_eta2/prover_timing_samples.csv",
+      "sha256": "3e41eebf1b19b44b318a0a0534182689385c4478114a81ca3d69b3e3c7c0ff31"
+    },
+    "timings/t32_whir_n24_eta2/timing_method.json": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_whir_n24_eta2/timing_method.json",
+      "sha256": "a519de6fe6474ed179b52e48df3fe5734def35123cd51d64c49b722a45cbffa1"
+    },
+    "timings/t32_whir_n24_eta2/process.json": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_whir_n24_eta2/process.json",
+      "sha256": "1ac9b287a329d53220cfc53c8c5df5d0730fd8024f9c2cf3929be02fc2dc3f01"
+    },
+    "timings/t32_whir_n24_eta2/prover_timing_stages.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_whir_n24_eta2/prover_timing_stages.csv",
+      "sha256": "dcb82e99ffd15b81ec2176de3a483ac170468710b56371221107d513ec8283f6"
+    },
+    "timings/t32_whir_n24_eta2/prover_timings.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_whir_n24_eta2/prover_timings.csv",
+      "sha256": "0120dc009e163059840de476493e69949cf1303ef424d8d8594fa1ee53a973c9"
+    },
+    "timings/t32_whir_n24_eta4/run.log": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_whir_n24_eta4/run.log",
+      "sha256": "6389df465616ae6f60f1448112602dd8f889a9137a9dd4564910659b091c1b46"
+    },
+    "timings/t32_whir_n24_eta4/prover_timing_samples.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_whir_n24_eta4/prover_timing_samples.csv",
+      "sha256": "ff052174e98fb4e558ad04475fac004f3920f50e468b145ee9d11b7619740b9f"
+    },
+    "timings/t32_whir_n24_eta4/timing_method.json": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_whir_n24_eta4/timing_method.json",
+      "sha256": "a519de6fe6474ed179b52e48df3fe5734def35123cd51d64c49b722a45cbffa1"
+    },
+    "timings/t32_whir_n24_eta4/process.json": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_whir_n24_eta4/process.json",
+      "sha256": "f6c1b5f2634270a174dfce4de2911345d4f857b3101e54f4936d5ab5421093c7"
+    },
+    "timings/t32_whir_n24_eta4/prover_timing_stages.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_whir_n24_eta4/prover_timing_stages.csv",
+      "sha256": "7d03b3ad0bdf8af626736fddcab630839558902e55770aece3a631588528f52d"
+    },
+    "timings/t32_whir_n24_eta4/prover_timings.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_whir_n24_eta4/prover_timings.csv",
+      "sha256": "389c17b3dc2601c5fc948adaade83ca249b697bd8ea00a85bbde305f60854059"
+    },
+    "timings/t32_whir_n24_eta8/run.log": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_whir_n24_eta8/run.log",
+      "sha256": "49efbcdd577c8bd9c850de73dbf5d483a38924cd69b0f16ffce441cac90d5a5f"
+    },
+    "timings/t32_whir_n24_eta8/prover_timing_samples.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_whir_n24_eta8/prover_timing_samples.csv",
+      "sha256": "1aef777cca60d94076ec85393fb1aec1375cccd07d5a112f40e8b7d2a7b427f8"
+    },
+    "timings/t32_whir_n24_eta8/timing_method.json": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_whir_n24_eta8/timing_method.json",
+      "sha256": "a519de6fe6474ed179b52e48df3fe5734def35123cd51d64c49b722a45cbffa1"
+    },
+    "timings/t32_whir_n24_eta8/process.json": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_whir_n24_eta8/process.json",
+      "sha256": "61dcca7a16531359a899e5d47befbaacbf2ebaf7b75e176a940880734cf0aaa9"
+    },
+    "timings/t32_whir_n24_eta8/prover_timing_stages.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_whir_n24_eta8/prover_timing_stages.csv",
+      "sha256": "b8985c5d9ccd87ee098bc2882ce806e39d6ff1389b53809a69777fd87558537e"
+    },
+    "timings/t32_whir_n24_eta8/prover_timings.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_whir_n24_eta8/prover_timings.csv",
+      "sha256": "8f3eb2d61efa4dfe417da9e9686bc86870d2a81b3863616df5ada37a3cea89ae"
+    },
+    "timings/t32_whir_n26_eta1/run.log": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_whir_n26_eta1/run.log",
+      "sha256": "cb0f7f82b45a791558e40b4a14136742517ff8d8d92e06ed0f0a7032d220c363"
+    },
+    "timings/t32_whir_n26_eta1/prover_timing_samples.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_whir_n26_eta1/prover_timing_samples.csv",
+      "sha256": "46d8fd07eaf91ac1f37c3884c8b746fa67eef76d8ded238e58c1ccf6949f84f5"
+    },
+    "timings/t32_whir_n26_eta1/timing_method.json": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_whir_n26_eta1/timing_method.json",
+      "sha256": "a519de6fe6474ed179b52e48df3fe5734def35123cd51d64c49b722a45cbffa1"
+    },
+    "timings/t32_whir_n26_eta1/process.json": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_whir_n26_eta1/process.json",
+      "sha256": "a6c34ebfbb5ccceb784e7ff3b038bc801514fc3116ef6fdc365312778595985c"
+    },
+    "timings/t32_whir_n26_eta1/prover_timing_stages.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_whir_n26_eta1/prover_timing_stages.csv",
+      "sha256": "8e081fb1f0fa06c97b1ea24a9faf13448f281bb9b915b2d0940e4893c03f88ac"
+    },
+    "timings/t32_whir_n26_eta1/prover_timings.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_whir_n26_eta1/prover_timings.csv",
+      "sha256": "e953d2f4c8215243f974a3fb657feb9710d05b060eeac94f8c1e2652ceb06dd2"
+    },
+    "timings/t32_whir_n26_eta2/run.log": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_whir_n26_eta2/run.log",
+      "sha256": "a10084019d0240efd4a2d28be2c800269e5c1008b1813ac48de0ae03aebce2ff"
+    },
+    "timings/t32_whir_n26_eta2/prover_timing_samples.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_whir_n26_eta2/prover_timing_samples.csv",
+      "sha256": "74aff1757b061ddeb770206a425f9a7b286a1d4207c43ed0045a2c4b5514307e"
+    },
+    "timings/t32_whir_n26_eta2/timing_method.json": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_whir_n26_eta2/timing_method.json",
+      "sha256": "a519de6fe6474ed179b52e48df3fe5734def35123cd51d64c49b722a45cbffa1"
+    },
+    "timings/t32_whir_n26_eta2/process.json": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_whir_n26_eta2/process.json",
+      "sha256": "ddecfdd0f943df220c57da676c0282391911e720e8deebf967a75a7476a3d091"
+    },
+    "timings/t32_whir_n26_eta2/prover_timing_stages.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_whir_n26_eta2/prover_timing_stages.csv",
+      "sha256": "5674f093a802f22f80a88a1499c0e0cd0faaab302c7e075106f6c34be35fde80"
+    },
+    "timings/t32_whir_n26_eta2/prover_timings.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_whir_n26_eta2/prover_timings.csv",
+      "sha256": "d07ae8d3a7dcdc3f6d34ae143f1fe5428323e36d151027759d37a8460acce218"
+    },
+    "timings/t32_whir_n26_eta4/run.log": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_whir_n26_eta4/run.log",
+      "sha256": "e7b77c9313957e18145d6ddbc2ced9e5bc03192ba77a98c55c7ebfccec74b772"
+    },
+    "timings/t32_whir_n26_eta4/prover_timing_samples.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_whir_n26_eta4/prover_timing_samples.csv",
+      "sha256": "031c2583bb0341a81e3b9b36dde92b084e5450ff727747b122ab34a27b4c4d9f"
+    },
+    "timings/t32_whir_n26_eta4/timing_method.json": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_whir_n26_eta4/timing_method.json",
+      "sha256": "a519de6fe6474ed179b52e48df3fe5734def35123cd51d64c49b722a45cbffa1"
+    },
+    "timings/t32_whir_n26_eta4/process.json": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_whir_n26_eta4/process.json",
+      "sha256": "0504d19bc0f81b5f418bc7ff2b7a8e4c8a81ed66ac11eb04a398e46a5ddd9892"
+    },
+    "timings/t32_whir_n26_eta4/prover_timing_stages.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_whir_n26_eta4/prover_timing_stages.csv",
+      "sha256": "ccf14d3d5f7220314248ca2eda7fec1a351436450590072edbc2139e7e06ba12"
+    },
+    "timings/t32_whir_n26_eta4/prover_timings.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_whir_n26_eta4/prover_timings.csv",
+      "sha256": "2fb48d0a22474b3e0244fb75c8b76133198478686db3c1638601202dd29722ea"
+    },
+    "timings/t32_whir_n26_eta8/run.log": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_whir_n26_eta8/run.log",
+      "sha256": "f8de12776fac351b2c1e87dc6532fee16a7742ec09c3c92e55a1fa9eb5d530cf"
+    },
+    "timings/t32_whir_n26_eta8/prover_timing_samples.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_whir_n26_eta8/prover_timing_samples.csv",
+      "sha256": "604a3b6a2e81d8d1ed000e695efa18f0d85b93ac295d42488159aa6ea48845c7"
+    },
+    "timings/t32_whir_n26_eta8/timing_method.json": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_whir_n26_eta8/timing_method.json",
+      "sha256": "a519de6fe6474ed179b52e48df3fe5734def35123cd51d64c49b722a45cbffa1"
+    },
+    "timings/t32_whir_n26_eta8/process.json": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_whir_n26_eta8/process.json",
+      "sha256": "00588f6a8365a87dbefbdbef7f202c70a240022f928c52dc4b7065a442798c42"
+    },
+    "timings/t32_whir_n26_eta8/prover_timing_stages.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_whir_n26_eta8/prover_timing_stages.csv",
+      "sha256": "85c3ca18e8f246a96e84c661cbfd330b58cb10aa140dd5066fb7fbf5fd814c5d"
+    },
+    "timings/t32_whir_n26_eta8/prover_timings.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_whir_n26_eta8/prover_timings.csv",
+      "sha256": "ae95693a1630a5bba0ce990855bbf2cede798bbc35d7ebb42dc3fcede779b7ad"
+    },
+    "timings/t32_whir_n28_eta1/run.log": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_whir_n28_eta1/run.log",
+      "sha256": "4812a29bea10d6463b4f2c9463b74ca0e80a97b127a96f28cc3658cc8e49c97c"
+    },
+    "timings/t32_whir_n28_eta1/prover_timing_samples.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_whir_n28_eta1/prover_timing_samples.csv",
+      "sha256": "d7815cc97a6ab28df268764025ca0084f9b8bc84c47a4b7983ef951ffd561b35"
+    },
+    "timings/t32_whir_n28_eta1/timing_method.json": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_whir_n28_eta1/timing_method.json",
+      "sha256": "a519de6fe6474ed179b52e48df3fe5734def35123cd51d64c49b722a45cbffa1"
+    },
+    "timings/t32_whir_n28_eta1/process.json": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_whir_n28_eta1/process.json",
+      "sha256": "101b71c53e89a3c4c45507a4dad84fb9bce00821d4f54a97f207a949b7178a5f"
+    },
+    "timings/t32_whir_n28_eta1/prover_timing_stages.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_whir_n28_eta1/prover_timing_stages.csv",
+      "sha256": "25ed9a60c96a251e1c8296f989d085964e3700bf4cd546b3928e160efe23e532"
+    },
+    "timings/t32_whir_n28_eta1/prover_timings.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_whir_n28_eta1/prover_timings.csv",
+      "sha256": "3f9438b9a6d120f671deef00cf93d87d540d1060d3384ad34fdcf69e35690058"
+    },
+    "timings/t32_whir_n28_eta2/run.log": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_whir_n28_eta2/run.log",
+      "sha256": "65b69b8f2f2af599ef333e4f5c35df2d424f167110a048b7c051f83c87f0a2fe"
+    },
+    "timings/t32_whir_n28_eta2/prover_timing_samples.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_whir_n28_eta2/prover_timing_samples.csv",
+      "sha256": "a84296412a580dba8e0514cd7483b5fda1380f6fc025d3d074d1cb92d296e184"
+    },
+    "timings/t32_whir_n28_eta2/timing_method.json": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_whir_n28_eta2/timing_method.json",
+      "sha256": "a519de6fe6474ed179b52e48df3fe5734def35123cd51d64c49b722a45cbffa1"
+    },
+    "timings/t32_whir_n28_eta2/process.json": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_whir_n28_eta2/process.json",
+      "sha256": "9fb9ac8072cf7049f9a3dc1eb59648b53f44732e163fe20a755fe8a88df655af"
+    },
+    "timings/t32_whir_n28_eta2/prover_timing_stages.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_whir_n28_eta2/prover_timing_stages.csv",
+      "sha256": "baedcf388394ae6d970e9185d9f8882d3b8b2f3f40043f29c63d799629680c61"
+    },
+    "timings/t32_whir_n28_eta2/prover_timings.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_whir_n28_eta2/prover_timings.csv",
+      "sha256": "8dbee978c762d26afd3ac0df2d07b718088bce9cdcf6fc2bf4d78a09a06a26c5"
+    },
+    "timings/t32_whir_n30_eta1/run.log": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_whir_n30_eta1/run.log",
+      "sha256": "3bbc6ad4e525d4951f3624011af70f7455a4da8d7d70a7fde4611812cd98c9f0"
+    },
+    "timings/t32_whir_n30_eta1/prover_timing_samples.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_whir_n30_eta1/prover_timing_samples.csv",
+      "sha256": "e607b8a80c999c5eb6c0c0f2972463f0ec05f08bf1f20367873440e45dacd71b"
+    },
+    "timings/t32_whir_n30_eta1/timing_method.json": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_whir_n30_eta1/timing_method.json",
+      "sha256": "a519de6fe6474ed179b52e48df3fe5734def35123cd51d64c49b722a45cbffa1"
+    },
+    "timings/t32_whir_n30_eta1/process.json": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_whir_n30_eta1/process.json",
+      "sha256": "dc877f434e5e32479305adde6d7c1f0bb3309d7f1b135d7bee6f4ed282c323a6"
+    },
+    "timings/t32_whir_n30_eta1/prover_timing_stages.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_whir_n30_eta1/prover_timing_stages.csv",
+      "sha256": "ebc5df4ece76dfe48736c8221d96281e084292838ab65edbd04ebb9eed0fbba1"
+    },
+    "timings/t32_whir_n30_eta1/prover_timings.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/timings/t32_whir_n30_eta1/prover_timings.csv",
+      "sha256": "2fb2966b48120bf6816ed76248222fd5182edfaa7f1c3fa0eb7fb7a5eca3f885"
+    },
+    "timings/t1_accum_n24_eta1_canopy/run.log": {
+      "original_path": "results/aws_r7a_20261028/remote/accumulation_n24/timings/t1_accum_n24_eta1_canopy/run.log",
+      "sha256": "c3bec63ed14dc4287a51665f77f5de6b5174b1da35f9cd754a1d32a2f7fdb20f"
+    },
+    "timings/t1_accum_n24_eta1_canopy/process.json": {
+      "original_path": "results/aws_r7a_20261028/remote/accumulation_n24/timings/t1_accum_n24_eta1_canopy/process.json",
+      "sha256": "385cbfa89110c5771cb717a49baa106cd5acacc5c1fbc516cc315114ec5cd030"
+    },
+    "timings/t1_accum_n24_eta1_canopy/timings.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/accumulation_n24/timings/t1_accum_n24_eta1_canopy/timings.csv",
+      "sha256": "ab20f34a961b75e90a34953890004a9a4cdf0824a130bccd02307e250e556cd8"
+    },
+    "timings/t1_accum_n24_eta1_merkle-half/run.log": {
+      "original_path": "results/aws_r7a_20261028/remote/accumulation_n24/timings/t1_accum_n24_eta1_merkle-half/run.log",
+      "sha256": "a3be3bdd4b0721a3d1925afaa9803c799f07e8c8e1fd9d5b23e7327b25c00bdf"
+    },
+    "timings/t1_accum_n24_eta1_merkle-half/process.json": {
+      "original_path": "results/aws_r7a_20261028/remote/accumulation_n24/timings/t1_accum_n24_eta1_merkle-half/process.json",
+      "sha256": "29be3fa392c187f3764d91c7371158e098c9e8d0c7fe93c99a2f4c1d8f436918"
+    },
+    "timings/t1_accum_n24_eta1_merkle-half/timings.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/accumulation_n24/timings/t1_accum_n24_eta1_merkle-half/timings.csv",
+      "sha256": "0dd81f0249c50e9efc589dab6dcf8f6a8f558a296be3d730e94119d857ab3f35"
+    },
+    "timings/t1_accum_n24_eta1_merkle-quarter/run.log": {
+      "original_path": "results/aws_r7a_20261028/remote/accumulation_n24/timings/t1_accum_n24_eta1_merkle-quarter/run.log",
+      "sha256": "5f5cfd1c91ccddaaf45e3ca0583d479a47f77f2ef35d9045acc78ed562619024"
+    },
+    "timings/t1_accum_n24_eta1_merkle-quarter/process.json": {
+      "original_path": "results/aws_r7a_20261028/remote/accumulation_n24/timings/t1_accum_n24_eta1_merkle-quarter/process.json",
+      "sha256": "bc30292f053f5ce8e90a0055d76f039808fbe28f521f66101f9d31d743a7886a"
+    },
+    "timings/t1_accum_n24_eta1_merkle-quarter/timings.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/accumulation_n24/timings/t1_accum_n24_eta1_merkle-quarter/timings.csv",
+      "sha256": "d5e3005876c3eb40c34bc017d8259364078a5a7cbf9df29fa9df4dd8665ef69e"
+    },
+    "timings/t1_accum_n24_eta2_canopy/run.log": {
+      "original_path": "results/aws_r7a_20261028/remote/accumulation_n24/timings/t1_accum_n24_eta2_canopy/run.log",
+      "sha256": "ba3cc60fd50dfa906cef9230496cf6c73eac32e991d7ae517a76f442864d0014"
+    },
+    "timings/t1_accum_n24_eta2_canopy/process.json": {
+      "original_path": "results/aws_r7a_20261028/remote/accumulation_n24/timings/t1_accum_n24_eta2_canopy/process.json",
+      "sha256": "1e58ed192e8f1cadd5b7e37cf686fd5d5d2a9208212a56ed3e59c6b746b2a87f"
+    },
+    "timings/t1_accum_n24_eta2_canopy/timings.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/accumulation_n24/timings/t1_accum_n24_eta2_canopy/timings.csv",
+      "sha256": "d9d88c76e4fba890b74592730c840d62e0c6d1808cd3a64c358d4d1355145469"
+    },
+    "timings/t1_accum_n24_eta2_merkle-half/run.log": {
+      "original_path": "results/aws_r7a_20261028/remote/accumulation_n24/timings/t1_accum_n24_eta2_merkle-half/run.log",
+      "sha256": "fc8e33eb067abfc662096b71794e03d9c4650d9cbe3a9c0d3cc9f54eba0890ab"
+    },
+    "timings/t1_accum_n24_eta2_merkle-half/process.json": {
+      "original_path": "results/aws_r7a_20261028/remote/accumulation_n24/timings/t1_accum_n24_eta2_merkle-half/process.json",
+      "sha256": "a06126f2e5d55ceeafd38d5cd3a6b8e1c571d9df32809bfb43ea8484ca3fc70c"
+    },
+    "timings/t1_accum_n24_eta2_merkle-half/timings.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/accumulation_n24/timings/t1_accum_n24_eta2_merkle-half/timings.csv",
+      "sha256": "19c9e403467324a61bd5c0667099cf1d359fee69215a385ebdcbbe5ddb32d6a6"
+    },
+    "timings/t1_accum_n24_eta2_merkle-quarter/run.log": {
+      "original_path": "results/aws_r7a_20261028/remote/accumulation_n24/timings/t1_accum_n24_eta2_merkle-quarter/run.log",
+      "sha256": "529da803961ff2e269f4bcbd0a01a8443b1cf8d1741b8932e64a4431df83ae78"
+    },
+    "timings/t1_accum_n24_eta2_merkle-quarter/process.json": {
+      "original_path": "results/aws_r7a_20261028/remote/accumulation_n24/timings/t1_accum_n24_eta2_merkle-quarter/process.json",
+      "sha256": "9d7eecb326cb331c420769de48628afd63b673baec3c401296f39c3af8f3eff1"
+    },
+    "timings/t1_accum_n24_eta2_merkle-quarter/timings.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/accumulation_n24/timings/t1_accum_n24_eta2_merkle-quarter/timings.csv",
+      "sha256": "9552dc4a076789a97a1e68914162885a4f15c58f6e2ec54253fdf06e909c569f"
+    },
+    "timings/t1_accum_n24_eta4_canopy/run.log": {
+      "original_path": "results/aws_r7a_20261028/remote/accumulation_n24/timings/t1_accum_n24_eta4_canopy/run.log",
+      "sha256": "3c36724f16499124fd5c8b8f13b9e38d0eb052fcfc02765536b924e07350aaab"
+    },
+    "timings/t1_accum_n24_eta4_canopy/process.json": {
+      "original_path": "results/aws_r7a_20261028/remote/accumulation_n24/timings/t1_accum_n24_eta4_canopy/process.json",
+      "sha256": "63ba2340179ea7724be39a4f29c22f6bc325b7d66fe1f339d48157a837c4e989"
+    },
+    "timings/t1_accum_n24_eta4_canopy/timings.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/accumulation_n24/timings/t1_accum_n24_eta4_canopy/timings.csv",
+      "sha256": "78a059b09d33c67ead4116a8ce5e300092a2787271aeca4696106d810f53eddf"
+    },
+    "timings/t1_accum_n24_eta4_merkle-half/run.log": {
+      "original_path": "results/aws_r7a_20261028/remote/accumulation_n24/timings/t1_accum_n24_eta4_merkle-half/run.log",
+      "sha256": "96fe52766b634b48ed06142f64c454121e8af2aeae4625b9caab6fc15bdb5e84"
+    },
+    "timings/t1_accum_n24_eta4_merkle-half/process.json": {
+      "original_path": "results/aws_r7a_20261028/remote/accumulation_n24/timings/t1_accum_n24_eta4_merkle-half/process.json",
+      "sha256": "cd1e62c3b34a2405abaf8d717d9ef93c7840cb7f3794b622aa1233b3a0049fb4"
+    },
+    "timings/t1_accum_n24_eta4_merkle-half/timings.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/accumulation_n24/timings/t1_accum_n24_eta4_merkle-half/timings.csv",
+      "sha256": "7bd8872d1e73717133e4f94fe30113305e3ed9601bc75f60dd2eeca1642cb900"
+    },
+    "timings/t1_accum_n24_eta4_merkle-quarter/run.log": {
+      "original_path": "results/aws_r7a_20261028/remote/accumulation_n24/timings/t1_accum_n24_eta4_merkle-quarter/run.log",
+      "sha256": "6ab05722611b3b1485d6d42a13ebfac905a15cdefa81b0f916fa28fdf8f45046"
+    },
+    "timings/t1_accum_n24_eta4_merkle-quarter/process.json": {
+      "original_path": "results/aws_r7a_20261028/remote/accumulation_n24/timings/t1_accum_n24_eta4_merkle-quarter/process.json",
+      "sha256": "fd6c2122bd01db83733de60eab72c9cd4648a0ae5a7745509a39790a43ed3d08"
+    },
+    "timings/t1_accum_n24_eta4_merkle-quarter/timings.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/accumulation_n24/timings/t1_accum_n24_eta4_merkle-quarter/timings.csv",
+      "sha256": "d9137e9a04c6e87357548ae74c89de9d106a83b30052bc42632a338b2e8d90ff"
+    },
+    "timings/t1_accum_n24_eta8_canopy/run.log": {
+      "original_path": "results/aws_r7a_20261028/remote/accumulation_n24/timings/t1_accum_n24_eta8_canopy/run.log",
+      "sha256": "4b676cdb597d66db73b2c6d3c0f6ae68ff4c66d0f3c29bf98bfecef8912c4c64"
+    },
+    "timings/t1_accum_n24_eta8_canopy/process.json": {
+      "original_path": "results/aws_r7a_20261028/remote/accumulation_n24/timings/t1_accum_n24_eta8_canopy/process.json",
+      "sha256": "47be3f344bb0cf2bf831b1dec16296dcdea14d8cdadce6993632adb0a14ab120"
+    },
+    "timings/t1_accum_n24_eta8_canopy/timings.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/accumulation_n24/timings/t1_accum_n24_eta8_canopy/timings.csv",
+      "sha256": "8c454e86c0bde6830828f8b6eb0559a594544ea90eac528617a4694003c10b8f"
+    },
+    "timings/t1_accum_n24_eta8_merkle-half/run.log": {
+      "original_path": "results/aws_r7a_20261028/remote/accumulation_n24/timings/t1_accum_n24_eta8_merkle-half/run.log",
+      "sha256": "f9893b5dda8ccb7fbbcfb39325aa050d25a424ee2d2b98f0e26e40b1b4a4f3ed"
+    },
+    "timings/t1_accum_n24_eta8_merkle-half/process.json": {
+      "original_path": "results/aws_r7a_20261028/remote/accumulation_n24/timings/t1_accum_n24_eta8_merkle-half/process.json",
+      "sha256": "43f3119dd1a4a2ec7cad93fb4001e4b4134d89d8657287f86cd745f4a9739570"
+    },
+    "timings/t1_accum_n24_eta8_merkle-half/timings.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/accumulation_n24/timings/t1_accum_n24_eta8_merkle-half/timings.csv",
+      "sha256": "545a3b4b508d9e3252d94b2ae495b8c3460dad3e53afa8998a5a4095a9c84456"
+    },
+    "timings/t1_accum_n24_eta8_merkle-quarter/run.log": {
+      "original_path": "results/aws_r7a_20261028/remote/accumulation_n24/timings/t1_accum_n24_eta8_merkle-quarter/run.log",
+      "sha256": "d43281477efb2dc619e662d9412ba547081a72b02b2690b44b6aee8523a9ef63"
+    },
+    "timings/t1_accum_n24_eta8_merkle-quarter/process.json": {
+      "original_path": "results/aws_r7a_20261028/remote/accumulation_n24/timings/t1_accum_n24_eta8_merkle-quarter/process.json",
+      "sha256": "1fcc4dde066245ca62989c0745857e8254c1ee9bf14b7541ff66c6f89da30158"
+    },
+    "timings/t1_accum_n24_eta8_merkle-quarter/timings.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/accumulation_n24/timings/t1_accum_n24_eta8_merkle-quarter/timings.csv",
+      "sha256": "d202e72a6724c050e3f68cfe7c31426bae0c0f3040bd24a8d68e448242c2d6b4"
+    },
+    "timings/t32_accum_n24_eta1_canopy/run.log": {
+      "original_path": "results/aws_r7a_20261028/remote/accumulation_n24/timings/t32_accum_n24_eta1_canopy/run.log",
+      "sha256": "79ea750af8a8797e8dc0dd63cfacc26662d2e7da3eb951ebcc0b1718fa9dfef3"
+    },
+    "timings/t32_accum_n24_eta1_canopy/process.json": {
+      "original_path": "results/aws_r7a_20261028/remote/accumulation_n24/timings/t32_accum_n24_eta1_canopy/process.json",
+      "sha256": "a70bef6cda656a9ea2edf7d6519e931a5adb65ffd46e3db666de3a633d05f754"
+    },
+    "timings/t32_accum_n24_eta1_canopy/timings.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/accumulation_n24/timings/t32_accum_n24_eta1_canopy/timings.csv",
+      "sha256": "3e905023fdfba00443de6439604d557756da41eebdc38dff16d64d11d8208c3c"
+    },
+    "timings/t32_accum_n24_eta1_merkle-half/run.log": {
+      "original_path": "results/aws_r7a_20261028/remote/accumulation_n24/timings/t32_accum_n24_eta1_merkle-half/run.log",
+      "sha256": "e61eff2b3fa222b6d495d245de4cc3265719db44a602f5dac8cea1933e091756"
+    },
+    "timings/t32_accum_n24_eta1_merkle-half/process.json": {
+      "original_path": "results/aws_r7a_20261028/remote/accumulation_n24/timings/t32_accum_n24_eta1_merkle-half/process.json",
+      "sha256": "747bc7e58a6511abbb55b16b63721360a0b704067806c38fa633f4075c4baf5b"
+    },
+    "timings/t32_accum_n24_eta1_merkle-half/timings.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/accumulation_n24/timings/t32_accum_n24_eta1_merkle-half/timings.csv",
+      "sha256": "d3ba7f3352b92114b8e712177cf5dc6466deac396a3d529bffa55d45ce6dd5c3"
+    },
+    "timings/t32_accum_n24_eta1_merkle-quarter/run.log": {
+      "original_path": "results/aws_r7a_20261028/remote/accumulation_n24/timings/t32_accum_n24_eta1_merkle-quarter/run.log",
+      "sha256": "7af88e664f199d26bda25a238966ea0baf597e92b4084a09208e8ede345e0a5e"
+    },
+    "timings/t32_accum_n24_eta1_merkle-quarter/process.json": {
+      "original_path": "results/aws_r7a_20261028/remote/accumulation_n24/timings/t32_accum_n24_eta1_merkle-quarter/process.json",
+      "sha256": "388854f5fc63c5ae85aeec2273229a3648740c1c2f768520021b4020276660ed"
+    },
+    "timings/t32_accum_n24_eta1_merkle-quarter/timings.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/accumulation_n24/timings/t32_accum_n24_eta1_merkle-quarter/timings.csv",
+      "sha256": "4259d0cd909d46c7aff1b05ccb46831ca722d1f224db4b9a35365676f43f04fd"
+    },
+    "timings/t32_accum_n24_eta2_canopy/run.log": {
+      "original_path": "results/aws_r7a_20261028/remote/accumulation_n24/timings/t32_accum_n24_eta2_canopy/run.log",
+      "sha256": "ea9b461a6c062074feb9df32b2ee5e0fd272ccb66bb8b35fa83d5bd259901987"
+    },
+    "timings/t32_accum_n24_eta2_canopy/process.json": {
+      "original_path": "results/aws_r7a_20261028/remote/accumulation_n24/timings/t32_accum_n24_eta2_canopy/process.json",
+      "sha256": "fa15b2eac411a5400ef3b3db17e3f415492d379362357d26fc60d261a5bc72ae"
+    },
+    "timings/t32_accum_n24_eta2_canopy/timings.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/accumulation_n24/timings/t32_accum_n24_eta2_canopy/timings.csv",
+      "sha256": "90a6b4e032eda224ae952abf2988cd18cecc5aadd3bd0018dddcabad3ba909de"
+    },
+    "timings/t32_accum_n24_eta2_merkle-half/run.log": {
+      "original_path": "results/aws_r7a_20261028/remote/accumulation_n24/timings/t32_accum_n24_eta2_merkle-half/run.log",
+      "sha256": "a13bafe2ca2d481810346de751b6d12880a0637e1cf23057c32521f6b8cbdfe7"
+    },
+    "timings/t32_accum_n24_eta2_merkle-half/process.json": {
+      "original_path": "results/aws_r7a_20261028/remote/accumulation_n24/timings/t32_accum_n24_eta2_merkle-half/process.json",
+      "sha256": "c18d5ca2b5c9ad255af19a57489a0296dcb106843f6970bb1ba0b9dcabb80e84"
+    },
+    "timings/t32_accum_n24_eta2_merkle-half/timings.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/accumulation_n24/timings/t32_accum_n24_eta2_merkle-half/timings.csv",
+      "sha256": "3f3afc2dc97da17bfd5420929b9d39d35291f2143ff8f7e6070e753aed739183"
+    },
+    "timings/t32_accum_n24_eta2_merkle-quarter/run.log": {
+      "original_path": "results/aws_r7a_20261028/remote/accumulation_n24/timings/t32_accum_n24_eta2_merkle-quarter/run.log",
+      "sha256": "c7707187f55e0aee40d35458885a985f759c9b4569234400809846252f657a9b"
+    },
+    "timings/t32_accum_n24_eta2_merkle-quarter/process.json": {
+      "original_path": "results/aws_r7a_20261028/remote/accumulation_n24/timings/t32_accum_n24_eta2_merkle-quarter/process.json",
+      "sha256": "123c33f80ae8c286dc4cf0744b260f73ca2c2febd52bfe3aa5ab8e3c2a0444de"
+    },
+    "timings/t32_accum_n24_eta2_merkle-quarter/timings.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/accumulation_n24/timings/t32_accum_n24_eta2_merkle-quarter/timings.csv",
+      "sha256": "02abc6fdebe65ea4fe59c3c6241779112c57a28c13854c24fc6f60945d75d95b"
+    },
+    "timings/t32_accum_n24_eta4_canopy/run.log": {
+      "original_path": "results/aws_r7a_20261028/remote/accumulation_n24/timings/t32_accum_n24_eta4_canopy/run.log",
+      "sha256": "2e0336964e8fc43ad6f4f8a088c1e330ac65c7ae8b5fe28158250d97ab8ca41c"
+    },
+    "timings/t32_accum_n24_eta4_canopy/process.json": {
+      "original_path": "results/aws_r7a_20261028/remote/accumulation_n24/timings/t32_accum_n24_eta4_canopy/process.json",
+      "sha256": "48deb8964081fbc3d3bd893b5dcf6e58fd7edb90755bc80f5dff1780d8e0fbc2"
+    },
+    "timings/t32_accum_n24_eta4_canopy/timings.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/accumulation_n24/timings/t32_accum_n24_eta4_canopy/timings.csv",
+      "sha256": "53549690fd7d643931f223c5a34e33c49855147ef7decb49b96e097616438163"
+    },
+    "timings/t32_accum_n24_eta4_merkle-half/run.log": {
+      "original_path": "results/aws_r7a_20261028/remote/accumulation_n24/timings/t32_accum_n24_eta4_merkle-half/run.log",
+      "sha256": "3050fd66c7ffeab32af402360bb541b71375f9ad68b3ca6e3066a7d0b2b2e0b1"
+    },
+    "timings/t32_accum_n24_eta4_merkle-half/process.json": {
+      "original_path": "results/aws_r7a_20261028/remote/accumulation_n24/timings/t32_accum_n24_eta4_merkle-half/process.json",
+      "sha256": "893e89fc19788d7b344d6da6db757b65a37cef3976d58d775eeae7efe81e4a63"
+    },
+    "timings/t32_accum_n24_eta4_merkle-half/timings.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/accumulation_n24/timings/t32_accum_n24_eta4_merkle-half/timings.csv",
+      "sha256": "6f909d36da833835b2de39faa980065130b6c74cc93544fa94e24a7c52dc0fd9"
+    },
+    "timings/t32_accum_n24_eta4_merkle-quarter/run.log": {
+      "original_path": "results/aws_r7a_20261028/remote/accumulation_n24/timings/t32_accum_n24_eta4_merkle-quarter/run.log",
+      "sha256": "314f84d541351b629c4d6442dbe6d35f3bda12c5801f846ba4d9848ec19cb24c"
+    },
+    "timings/t32_accum_n24_eta4_merkle-quarter/process.json": {
+      "original_path": "results/aws_r7a_20261028/remote/accumulation_n24/timings/t32_accum_n24_eta4_merkle-quarter/process.json",
+      "sha256": "a9ddc4a774220716cff853ebe13a8cfc948e212a40ad64bc4210c83f8f9be5e4"
+    },
+    "timings/t32_accum_n24_eta4_merkle-quarter/timings.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/accumulation_n24/timings/t32_accum_n24_eta4_merkle-quarter/timings.csv",
+      "sha256": "747919a36ef9d0c1c8b087196f11f21684561619bb5e5871dfc0b6a3bf68f782"
+    },
+    "timings/t32_accum_n24_eta8_canopy/run.log": {
+      "original_path": "results/aws_r7a_20261028/remote/accumulation_n24/timings/t32_accum_n24_eta8_canopy/run.log",
+      "sha256": "68ffd0b09f3790551959926ebbb0103ab19c19d219ab35f8049c9927a54c5070"
+    },
+    "timings/t32_accum_n24_eta8_canopy/process.json": {
+      "original_path": "results/aws_r7a_20261028/remote/accumulation_n24/timings/t32_accum_n24_eta8_canopy/process.json",
+      "sha256": "ee3efeb21ee0b3b1bc3a7d9551f028f8b787202893c786bb5ca2a3ea94ad98bd"
+    },
+    "timings/t32_accum_n24_eta8_canopy/timings.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/accumulation_n24/timings/t32_accum_n24_eta8_canopy/timings.csv",
+      "sha256": "4a9bab6b9a9dbd81cbb5faa9c5fd431e5d1e4166fddd4f83c36d5f3c69f843f8"
+    },
+    "timings/t32_accum_n24_eta8_merkle-half/run.log": {
+      "original_path": "results/aws_r7a_20261028/remote/accumulation_n24/timings/t32_accum_n24_eta8_merkle-half/run.log",
+      "sha256": "81e35e0ed4380b1e652041ae86ebb3a9c2bd968d6a077d048940a1fb8bd9edf5"
+    },
+    "timings/t32_accum_n24_eta8_merkle-half/process.json": {
+      "original_path": "results/aws_r7a_20261028/remote/accumulation_n24/timings/t32_accum_n24_eta8_merkle-half/process.json",
+      "sha256": "9db73499a9cc1c2d437b95715f7fd12b03bbac8584d77fe6dc204cd7e6e03348"
+    },
+    "timings/t32_accum_n24_eta8_merkle-half/timings.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/accumulation_n24/timings/t32_accum_n24_eta8_merkle-half/timings.csv",
+      "sha256": "2463bf563fb661064e4c8aad61c112a0656d75b0973d3ea2f37c70f345e14491"
+    },
+    "timings/t32_accum_n24_eta8_merkle-quarter/run.log": {
+      "original_path": "results/aws_r7a_20261028/remote/accumulation_n24/timings/t32_accum_n24_eta8_merkle-quarter/run.log",
+      "sha256": "c93b0db555d5206005c102a015074f9fdf4c3bad0eabe1d8a14d4fb39611af8a"
+    },
+    "timings/t32_accum_n24_eta8_merkle-quarter/process.json": {
+      "original_path": "results/aws_r7a_20261028/remote/accumulation_n24/timings/t32_accum_n24_eta8_merkle-quarter/process.json",
+      "sha256": "8c265b0cade8d17f68d53e92db07afdb1496e99a1c3f34b25d9376e39fd62ba5"
+    },
+    "timings/t32_accum_n24_eta8_merkle-quarter/timings.csv": {
+      "original_path": "results/aws_r7a_20261028/remote/accumulation_n24/timings/t32_accum_n24_eta8_merkle-quarter/timings.csv",
+      "sha256": "405a5339908b910153f3fe1b3f1103e248b90fe6bf02c8104441ca3cc503d641"
+    }
+  }
+}

@@ -553,7 +553,7 @@ pub(super) fn prefix_size_from_config(
     Ok(size)
 }
 
-fn batch_size_inputs(
+pub(super) fn batch_size_inputs(
     log_k: usize,
     common: &WhirConfig,
     canopy: bool,

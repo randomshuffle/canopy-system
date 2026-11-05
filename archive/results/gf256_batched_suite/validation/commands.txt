@@ -1,6 +1,0 @@
-cargo test --all-targets
-cargo test --release --lib bolt_experiment::batching::tests
-cargo build --release --bin canopy-system --example gf256_bolt_suite
-cargo test --lib local_budget_covers_the_composed_batched_grid
-cargo test --all-targets  # after composition-budget correction; 70 tests
-cargo test --lib executable_whir::tests  # final BLAKE3 transcript; 6 passed

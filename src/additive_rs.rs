@@ -125,6 +125,41 @@ fn butterflies<const TRANSPOSE: bool>(left: &mut [F], right: &mut [F], c: F) {
     }
 }
 
+// These public term lists depend only on the recursion depth. Keep them in
+// read-only storage rather than allocating a Vec at every recursion node. Their
+// ascending order is significant for the overlapping long-division sweeps.
+struct ConversionTerms {
+    values: [usize; usize::BITS as usize],
+    len: usize,
+}
+static CONVERSION_TERMS: [ConversionTerms; usize::BITS as usize] = {
+    let mut lists = [const {
+        ConversionTerms {
+            values: [0; usize::BITS as usize],
+            len: 0,
+        }
+    }; usize::BITS as usize];
+    let mut h = 0;
+    while h < lists.len() {
+        let mut j = 0;
+        while j < h {
+            if j & h == j {
+                let len = lists[h].len;
+                lists[h].values[len] = 1usize << j;
+                lists[h].len += 1;
+            }
+            j += 1;
+        }
+        h += 1;
+    }
+    lists
+};
+#[inline(always)]
+fn conversion_terms(h: u32) -> &'static [usize] {
+    let list = &CONVERSION_TERMS[h as usize];
+    &list.values[..list.len]
+}
+
 /// Convert monomials into products of s_i(X), where s_0=X and
 /// s_{i+1}=s_i²+s_i. Each s_i has only binary coefficients.
 fn monomial_to_novel(a: &mut [F]) {
@@ -133,10 +168,7 @@ fn monomial_to_novel(a: &mut [F]) {
     }
     let half = a.len() / 2;
     let h = half.ilog2();
-    let terms: Vec<usize> = (0..h)
-        .filter(|j| j & h == *j)
-        .map(|j| 1usize << j)
-        .collect();
+    let terms = conversion_terms(h);
     if half >= PARALLEL_SWEEP {
         // Long division has dependencies: i writes only at most i-gap. In a
         // descending block of <= gap sources, every destination precedes the
@@ -146,7 +178,7 @@ fn monomial_to_novel(a: &mut [F]) {
         while end > half {
             let start = half.max(end - gap);
             let (dest, source) = a.split_at_mut(start);
-            for &term in &terms {
+            for &term in terms {
                 dest[start - half + term..end - half + term]
                     .par_iter_mut()
                     .zip(source[..end - start].par_iter())
@@ -158,7 +190,7 @@ fn monomial_to_novel(a: &mut [F]) {
     } else {
         for i in (half..a.len()).rev() {
             let q = a[i];
-            for &term in &terms {
+            for &term in terms {
                 a[i - half + term] += q
             }
         }
@@ -190,10 +222,21 @@ fn forward(a: &mut [F], offset: usize) {
 pub fn encode(coefficients: &[F], length: usize) -> Vec<F> {
     assert!(!coefficients.is_empty() && length.is_power_of_two() && coefficients.len() <= length);
     assert!(length <= 1usize << 32);
-    let size = coefficients.len().next_power_of_two();
-    let mut novel = coefficients.to_vec();
+    encode_owned(coefficients.to_vec(), length)
+}
+
+// Interleaved encoding has already gathered an owned coefficient column. Reuse
+// that allocation for conversion instead of copying the full column again.
+fn encode_owned(mut novel: Vec<F>, length: usize) -> Vec<F> {
+    assert!(!novel.is_empty() && length.is_power_of_two() && novel.len() <= length);
+    assert!(length <= 1usize << 32);
+    let size = novel.len().next_power_of_two();
     novel.resize(size, F::ZERO);
     monomial_to_novel(&mut novel);
+    if length == size {
+        forward(&mut novel, 0);
+        return novel;
+    }
     let mut out = vec![F::ZERO; length];
     out.par_chunks_mut(size)
         .enumerate()
@@ -240,10 +283,7 @@ fn conversion_transpose(a: &mut [F]) {
         conversion_transpose(left);
         conversion_transpose(right);
     }
-    let terms: Vec<usize> = (0..h)
-        .filter(|j| j & h == *j)
-        .map(|j| 1usize << j)
-        .collect();
+    let terms = conversion_terms(h);
     if half >= PARALLEL_SWEEP {
         // Transpose the same dependency blocks in the opposite order. Each
         // output can gather all its terms independently from the earlier prefix.
@@ -256,14 +296,14 @@ fn conversion_transpose(a: &mut [F]) {
                 .enumerate()
                 .with_min_len(4096)
                 .for_each(|(i, dst)| {
-                    for &term in &terms {
+                    for &term in terms {
                         *dst += source[start + i - half + term];
                     }
                 });
         }
     } else {
         for i in half..a.len() {
-            for &term in &terms {
+            for &term in terms {
                 let delta = a[i - half + term];
                 a[i] += delta
             }
@@ -356,7 +396,7 @@ impl ReedSolomon<F> for AdditiveRs {
                     let start = (col % segment.rows_per_buffer()) * segment.row_width();
                     coefficients.extend_from_slice(&buffer[start..start + segment.row_width()]);
                 }
-                encode(&coefficients, length)
+                encode_owned(coefficients, length)
             })
             .collect();
         let mut matrix = vec![F::ZERO; length * columns.len()];
@@ -410,6 +450,97 @@ mod tests {
             }
             serial_conversion(&mut a[..half], false);
             serial_conversion(&mut a[half..], false);
+        }
+    }
+
+    #[test]
+    fn public_conversion_terms_preserve_long_division_order() {
+        for h in 0..usize::BITS {
+            let expected = (0..h)
+                .filter(|j| j & h == *j)
+                .map(|j| 1usize << j)
+                .collect::<Vec<_>>();
+            assert_eq!(conversion_terms(h), expected, "h={h}");
+        }
+    }
+
+    #[test]
+    fn owned_encoder_matches_original_conversion_and_horner() {
+        let mut rng = rand_chacha::ChaCha20Rng::seed_from_u64(1729);
+        for coefficients_len in [1usize, 2, 3, 4, 7, 16, 31, 65, 128] {
+            let random = (0..coefficients_len)
+                .map(|_| rng.gen::<F>())
+                .collect::<Vec<_>>();
+            for coefficients in [vec![F::ZERO; coefficients_len], random] {
+                let size = coefficients_len.next_power_of_two();
+                for length in [size, size * 2, size * 4] {
+                    // Original encoder: serial long division, followed by the
+                    // unchanged FFT on every coset. This also covers padding.
+                    let mut novel = coefficients.clone();
+                    novel.resize(size, F::ZERO);
+                    serial_conversion(&mut novel, false);
+                    let mut expected = Vec::with_capacity(length);
+                    for offset in (0..length).step_by(size) {
+                        let mut coset = novel.clone();
+                        forward(&mut coset, offset);
+                        expected.extend(coset);
+                    }
+                    let actual = encode_owned(coefficients.clone(), length);
+                    assert_eq!(actual, expected, "k={coefficients_len}, n={length}");
+                    assert_eq!(encode(&coefficients, length), expected);
+                    for (index, &value) in actual.iter().enumerate() {
+                        let direct = coefficients
+                            .iter()
+                            .rev()
+                            .fold(F::ZERO, |acc, &c| acc * point(index) + c);
+                        assert_eq!(value, direct, "k={coefficients_len}, index={index}");
+                    }
+                }
+            }
+        }
+        // With no expansion or padding, the owned path can reuse the original
+        // coefficient allocation all the way through the output FFT.
+        let coefficients = vec![F::ONE; 32];
+        let pointer = coefficients.as_ptr();
+        let encoded = encode_owned(coefficients, 32);
+        assert_eq!(encoded.as_ptr(), pointer);
+    }
+
+    #[test]
+    fn segmented_interleaving_matches_direct_polynomial_evaluation() {
+        use whir_ref::algebra::ntt::PolynomialSegment;
+        let mut rng = rand_chacha::ChaCha20Rng::seed_from_u64(1733);
+        let coefficients = (0..4)
+            .map(|_| (0..7).map(|_| rng.gen::<F>()).collect::<Vec<_>>())
+            .collect::<Vec<_>>();
+        // The first segment stores one row per buffer; the second packs two.
+        // This exercises the real owned-column path with a non-power-of-two k.
+        let prefixes = coefficients
+            .iter()
+            .map(|p| Buffer::from(p[..3].to_vec()))
+            .collect::<Vec<_>>();
+        let prefix_refs = prefixes.iter().collect::<Vec<_>>();
+        let suffixes = coefficients
+            .chunks_exact(2)
+            .map(|pair| Buffer::from([&pair[0][3..], &pair[1][3..]].concat()))
+            .collect::<Vec<_>>();
+        let suffix_refs = suffixes.iter().collect::<Vec<_>>();
+        let segments = [
+            PolynomialSegment::new(&prefix_refs, 1, 3),
+            PolynomialSegment::new(&suffix_refs, 2, 4),
+        ];
+        for length in [8, 16, 32] {
+            let matrix =
+                AdditiveRs.interleaved_encode(Polynomials::from_segments(&segments), length);
+            for row in 0..length {
+                for col in 0..4 {
+                    let expected = coefficients[col]
+                        .iter()
+                        .rev()
+                        .fold(F::ZERO, |acc, &c| acc * point(row) + c);
+                    assert_eq!(matrix.to_slice()[row * 4 + col], expected);
+                }
+            }
         }
     }
 

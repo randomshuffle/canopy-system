@@ -1,0 +1,5 @@
+input_oracles,canopy_layout,interleaving,log_input,setup_seed,rayon_threads,scheme,systematic_h,parity_h,iteration,encoding_seconds,commitment_seconds,opening_seconds,verification_seconds,total_prover_seconds,proof_bytes,proof_verified
+1,equal_blocks,4,22,4778121654452702769,32,bolt_canopy_black_box,3,18,0,0.062238892999999997,0.092317501,0.338778632,0.188006181,0.43109613300000005,5513280,true
+1,equal_blocks,4,22,4778121654452702769,32,bolt_merkle_shared,,,0,0.057556382999999996,0.081574469,0.320693347,0.179370307,0.402267816,6609336,true
+1,equal_blocks,4,22,4778121654452702769,32,bolt_merkle_shared,,,1,0.043772975000000006,0.069118383,0.306022501,0.213971244,0.375140884,6609336,true
+1,equal_blocks,4,22,4778121654452702769,32,bolt_canopy_black_box,3,18,1,0.055673326999999995,0.084270012,0.342077431,0.188947159,0.426347443,5513280,true

@@ -1,0 +1,10 @@
+{
+  "version": "concurrent-commitments-v2",
+  "rayon_threads": 1,
+  "initial_commitments": "concurrent encodings and concurrent Merkle commitments for all three schemes; batch wall times",
+  "half_rate_base_encoding": "one shared measured batch and duration for Merkle-WHIR and Canopy-WHIR",
+  "opening_fronts": "single-input native WHIR front component scaled by eta for all three schemes",
+  "recursive_tails": "executed native batched WHIR with the same implementation for all three schemes",
+  "cross_evaluations": "same parallel distinct-functional routine for all three schemes",
+  "scope": "component-composed; not a complete serialized Exp3 proof"
+}

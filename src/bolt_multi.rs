@@ -19,9 +19,14 @@ fn domain(
     layout: CanopyLayout,
     target: usize,
     input_oracles: usize,
+    separate_canopy: bool,
 ) -> DomainSeparator<'static, ()> {
     DomainSeparator::protocol(&(
-        "canopy-system/bolt-max/v5/multi-input",
+        if separate_canopy {
+            "canopy-system/bolt-max/v9/black-box-canopy"
+        } else {
+            "canopy-system/bolt-max/v5/multi-input"
+        },
         crate::FIELD_MODULUS_LABEL,
         n,
         width,
@@ -270,6 +275,20 @@ pub(super) fn prove(
     layout: CanopyLayout,
     target: usize,
 ) -> Result<Run> {
+    prove_mode(encoder, inputs, heights, seed, layout, target, false)
+}
+
+/// The black-box mode keeps the baseline's shared Bolt tail and discharges
+/// the two Canopy families separately, without mixing their claims into Bolt.
+pub(super) fn prove_mode(
+    encoder: &BoltMaxEncoder,
+    inputs: &[Vec<Fr>],
+    heights: Option<(usize, usize)>,
+    seed: u64,
+    layout: CanopyLayout,
+    target: usize,
+    separate_canopy: bool,
+) -> Result<Run> {
     let eta = inputs.len();
     let k = encoder.message_rows;
     let width = encoder.interleaving;
@@ -282,9 +301,18 @@ pub(super) fn prove(
         "wrong input shape"
     );
     let n = (k * width).ilog2() as usize;
-    let common = batching::common_config(k, heights, layout, target)?;
+    ensure!(
+        !separate_canopy || heights.is_some(),
+        "black-box mode requires Canopy"
+    );
+    let common = batching::common_config(
+        k,
+        if separate_canopy { None } else { heights },
+        layout,
+        target,
+    )?;
     let source_count = eta
-        * if heights.is_some_and(|h| h.0 < k.ilog2() as usize) {
+        * if !separate_canopy && heights.is_some_and(|h| h.0 < k.ilog2() as usize) {
             4
         } else {
             2
@@ -293,7 +321,17 @@ pub(super) fn prove(
         common.security_level(source_count, source_count) + 1e-9 >= WHIR_SECURITY as f64,
         "insufficient shared WHIR security for batch"
     );
-    let domain = domain(n, width, heights, seed, layout, target, eta).instance(&Empty);
+    let domain = domain(
+        n,
+        width,
+        heights,
+        seed,
+        layout,
+        target,
+        eta,
+        separate_canopy,
+    )
+    .instance(&Empty);
     let mut state = ProverState::new(&domain, Blake3Transcript::default());
     let mut profile = Vec::new();
     let mut committed = Vec::with_capacity(eta);
@@ -341,6 +379,7 @@ pub(super) fn prove(
         .sum();
     let start = Instant::now();
     let mut claims = Vec::new();
+    let mut canopy_claims = [Vec::new(), Vec::new()];
     let mut evaluations = Vec::new();
     for (input, (encoded, x_layer, y_layer)) in inputs.iter().zip(committed) {
         let (front, value) = prove_front(
@@ -354,10 +393,36 @@ pub(super) fn prove(
             &mut state,
             &mut profile,
         )?;
-        claims.extend(front);
+        if separate_canopy {
+            let [bolt, x, y] = black_box::partition_front(front, heights.unwrap(), k)?;
+            claims.extend(bolt);
+            canopy_claims[0].extend(x);
+            canopy_claims[1].extend(y);
+        } else {
+            claims.extend(front);
+        }
         evaluations.push(value);
     }
     batching::prove_batch(claims, &common, &mut state, &mut profile)?;
+    for (side, claims) in canopy_claims.into_iter().enumerate() {
+        if claims.is_empty() {
+            continue; // Full-height constant layers were already checked/opened.
+        }
+        let cfg = claims[0].config.clone();
+        ensure!(
+            cfg.security_level(eta, eta) + 1e-9 >= WHIR_SECURITY as f64,
+            "insufficient standalone Canopy batch security"
+        );
+        let first = profile.len();
+        batching::prove_batch(claims, &cfg, &mut state, &mut profile)?;
+        for event in &mut profile[first..] {
+            event.part = if side == 0 {
+                "separate Canopy X"
+            } else {
+                "separate Canopy Y"
+            };
+        }
+    }
     let opening = start.elapsed().as_secs_f64();
     for (phase, total) in [("commitment", commitment), ("opening", opening)] {
         let accounted = profile
@@ -381,7 +446,9 @@ pub(super) fn prove(
         log_input: n,
         setup_seed: seed,
         rayon_threads: rayon::current_num_threads(),
-        scheme: if heights.is_some() {
+        scheme: if separate_canopy {
+            "bolt_canopy_black_box"
+        } else if heights.is_some() {
             "bolt_canopy_batched"
         } else {
             "bolt_merkle_batched"
@@ -417,6 +484,31 @@ pub(super) fn verify(
     layout: CanopyLayout,
     target: usize,
 ) -> Result<()> {
+    verify_mode(
+        encoder,
+        n,
+        heights,
+        seed,
+        evaluations,
+        proof,
+        layout,
+        target,
+        false,
+    )
+}
+
+#[allow(clippy::too_many_arguments)]
+pub(super) fn verify_mode(
+    encoder: &BoltMaxEncoder,
+    n: usize,
+    heights: Option<(usize, usize)>,
+    seed: u64,
+    evaluations: &[Fr],
+    proof: &Proof,
+    layout: CanopyLayout,
+    target: usize,
+    separate_canopy: bool,
+) -> Result<()> {
     let eta = evaluations.len();
     let k = encoder.message_rows;
     let width = encoder.interleaving;
@@ -424,8 +516,27 @@ pub(super) fn verify(
         [4, 16].contains(&width) && [1, 2, 4, 8].contains(&eta) && (1 << n) == k * width,
         "invalid instance shape"
     );
-    let common = batching::common_config(k, heights, layout, target)?;
-    let domain = domain(n, width, heights, seed, layout, target, eta).instance(&Empty);
+    ensure!(
+        !separate_canopy || heights.is_some(),
+        "black-box mode requires Canopy"
+    );
+    let common = batching::common_config(
+        k,
+        if separate_canopy { None } else { heights },
+        layout,
+        target,
+    )?;
+    let domain = domain(
+        n,
+        width,
+        heights,
+        seed,
+        layout,
+        target,
+        eta,
+        separate_canopy,
+    )
+    .instance(&Empty);
     let mut state = VerifierState::new(&domain, proof, Blake3Transcript::default());
     let mut layers = Vec::new();
     for _ in 0..eta {
@@ -446,18 +557,29 @@ pub(super) fn verify(
         layers.push((x, y));
     }
     let mut claims = Vec::new();
+    let mut canopy_claims = [Vec::new(), Vec::new()];
     for (&value, (x, y)) in evaluations.iter().zip(layers) {
-        claims.extend(verify_front(
-            encoder,
-            value,
-            x,
-            y,
-            [&common, &common],
-            eta,
-            &mut state,
-        )?);
+        let front = verify_front(encoder, value, x, y, [&common, &common], eta, &mut state)?;
+        if separate_canopy {
+            let [bolt, x, y] = black_box::partition_front(front, heights.unwrap(), k)?;
+            claims.extend(bolt);
+            canopy_claims[0].extend(x);
+            canopy_claims[1].extend(y);
+        } else {
+            claims.extend(front);
+        }
     }
     batching::verify_batch(claims, &common, &mut state)?;
+    for claims in canopy_claims {
+        if let Some(first) = claims.first() {
+            let cfg = first.config.clone();
+            ensure!(
+                cfg.security_level(eta, eta) + 1e-9 >= WHIR_SECURITY as f64,
+                "insufficient standalone Canopy batch security"
+            );
+            batching::verify_batch(claims, &cfg, &mut state)?;
+        }
+    }
     state
         .check_eof()
         .map_err(|e| anyhow::anyhow!("trailing proof data: {e:?}"))?;

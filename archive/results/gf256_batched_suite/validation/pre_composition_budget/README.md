@@ -1,1 +1,0 @@
-Superseded intermediate WHIR runs using the old 128-bit per-event budget. Their composed algebraic union bound was below 128 bits. These results are excluded from all final reports. The n22 timing run was interrupted.

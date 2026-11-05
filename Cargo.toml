@@ -3,7 +3,8 @@ name = "canopy-system"
 version = "0.1.0"
 edition = "2021"
 license = "MIT"
-description = "Proof-size and timing comparison for Merkle and Canopy vector commitments"
+description = "Canopy commitment experiments: Bolt, WHIR, and Reed-Solomon accumulation"
+rust-version = "1.92"
 
 [dependencies]
 anyhow = "1.0"
@@ -20,11 +21,9 @@ rand_chacha = "0.3"
 rayon = "1.10"
 serde = { version = "1.0", features = ["derive"] }
 spongefish = { git = "https://github.com/arkworks-rs/spongefish", rev = "fcc277f8a857fdeeadd7cca92ab08de63b1ff1a1", features = ["ark-ff"] }
-tracing = { version = "0.1", optional = true }
 whir-ref = { package = "whir", path = "vendor/whir" }
 
 [features]
-whir-tracing = ["dep:tracing", "whir-ref/tracing"]
 fs-accounting = []
 
 [dev-dependencies]

@@ -8,42 +8,16 @@ pub mod bolt_experiment;
 pub mod canopy;
 pub mod executable_whir;
 pub mod fiat_shamir;
-pub mod field_benchmark;
 pub mod merkle;
 pub mod paper_experiments;
 pub mod reed_solomon;
-pub mod separate_benchmark;
+pub mod section8;
+mod section8_codeword;
+pub mod section8_estimator;
 pub mod whir;
-#[cfg(feature = "whir-tracing")]
-pub mod whir_trace;
 
-use ark_ff::{Fp256, Fp64, MontBackend, MontConfig};
-
-/// Historical prime field retained for the field microbenchmark.
-#[derive(MontConfig)]
-#[modulus = "115792089237316195423570985008687907853269984665640564039457584007728446046209"]
-#[generator = "7"]
-pub struct FrConfig;
-
-pub type PrimeFr = Fp256<MontBackend<FrConfig, 4>>;
 /// Default field for WHIR, Canopy, and Bolt.
 pub use binary_field::Binary256 as Fr;
-
-/// Concrete 48-bit Canopy-layer candidate used by the field-size grid.
-#[derive(MontConfig)]
-#[modulus = "281467460517889"]
-#[generator = "11"]
-pub struct CanopyLayerFr48Config;
-
-pub type CanopyLayerFr48 = Fp64<MontBackend<CanopyLayerFr48Config, 1>>;
-
-/// Concrete 64-bit Goldilocks Canopy-layer candidate.
-#[derive(MontConfig)]
-#[modulus = "18446744069414584321"]
-#[generator = "7"]
-pub struct CanopyLayerFr64Config;
-
-pub type CanopyLayerFr64 = Fp64<MontBackend<CanopyLayerFr64Config, 1>>;
 
 /// Headline bit width of the field used throughout the paper experiments.
 pub const FIELD_BITS: usize = 256;
@@ -54,18 +28,12 @@ pub const HASH_BYTES: usize = 32;
 
 #[cfg(test)]
 mod tests {
-    use ark_ff::{FftField, PrimeField};
-
-    use super::{CanopyLayerFr48, CanopyLayerFr64, Fr};
+    use super::Fr;
 
     #[test]
     fn field_matches_benchmark_requirements() {
         assert_eq!(<Fr as ark_ff::Field>::extension_degree(), 256);
         assert_eq!(<Fr as ark_ff::Field>::characteristic(), &[2]);
-        assert_eq!(CanopyLayerFr48::MODULUS_BIT_SIZE, 48);
-        assert_eq!(CanopyLayerFr48::TWO_ADICITY, 30);
-        assert_eq!(CanopyLayerFr64::MODULUS_BIT_SIZE, 64);
-        assert_eq!(CanopyLayerFr64::TWO_ADICITY, 32);
     }
 }
 

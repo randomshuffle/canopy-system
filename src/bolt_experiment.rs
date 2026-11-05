@@ -3,7 +3,7 @@
 //! This is an H-oracle-aided experiment: H is public, and its final evaluation
 //! is checked directly. It does not implement Spark or Mulperm preprocessing.
 //! WHIR supplies constrained RS proofs in place of the binary-field Ligerito
-//! implementation. See docs/experiment_bolt_max.md for the exact protocol.
+//! implementation. See experiments/bolt/README.md for the experiment protocol.
 
 use std::{collections::BTreeMap, path::Path, time::Instant};
 
@@ -47,10 +47,10 @@ const QUERY_SECURITY: usize = 132;
 const WHIR_SECURITY: usize = 136;
 #[path = "bolt_batching.rs"]
 pub mod batching;
+#[path = "bolt_black_box.rs"]
+pub mod black_box;
 #[path = "bolt_multi.rs"]
 pub mod multi;
-#[path = "bolt_split.rs"]
-pub mod split;
 
 pub const DEFAULT_SEED: u64 = 0x424f_4c54_4341_4e31;
 /// Canopy RS lengths relative to the systematic row count k=N/width.

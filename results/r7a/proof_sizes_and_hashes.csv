@@ -1,0 +1,76 @@
+log_input,input_oracles,scheme,proof_bytes,verifier_auth_hashes,fs_finalizations,verifier_hashes,timing_scope,systematic_h,parity_h
+22,1,merkle_whir_batched_after_second,336938.88,6566.08,31,6597.08,component-composed native WHIR,,
+22,1,merkle_whir_batched_rate_quarter_after_second,225053.76,4299.27,31,4330.27,component-composed native WHIR,,
+22,1,canopy_schwartz_zippel,297704.95999999996,4445.14,34,4479.14,component-composed native WHIR,,
+22,2,merkle_whir_batched_after_second,588451.84,11932.02,39,11971.02,component-composed native WHIR,,
+22,2,merkle_whir_batched_rate_quarter_after_second,371296.0,7545.26,39,7584.26,component-composed native WHIR,,
+22,2,canopy_schwartz_zippel,509387.2,7669.110000000001,43,7712.110000000001,component-composed native WHIR,,
+22,4,merkle_whir_batched_after_second,1091190.72,22653.430000000004,53,22706.430000000004,component-composed native WHIR,,
+22,4,merkle_whir_batched_rate_quarter_after_second,664435.52,14055.990000000002,53,14108.990000000002,component-composed native WHIR,,
+22,4,canopy_schwartz_zippel,933649.9199999999,14146.819999999996,61,14207.819999999996,component-composed native WHIR,,
+22,8,merkle_whir_batched_after_second,2094734.08,44035.399999999994,81,44116.399999999994,component-composed native WHIR,,
+22,8,merkle_whir_batched_rate_quarter_after_second,1250817.6,27080.190000000002,81,27161.190000000002,component-composed native WHIR,,
+22,8,canopy_schwartz_zippel,1779849.92,27031.03,97,27128.03,component-composed native WHIR,,
+22,1,bolt_merkle_shared,6609930.24,178071.27000000005,37,178108.27000000005,complete serialized public-H Bolt adapter,,
+22,1,bolt_canopy_black_box,5515588.799999999,101456.72,64,101520.72,complete serialized public-H Bolt adapter,3,18
+22,2,bolt_merkle_shared,13194888.959999999,356413.64999999997,47,356460.64999999997,complete serialized public-H Bolt adapter,,
+22,2,bolt_canopy_black_box,10895912.32,200569.8099999999,75,200644.8099999999,complete serialized public-H Bolt adapter,3,18
+22,4,bolt_merkle_shared,26443186.88,715176.3000000002,67,715243.3000000002,complete serialized public-H Bolt adapter,,
+22,4,bolt_canopy_black_box,21727667.52,400083.1000000001,95,400178.1000000001,complete serialized public-H Bolt adapter,3,18
+22,8,bolt_merkle_shared,53101661.43999999,1436914.49,107,1437021.49,complete serialized public-H Bolt adapter,,
+22,8,bolt_canopy_black_box,43486992.95999999,790577.82,165,790742.82,complete serialized public-H Bolt adapter,3,4
+24,1,merkle_whir_batched_after_second,379762.88,8036.59,35,8071.59,component-composed native WHIR,,
+24,1,merkle_whir_batched_rate_quarter_after_second,254771.2,5426.6,35,5461.6,component-composed native WHIR,,
+24,1,canopy_schwartz_zippel,326294.4,5471.070000000001,38,5509.070000000001,component-composed native WHIR,,
+24,2,merkle_whir_batched_after_second,657576.0,14224.369999999999,43,14267.369999999999,component-composed native WHIR,,
+24,2,merkle_whir_batched_rate_quarter_after_second,415324.48,9119.89,43,9162.89,component-composed native WHIR,,
+24,2,canopy_schwartz_zippel,550585.6,9089.26,47,9136.26,component-composed native WHIR,,
+24,4,merkle_whir_batched_after_second,1212849.28,26586.680000000004,57,26643.680000000004,component-composed native WHIR,,
+24,4,merkle_whir_batched_rate_quarter_after_second,736128.64,16495.02,57,16552.02,component-composed native WHIR,,
+24,4,canopy_schwartz_zippel,998536.3200000001,16306.180000000004,65,16371.180000000004,component-composed native WHIR,,
+24,8,merkle_whir_batched_after_second,2323121.6,51304.47,85,51389.47,component-composed native WHIR,,
+24,8,merkle_whir_batched_rate_quarter_after_second,1378157.44,31258.56,85,31343.56,component-composed native WHIR,,
+24,8,canopy_schwartz_zippel,1894732.48,30748.11,101,30849.11,component-composed native WHIR,,
+24,1,bolt_merkle_shared,8029484.16,222273.98000000004,41,222314.98000000004,complete serialized public-H Bolt adapter,,
+24,1,bolt_canopy_black_box,5756298.240000002,106583.05000000002,72,106655.05000000002,complete serialized public-H Bolt adapter,3,20
+24,2,bolt_merkle_shared,16027527.360000003,444777.2900000001,51,444828.2900000001,complete serialized public-H Bolt adapter,,
+24,2,bolt_canopy_black_box,11327696.64,209530.98999999996,83,209613.98999999996,complete serialized public-H Bolt adapter,3,20
+24,4,bolt_merkle_shared,32120461.44000001,892439.07,71,892510.07,complete serialized public-H Bolt adapter,,
+24,4,bolt_canopy_black_box,22498829.759999998,410089.94,133,410222.94,complete serialized public-H Bolt adapter,3,4
+24,8,bolt_merkle_shared,64511973.44000002,1793349.4100000008,111,1793460.4100000008,complete serialized public-H Bolt adapter,,
+24,8,bolt_canopy_black_box,44969399.68,819063.44,177,819240.44,complete serialized public-H Bolt adapter,3,4
+26,1,merkle_whir_batched_after_second,425466.24,9547.819999999998,39,9586.819999999998,component-composed native WHIR,,
+26,1,merkle_whir_batched_rate_quarter_after_second,285880.95999999996,5658.780000000001,37,5695.780000000001,component-composed native WHIR,,
+26,1,canopy_schwartz_zippel,357699.83999999997,6535.12,42,6577.12,component-composed native WHIR,,
+26,2,merkle_whir_batched_after_second,729550.0800000001,16556.44,47,16603.44,component-composed native WHIR,,
+26,2,merkle_whir_batched_rate_quarter_after_second,460155.2,9984.849999999999,45,10029.849999999999,component-composed native WHIR,,
+26,2,canopy_schwartz_zippel,594551.36,10545.869999999999,51,10596.869999999999,component-composed native WHIR,,
+26,4,merkle_whir_batched_after_second,1337722.56,30571.83,61,30632.83,component-composed native WHIR,,
+26,4,merkle_whir_batched_rate_quarter_after_second,808957.76,18234.93,59,18293.93,component-composed native WHIR,,
+26,4,canopy_schwartz_zippel,1067562.24,18545.6,69,18614.6,component-composed native WHIR,,
+26,8,merkle_whir_batched_after_second,2553675.84,58590.91,89,58679.91,component-composed native WHIR,,
+26,8,merkle_whir_batched_rate_quarter_after_second,1507603.8399999999,34768.1,87,34855.1,component-composed native WHIR,,
+26,8,canopy_schwartz_zippel,2012977.6,34525.549999999996,105,34630.549999999996,component-composed native WHIR,,
+26,1,bolt_merkle_shared,9472890.24,267243.56999999995,45,267288.56999999995,complete serialized public-H Bolt adapter,,
+26,1,bolt_canopy_black_box,5935682.56,111365.58999999997,80,111445.58999999997,complete serialized public-H Bolt adapter,3,22
+26,2,bolt_merkle_shared,18906664.64,534613.7599999999,55,534668.7599999999,complete serialized public-H Bolt adapter,,
+26,2,bolt_canopy_black_box,11618815.359999998,214474.67999999993,120,214594.67999999993,complete serialized public-H Bolt adapter,3,5
+26,4,bolt_merkle_shared,37893932.48,1072725.8800000004,75,1072800.8800000004,complete serialized public-H Bolt adapter,,
+26,4,bolt_canopy_black_box,22999653.119999997,423634.56000000006,142,423776.56000000006,complete serialized public-H Bolt adapter,3,5
+26,8,bolt_merkle_shared,76109391.04,2155633.1800000006,115,2155748.1800000006,complete serialized public-H Bolt adapter,,
+26,8,bolt_canopy_black_box,45914533.120000005,844506.0999999997,186,844692.0999999997,complete serialized public-H Bolt adapter,3,5
+28,1,merkle_whir_batched_after_second,471586.88,10417.09,41,10458.09,component-composed native WHIR,,
+28,1,merkle_whir_batched_rate_quarter_after_second,316753.6,6678.549999999999,41,6719.549999999999,component-composed native WHIR,,
+28,1,canopy_schwartz_zippel,389666.24,6962.07,44,7006.07,component-composed native WHIR,,
+28,2,merkle_whir_batched_after_second,802004.48,18248.76,49,18297.76,component-composed native WHIR,,
+28,2,merkle_whir_batched_rate_quarter_after_second,505602.88,11460.09,49,11509.09,component-composed native WHIR,,
+28,2,canopy_schwartz_zippel,638679.36,11352.73,53,11405.73,component-composed native WHIR,,
+28,1,bolt_merkle_shared,10910563.2,312164.08,47,312211.08,complete serialized public-H Bolt adapter,,
+28,1,bolt_canopy_black_box,6078280.0,115676.55000000002,84,115760.55000000002,complete serialized public-H Bolt adapter,3,24
+28,2,bolt_merkle_shared,21785445.759999998,624569.03,57,624626.03,complete serialized public-H Bolt adapter,,
+28,2,bolt_canopy_black_box,11849556.8,221718.12,124,221842.12,complete serialized public-H Bolt adapter,3,7
+30,1,merkle_whir_batched_after_second,515767.36,10979.73,43,11022.73,component-composed native WHIR,,
+30,1,merkle_whir_batched_rate_quarter_after_second,346415.36,7269.48,43,7312.48,component-composed native WHIR,,
+30,1,canopy_schwartz_zippel,420340.48,7480.64,46,7526.64,component-composed native WHIR,,
+30,1,bolt_merkle_shared,12364761.920000002,357488.79,51,357539.79,complete serialized public-H Bolt adapter,,
+30,1,bolt_canopy_black_box,6239889.919999999,120455.71000000004,92,120547.71000000004,complete serialized public-H Bolt adapter,3,26

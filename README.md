@@ -1,243 +1,132 @@
-# canopy-system
+# Canopy
 
-Rust implementation and experiments comparing Merkle and Canopy commitments
-inside batched WHIR and Bolt-max proximity arguments. The final suite contains
-**five configurations**, all using **GF(2^256)**, 32-byte field elements,
-**BLAKE3-256**, and a **128-bit soundness target**. Reed–Solomon encoding uses
-additive FFTs on Cantor-subspace domains, including conversion from monomial
-coefficients to the FFT basis. Fiat–Shamir uses a BLAKE3 XOF, with no proof of work.
+Experiments comparing **Canopy and Merkle commitments** in Bolt, WHIR, and
+Reed–Solomon accumulation. The implementation uses Rust, GF(2²⁵⁶), additive
+Reed–Solomon encoding, and BLAKE3-256.
 
-Canopy interprets each 32-byte subtree digest directly as a GF(2^256) element.
-This invertible conversion invokes no hash; current verifier hash counts include
-only authentication and Fiat–Shamir finalizations.
-
-Start with the [final artifact index](results/README.md). The final campaign
-inputs are in `experiments/aws-r5/`, and the current reproduction tools are in
-`scripts/`. Earlier experiments, runners, and notes are separate under
-[`archive/`](archive/README.md); every retained study has an `EXPERIMENT.md`.
-
-RS list decoding in both the estimator and executable WHIR uses BCGM26 with
-`m=10` and radius `1 - (1 + 1/20) sqrt(rho)`. The shared affine MCA bound is
-`10.5^7 * n_RS^2 / (3 * rho^(3/2) * |F|)`; an s-coordinate multilinear fold
-incurs s such errors. See [Definition 9.1 and Theorem 9.2](https://eprint.iacr.org/2025/2051).
-Bolt's general-code systematic test retains Khatam, and unique-decoding paths
-retain their stronger bounds. The [regenerated 75-point estimates](results/paper_bcgm_m10/README.md)
-record the BCGM parameters separately from the historical AWS timings.
-
-## The final five configurations
-
-Here `N` is the number of field elements per input polynomial, `eta` is the
-number of inputs, and Bolt uses `w=4` with `k=N/4`.
-
-| Configuration | Commitments and batching | CSV scheme |
+| Experiment | What is compared | Start here |
 |---|---|---|
-| WHIR, rate 1/2 | Merkle commitments; execute each input's first transition separately, then batch the resulting claims into one recursive WHIR proof. | `merkle_whir_batched_after_second` |
-| WHIR, rate 1/4 | The same batched Merkle baseline with starting RS rate 1/4. | `merkle_whir_batched_rate_quarter_after_second` |
-| Canopy + WHIR, half-length block | Starting rate 1/2: the base oracle has length `2N`, and the Canopy RS codeword has length `N`. Batch the `eta` Canopy SEP claims with the `eta` first-transition WHIR claims into one recursive proof. | `canopy_schwartz_zippel` |
-| Bolt + Merkle, shared tail | Bolt-max with `w=4`, the fixed shared WHIR tail, and join message length `k/8`. | `bolt_merkle_shared` |
-| Bolt + Canopy, quarter-length blocks | Bolt-max with `w=4`; systematic and parity Canopy RS blocks both have length `k/4=N/16`. Optimize their heights independently and use a separate recursive WHIR batch for each side. | `bolt_canopy_split_quarter` |
+| **Bolt** | The shared-tail Merkle baseline and black-box Canopy commitments for Bolt's input oracles. | [Protocol, results, and reproduction](experiments/bolt/README.md) |
+| **WHIR** | Batched Merkle WHIR at rates 1/2 and 1/4, and Canopy–WHIR with a half-length Canopy codeword. | [Protocol, results, and reproduction](experiments/whir/README.md) |
+| **RS accumulation** | A steady-state Canopy `ifold` + `iacc` step and Merkle accumulation at rates 1/2 and 1/4. | [Protocol, results, and reproduction](experiments/rs-accumulation/README.md) |
 
-For Canopy + WHIR, the timing harness uses a three-variable initial fold and
-Canopy height four, giving a Canopy message of length `N/8` and a shared tail
-starting at rate 1/8. The `2 eta` source claims use the existing
-Schwartz–Zippel batching construction.
+The [reference results](results/README.md) contain the completed October 28,
+2026 campaign: **135 Bolt/WHIR configurations and 24 accumulation configurations**,
+with raw samples, parameter searches, and build provenance. Superseded
+campaigns and exploratory command-line interfaces have been removed.
 
-For Bolt + Canopy, each nonconstant Canopy claim joins its own side's
-code-switch claim immediately at the aligned message size. There are no
-independent Canopy folds before joining and no delayed systematic join.
-Full-height constant layers are opened directly. The Merkle control always
-uses the shared-tail baseline. The executable selection is fixed by
-`--paper-only --shared-merkle-baseline`, with Canopy estimates generated using
-`--width 4 --block-divisor 4`.
+## Getting started
 
-The configuration lists and workload grids are in
-[config.json](experiments/aws-r5/config.json) and
-[config-n30-eta1.json](experiments/aws-r5/config-n30-eta1.json).
+Local reproduction supports macOS and Linux. You need Rust **1.92.0**,
+Python **3.10+**, Git, and a C compiler/linker.
+Python runners use the standard library. The first build needs network access;
+subsequent builds can use `--offline`. Rust dependencies are locked in
+[`Cargo.lock`](Cargo.lock), WHIR is vendored, and Spongefish is pinned to a Git
+revision.
 
-## Measured results
+```sh
+rustup toolchain install 1.92.0 --profile minimal --component rustfmt
 
-The completed AWS experiments use an i4i.24xlarge with 32 Rayon workers pinned
-to CPUs `0-15,48-63`, Rust 1.92.0, and native release builds. The main campaign
-and its `N=2^30` extension use zero warmups and one measured pass per point.
+# Check the retained files and reconstruct all reported results from raw samples.
+python3 scripts/validate_results.py
 
-| Dataset | Input sizes `N` | Input counts `eta` | Configuration points |
-|---|---|---|---:|
-| Main campaign | `2^22, 2^24, 2^26` | `1, 2, 4, 8` | 60 |
-| Main campaign | `2^28` | `1, 2` | 10 |
-| Large-input extension | `2^30` | `1` | 5 |
+# Regenerate all proof-size/hash estimates; no large input polynomials are allocated.
+python3 scripts/reproduce.py estimates --output results/reproduce/estimates
+```
 
-The following values come from the completed
-[`N=2^30, eta=1` comparison](results/aws_i4i_n30_eta1/remote/comparison_iop_rounds.csv).
-**Times are measured seconds.** Proof sizes and verifier hash counts are means
-over 100 deterministic query samples.
+The estimator command builds the executables, runs the 75 Bolt/WHIR model
+points and the accumulation height search, then checks every exported summary
+field against the reference. Commands, logs, source/binary hashes, and the
+comparison receipt are saved in the output directory. Use a new directory for
+each run; generated output under `results/reproduce/` is ignored by Git.
 
-| Configuration | Proof (KiB) | Verifier hashes | Commit (s) | Open (s) | Total prover (s) |
-|---|---:|---:|---:|---:|---:|
-| WHIR, rate 1/2 | 503.68 | 11,022.73 | 153.18 | 137.64 | 290.83 |
-| WHIR, rate 1/4 | 338.30 | 7,312.48 | 253.55 | 242.13 | 495.68 |
-| Canopy + WHIR, half-length block | 410.49 | 7,526.64 | 202.95 | 160.85 | 363.80 |
-| Bolt + Merkle, shared tail | 12,074.96 | 357,539.79 | 34.73 | 87.12 | 121.85 |
-| Bolt + Canopy, quarter-length blocks | 6,002.74 | 116,768.93 | 41.45 | 96.41 | 137.86 |
+For a small, verifier-checked timing run on your own machine, build the
+executables and follow one of the three experiment guides above:
 
-The large-input extension uses direct digest conversion in both the timed
-binaries and the hash accounting. Its
-[report](results/aws_i4i_n30_eta1/README.md) and
-[validation receipt](results/aws_i4i_n30_eta1/remote/completion-validation.json)
-record the completed measurements and proof checks.
+```sh
+RUSTFLAGS="-C target-cpu=native" cargo build --locked --release --bin canopy-system --examples
+cargo test --locked --lib
+```
 
-Separate repeated Bolt checks at
-[`N=2^22`](results/aws_i4i_bolt_n22_recheck_20260917/README.md) and
-[`N=2^24`](results/aws_i4i_bolt_n24_recheck_20260917/README.md) cover all four
-input counts using direct digest conversion, one discarded warmup, and four
-measured passes with alternating scheme order. All 64 measured serialized
-proofs verified. These repeated checks did not reproduce the earlier
-single-pass apparent Canopy speedup; their results remain separate from the
-original campaign.
+The guides include small pilots (`N=2^16` for Bolt and accumulation,
+`N=2^18` for WHIR). They exercise the full measurement path at a smaller size; their timings are not the reference measurements.
 
-## Measurement and accounting conventions
+## Reproducing the measured campaign
 
-- **Proof size:** mean over 100 deterministic query samples with merged
-  authentication paths, including roots, digests, queried field values, and
-  non-oracle messages. The model excludes serializer framing; Bolt timing
-  records additionally retain actual serialized proof bytes.
-- **Verifier hashes:** authentication plus Fiat–Shamir hash/XOF finalizations.
-  Direct digest-to-field conversion contributes zero hashes. Counts refer to
-  complete invocations, not BLAKE3 compression calls. Fiat–Shamir adds no proof
-  bytes; transcript byte counts remain in the CSVs.
-- **Prover time:** commitment plus opening, including executed Fiat–Shamir work
-  and excluding input generation, public setup, and verification. Those
-  excluded phases still contribute to process wall time and peak RSS.
-- **Sequential IOP rounds:** for all five configurations, reported commitment
-  time is `C(N, eta) = eta * C(N, 1)` for the same scheme and input size.
-  Opening time is measured at the requested `eta`; total time is their sum.
-  For `eta > 1`, these totals are derived from measured components. Raw
-  commitment measurements remain in the per-job data.
-- **Timing scope:** WHIR/Canopy composes separately measured, verifier-checked
-  native WHIR components. Bolt generates and verifies complete serialized
-  arguments for the public-`H` adapter, excluding Spark/Mulperm preprocessing
-  and proofs. Single-pass results do not characterize run-to-run variability.
+The reference host was an **AWS r7a.32xlarge**, with an AMD EPYC 9R14, 1 TiB RAM,
+and native release builds. Jobs ran sequentially with either **1 or 32 Rayon
+workers**, pinned to CPUs `0` or `0–31`. The full runner requires Linux x86_64,
+`numactl`, `lscpu`, disabled swap, and enough RAM for the large workloads. It
+checks field arithmetic, protocol tests, CPU affinity, and memory before accepting
+measurements.
 
-WHIR proof-size searches optimize schedules with three or four variables per
-fold and a terminal message of at most `2^10` coefficients. Executable timings
-use three-variable folds. Proof-minimizing estimates and timed components
-therefore have separately recorded parameters.
+```sh
+# Inspect the exact 78 jobs before running the memory-intensive campaign.
+python3 scripts/reproduce.py plan --output results/reproduce/campaign
+python3 scripts/reproduce.py run --output results/reproduce/campaign
+```
 
-The composed 128-bit soundness target is conditional on the protocol
-assumptions. WHIR uses BCGM RS list-decoding parameters with a 136-bit local budget. Bolt
-assumes ensemble distance `gamma=0.013` over GF(2^256) and retains separate
-systematic and parity proximity analyses. See the
-[protocol and soundness notes](docs/experiment_bolt_max.md#arithmetic-and-soundness)
-for these assumptions and the public-`H` scope.
+[`experiments/r7a.json`](experiments/r7a.json) records the completed grid and
+per-job sampling policy:
 
-## Result files
+| Family | 32 workers | 1 worker |
+|---|---|---|
+| Bolt and WHIR | `N=2^22, 2^24, 2^26`, `eta=1,2,4,8`; `N=2^28`, `eta=1,2`; `N=2^30`, `eta=1` | `N=2^22, 2^24, 2^26`, `eta=1,2,4,8` |
+| RS accumulation | `N=2^24`, fresh arity `1,2,4,8`, one prior accumulator per relation | Same grid |
 
-| Artifact | Contents |
+The saved campaign has mixed sampling: 108 configurations use zero warmups
+and one measurement; 51 use one warmup and two measurements. The runner
+reproduces those choices. For repeated performance studies, copy the config,
+set `warmups` and `repetitions`, clear `sampling_by_job`, and pass `--config`.
+CPU affinity and memory limits are also explicit configuration fields.
+
+Successful jobs resume only when their source, executable, and configuration
+fingerprints match. Failed or interrupted jobs require inspection and a fresh
+output directory. Timing values depend on the machine and measurement conditions;
+proof/hash models use deterministic samples.
+
+To rebuild the tables from the retained raw measurements without compiling Rust:
+
+```sh
+python3 scripts/reproduce.py report \
+  --input results/r7a --output results/reproduce/report
+```
+
+## Reading the results
+
+- **Proof size** is a model expectation over 100 deterministic query samples
+  for Bolt/WHIR, or an analytic expectation for accumulation. Models exclude
+  serializer framing. Measured serialized sizes are retained where available.
+- **Verifier hashes** count authentication and Fiat–Shamir hash/XOF
+  finalizations. Direct conversion of a 32-byte digest to GF(2²⁵⁶) adds no hash.
+- **Bolt/WHIR prover time** reports commitment as
+  `C(N, eta) = eta × C(N, 1)` and adds the measured opening at that `eta`.
+  The CSV also preserves raw commitment and total timings. WHIR timings compose
+  separately measured, verified native components; Bolt verifies complete
+  serialized public-`H` arguments and excludes Spark/Mulperm preprocessing.
+- **Accumulation prover time** includes fresh commitments plus `ifold + iacc`
+  (or the Merkle control's reduction). Prior commitments, verification, and the
+  final membership decider are excluded. Both accumulator claims are retained
+  for the next step.
+
+This is a research implementation. Bolt/WHIR use a 128-bit composed target
+with a 136-bit local WHIR budget; Bolt also assumes code distance
+`gamma=0.013`. Accumulation uses a 128-bit round-by-round target and records
+local soundness diagnostics, without claiming a proved end-to-end 128-bit
+accumulation theorem. The experiment guides explain these boundaries.
+
+## Repository map
+
+| Path | Contents |
 |---|---|
-| [Current 75-point estimates](results/paper_bcgm_m10/README.md) | Final proof sizes and verifier hashes using BCGM26 with `m=10`; no timings were rerun. |
-| [Main 70-point comparison](results/aws_i4i_optimized/comparison_iop_rounds_direct_digest.csv) | Final five configurations with sequential-round timing and corrected direct-digest hash accounting. The original Canopy timings still include the removed rehash; these timings have not been rerun. |
-| [Measured `N=2^30` extension](results/aws_i4i_n30_eta1/remote/comparison_iop_rounds.csv) | Five measured points at `eta=1`, using direct digest conversion throughout. |
-| [Bolt `N=2^22` recheck](results/aws_i4i_bolt_n22_recheck_20260917/remote/results/summary_iop_rounds.csv) | Repeated timing means for both Bolt configurations at all four input counts. |
-| [Bolt `N=2^24` recheck](results/aws_i4i_bolt_n24_recheck_20260917/remote/results/summary_iop_rounds.csv) | The corresponding repeated checks at `N=2^24`. |
-| [Reporting audit](archive/results/aws_i4i_fair/README.md) | Commitment scheduling audit and the sequential-IOP reporting policy. |
+| [`src/`](src) | Field arithmetic, additive RS, commitments, protocol implementations, estimators, and tests. |
+| [`examples/`](examples) | Bolt and accumulation CLIs, WHIR transcript accounting, and arithmetic/encoder checks. |
+| [`scripts/`](scripts) | Reproduction, result validation, and accumulation profiling/reporting. |
+| [`experiments/`](experiments) | The three experiment guides and the reference campaign configuration. |
+| [`results/r7a/`](results/r7a) | Curated reference data, raw samples, and the original measured source snapshot. |
+| [`vendor/whir/`](vendor/whir) | WHIR dependency with the experiment's local modifications and upstream licenses. |
 
-Earlier full-length WHIR, Bolt `k/2` and full-block studies, and extrapolated
-local timing tables are under `archive/results/`. Their geometry, hash accounting,
-and hardware differ from the final suite. The GF(2^256) transition occurred on
-September 15–16, 2026: binary-field runs began September 15, and commit
-`3603dd8` first records the default-field switch on September 16 at 11:13 a.m.
-Eastern. Confirmed prime-field-era outputs were removed; the mixed-field binary
-pilot was retained. See the [archive index](archive/README.md) for the cutoff
-evidence and removal list.
-
-## Reproduce the final suite
-
-Run from the repository root. Rust dependencies are locked in `Cargo.lock`;
-WHIR is vendored and Spongefish is pinned to a Git revision. Python runners use
-only the standard library. Install Rust through rustup, Python 3.10+, Git, and
-a C linker/build toolchain; the first Cargo build needs network access.
-
-The 75 proof-size and verifier-hash estimates are hardware independent and do
-not allocate the full input polynomials. Reproduce them locally first:
-
-```sh
-rustup toolchain install 1.92.0 --profile minimal
-python3 scripts/reproduce_estimates.py --output results/reproduce_estimates
-```
-
-This builds the four estimator executables with `--locked`, runs the main grid
-and `N=2^30` extension, and compares every exported field against the retained
-BCGM report. Commands, source/binary hashes, logs, and validation are saved in
-the fresh output directory. Add `--offline` after dependencies are cached.
-
-For measured timings, the campaign runner requires Linux x86_64,
-Rust 1.92.0, Cargo, Python 3.10+, and a C linker/build toolchain. Its supplied
-configuration targets the CPU allocation above and requires sufficient memory
-for the large workloads. The preflight checks enforce CPU affinity, native
-field arithmetic, available RAM, and disabled swap. Use a fresh output directory
-for new measurements; historical source and binary hashes describe their
-original runs.
-
-```sh
-rustup toolchain install 1.92.0 --profile minimal
-
-# Build, validate, prepare, measure, and report the 70-point grid.
-set -e
-campaign_config=experiments/aws-r5/config.json
-campaign_output=results/reproduce_five_configs
-for action in build plan prepare run report; do
-  python3 scripts/aws_benchmark.py "$action" \
-    --config "$campaign_config" --output "$campaign_output"
-done
-```
-
-For the measured `N=2^30, eta=1` workload, repeat the same loop with
-`campaign_config=experiments/aws-r5/config-n30-eta1.json` and a separate
-`campaign_output=results/reproduce_n30_eta1`. Add `--offline` once dependencies
-are cached. `run --only-log 22` can be used for the smaller-input pilot before
-continuing the remaining jobs. Successful jobs with identical provenance are
-resumable.
-
-The runner applies the half-length WHIR codeword and quarter-length Bolt blocks
-explicitly, generates the fixed shared-tail Merkle baseline, validates native
-field/protocol behavior, and writes `proof_sizes_and_hashes.csv`, raw
-`comparison.csv`, and the sequential-round `comparison_iop_rounds.csv`.
-Fresh builds already use direct digest conversion; the legacy correction script
-is only for the older 70-point dataset and must not be reapplied to these results.
-See the [campaign guide](experiments/aws-r5/README.md) for resource limits,
-per-job records, and source bundling.
-
-To repeat the balanced Bolt checks, run each check on that Linux host into a
-fresh directory. The first command builds and validates native binaries:
-
-```sh
-set -e
-python3 scripts/reproduce_bolt_recheck.py --log 22 --output results/reproduce_bolt_n22
-python3 scripts/reproduce_bolt_recheck.py --log 24 --output results/reproduce_bolt_n24 --skip-build
-```
-
-These checks use one discarded warmup and four measured repetitions at
-`eta=1,2,4,8`, alternating scheme order. Stored result directories are protected
-from use as reproduction outputs. New timings depend on the host and run
-conditions; the saved single-pass campaign still predates removal of the Canopy
-rehash and is not replaced by a current-source rerun.
-
-## Code map
-
-- [Field arithmetic](src/binary_field.rs) and [additive RS](src/additive_rs.rs):
-  GF(2^256), ARM PMULL, Intel PCLMULQDQ, portable arithmetic, additive FFTs,
-  and transposed encoding.
-- [Merkle](src/merkle.rs) and [Canopy](src/canopy.rs): commitments,
-  authentication paths, and the Canopy SEP reduction.
-- [WHIR experiments](src/paper_experiments.rs),
-  [executable bridge](src/executable_whir.rs), and [vendored WHIR](vendor/whir/):
-  proof-size models and component timings.
-- [Bolt encoder](src/bolt.rs), [split experiment](src/bolt_split.rs), and
-  [batching](src/bolt_batching.rs): the public-`H` adapter and the selected
-  shared-tail Merkle / quarter-block Canopy comparison.
-- [WHIR transcript model](src/paper_fiat_shamir.rs) and
-  [Bolt transcript model](src/bolt_fiat_shamir.rs): verifier hash accounting.
-- [Campaign runner](scripts/aws_benchmark.py), [main CLI](src/main.rs), and
-  [Bolt CLI](examples/gf256_bolt_split.rs): reproduction entry points.
-
-Library checks run with `cargo test --offline --lib`. Timing builds omit the
-diagnostic `fs-accounting` feature.
+First-party code is [MIT licensed](LICENSE). The vendored WHIR code retains
+its [MIT](vendor/whir/LICENSE-MIT) and [Apache-2.0](vendor/whir/LICENSE-APACHE)
+license files. See [public distribution notes](docs/publication.md) for the
+scope of this cleanup and the distinction between files and Git history.

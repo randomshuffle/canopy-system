@@ -7,10 +7,10 @@ fn main() {
         "timing binary has FS instrumentation"
     );
     let backend = multiplication_backend();
-    if std::env::args().any(|x| x == "--require-intel") {
+    if std::env::args().any(|x| x == "--require-intel" || x == "--require-pclmul") {
         assert_eq!(
             backend, "x86_64-pclmulqdq",
-            "build on the Intel host with -C target-cpu=native"
+            "build on the x86 host with -C target-cpu=native"
         );
     }
     for i in 0..128 {
